@@ -1,0 +1,31 @@
+{
+	"id": 7271,
+	"uuid": "uuid",
+	"name": "Ilia nucleus 2",
+	"photo": null,
+	"taxon": {
+		"id": 7271,
+		"validAs": null,
+		"rank": {
+			"id": 10,
+			"name_en": "Species",
+			"name": "Species"
+		},
+		"scientificName": "Ilia nucleus",
+		"authorship": "(Linnaeus, 1758)",
+		"path": "root.1.21.150.223.341.1077.2932.7271",
+		"leaves": 0,
+		"commonName": "Cangrejo boliche",
+		"aphia": 2423
+	},
+	"lifeStage": {
+		"id": 1,
+		"name": "joven",
+		"name_en": "jj"
+	},
+	"sex": {
+		"id": 2,
+		"name": "hembra",
+		"name_en": "hh"
+	}
+}

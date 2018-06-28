@@ -1,0 +1,115 @@
+{
+	"commonName": null,
+	"worms": "http://www.marinespecies.org/aphia.php?p=taxdetails&id=126956",
+	"image": null,
+	"note": " ",
+	"scientificName": "Kyphosus sectator",
+	"validAs": {
+		"path": "root.1",
+		"scientificName": "Animalia",
+		"authorship": null,
+		"rank": {
+			"name": "Kingdom",
+			"id": 1,
+			"name_en": "Kingdom"
+		},
+		"id": 1
+	},
+	"groupIcon": "fr-fish",
+	"path": "root.1.13",
+	"leaves": 0,
+	"authorship": "(Linnaeus, 1758)",
+	"rank": {
+		"id": 2,
+		"name": "Libre",
+		"name_en": "Free"
+	},
+	"aphia": 126956,
+	"id": 13,
+	"ecology": {
+		"id": 2,
+		"name": "Libre",
+		"name_en": "Free"
+	},
+	"euDirective": {
+		"id": 5911,
+		"author": "Djiba, A., Bamy, I. L., Sama Ould Bilal, A. & Van Waerebeek, K.",
+		"title": "Biodiversity of cetaceans in coastal waters of Northwest Africa: new insights through platform-of-opportunity visual surveying in 2011-2013",
+		"url": "/api/mediastorage/documents/BibOAG-05200.pdf",
+		"year": "2015"
+	},
+	"endemicity": {
+		"id": 2,
+		"name": "Libre",
+		"name_en": "Free"
+	},
+	"trophicRegime": {
+		"id": 2,
+		"name": "Libre",
+		"name_en": "Free"
+	},
+	"interest": {
+		"id": 2,
+		"name": "Libre",
+		"name_en": "Free"
+	},
+	"canaryProtection": {
+		"id": 2,
+		"name": "Libre",
+		"name_en": "Free"
+	},
+	"canaryCatalogue": {
+		"id": 5911,
+		"author": "Djiba, A., Bamy, I. L., Sama Ould Bilal, A. & Van Waerebeek, K.",
+		"title": "Biodiversity of cetaceans in coastal waters of Northwest Africa: new insights through platform-of-opportunity visual surveying in 2011-2013",
+		"url": "/api/mediastorage/documents/BibOAG-05200.pdf",
+		"year": "2015"
+	},
+	"origin": {
+		"id": 2,
+		"name": "Libre",
+		"name_en": "Free"
+	},
+	"spainProtection": {
+		"id": 2,
+		"name": "Libre",
+		"name_en": "Free"
+	},
+	"euProtection": {
+		"id": 2,
+		"name": "Libre",
+		"name_en": "Free"
+	},
+	"spainCatalogue": {
+		"id": 5911,
+		"author": "Djiba, A., Bamy, I. L., Sama Ould Bilal, A. & Van Waerebeek, K.",
+		"title": "Biodiversity of cetaceans in coastal waters of Northwest Africa: new insights through platform-of-opportunity visual surveying in 2011-2013",
+		"url": "/api/mediastorage/documents/BibOAG-05200.pdf",
+		"year": "2015"
+	},
+	"permanence": {
+		"id": 2,
+		"name": "Libre",
+		"name_en": "Free"
+	},
+	"popularNames": "Peje verdoso,Peje verde",
+	"parent": {
+		"path": "root.1",
+		"scientificName": "Animalia",
+		"authorship": null,
+		"rank": {
+			"name": "Kingdom",
+			"id": 1,
+			"name_en": "Kingdom"
+		},
+		"id": 1
+	},
+	"inserted": "2015-01-29T13:07:58.808+00:00",
+	"updated": "2015-01-29T13:12:42.146+00:00",
+	"wormsUpdated": "2015-01-29T13:12:42.146+00:00",
+	"status": {
+		"id": 2,
+		"name": "Libre",
+		"name_en": "Free"
+	}
+}

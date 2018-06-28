@@ -1,0 +1,127 @@
+{
+	"total": 2,
+	"type": "FeatureCollection",
+	"_meta": {
+		"max_score": null
+	},
+	"_aggs": {},
+	"features": [{
+		"_meta": {
+			"category": "ci",
+			"score": null,
+			"version": null,
+			"highlight": null
+		},
+		"id": 12931,
+		"uuid": "sdsd323sdds_3ed",
+		"properties": {
+			"activityId": "3",
+			"z": -12.0,
+			"deviation": 100.0,
+			"startDate": "1883-06-28T00:00:00.001+00:00",
+			"endDate": "1883-06-28T00:00:00.001+00:00",
+			"inserted": "2016-05-11T09:15:54.639+00:00",
+			"updated": "2016-05-11T09:15:54.639+00:00",
+			"remark": "",
+			"confidence": {
+				"id": 4,
+				"name": "Alta",
+				"name_en": "High"
+			},
+			"radius": 50.0,
+			"speciesConfidence": {
+				"id": 4,
+				"name": "Alta",
+				"name_en": "High"
+			},
+			"taxon": {
+				"id": 82,
+				"authorship": "(Linnaeus, 1758)",
+				"path": "s.1.3.4.6.7.82",
+				"aphia": null,
+				"leaves": 0,
+				"validAs": null,
+				"status": null,
+				"scientificName": "Ilia nucleus",
+				"rank": {
+					"id": 10,
+					"name": "Species",
+					"name_en": "Species"
+				}
+			},
+			"misidentification": {
+				"id": 1,
+				"document": {
+					"id": 1,
+					"title": "Hola",
+					"author": null,
+					"year": null,
+					"url": null
+				},
+				"taxon": null,
+				"note": null
+			},
+			"collectorName": "Anónimo",
+			"specimenCount": 2
+		},
+		"geometry": {
+			"type": "Point",
+			"coordinates": [-16.50891417, 28.0611774]
+		},
+		"type": "Feature"
+	}, {
+		"_meta": {
+			"category": "ci",
+			"score": null,
+			"version": null,
+			"highlight": null
+		},
+		"id": 12931,
+		"uuid": "sdsd323sdds_3ed",
+		"properties": {
+			"activityId": "3",
+			"z": -12.0,
+			"deviation": 100.0,
+			"startDate": "1883-06-28T00:00:00.001+00:00",
+			"endDate": "1883-06-28T00:00:00.001+00:00",
+			"inserted": "2016-05-11T09:15:54.639+00:00",
+			"updated": "2016-05-11T09:15:54.639+00:00",
+			"remark": "",
+			"confidence": {
+				"id": 4,
+				"name": "Alta",
+				"name_en": "High"
+			},
+			"radius": 50.0,
+			"speciesConfidence": {
+				"id": 4,
+				"name": "Alta",
+				"name_en": "High"
+			},
+			"taxon": {
+				"id": 82,
+				"authorship": "(Linnaeus, 1758)",
+				"path": "s.1.3.4.6.7.82",
+				"aphia": null,
+				"leaves": 0,
+				"validAs": null,
+				"status": null,
+				"scientificName": "Ilia nucleus",
+				"rank": {
+					"id": 10,
+					"name": "Species",
+					"name_en": "Species"
+				}
+			},
+			"misidentification": null,
+			"collectorName": "Anónimo",
+			"specimenCount": 2
+		},
+		"geometry": {
+			"type": "Point",
+			"coordinates": [-17.50891417, 29.0611774]
+		},
+		"type": "Feature"
+
+	}]
+}

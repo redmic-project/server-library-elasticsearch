@@ -1,0 +1,65 @@
+{
+	"took": 1,
+	"timed_out": false,
+	"_shards": {
+		"total": 5,
+		"successful": 5,
+		"failed": 0
+	},
+	"hits": {
+		"total": 2,
+		"max_score": null,
+		"hits": [
+			{
+				"_index": "administrative",
+				"_type": "contact",
+				"_id": "14",
+				"_version": 1,
+				"_score": 1,
+				"_source": {
+					"id": 14,
+					"firstName": "José Andrés",
+					"surname": "Sevilla Hernández",
+					"image": "/api/mediastorage/photobank/contacts/000014_jose_andres_sevilla.jpg",
+					"affiliation": {
+						"id": 1,
+						"logo": "/api/mediastorage/photobank/organisations/logo_oag.jpg",
+						"acronym": "OAG",
+						"name": "Observatorio Ambiental Granadilla."
+					},
+					"inserted": "2015-01-29T13:07:58.808+00:00",
+					"updated": "2015-01-29T13:12:42.146+00:00",
+					"phone": null,
+					"email": "gis@oag-fundacion.org",
+					"note": "Técnico gis del OAG",
+					"mobile": "647 428 643"
+				}
+			},
+			{
+				"_index": "administrative",
+				"_type": "contact",
+				"_id": "24",
+				"_version": 1,
+				"_score": 1,
+				"_source": {
+					"id": 22,
+					"firstName": "Alejandro",
+					"surname": "Dominguez",
+					"image": "/api/mediastorage/photobank/contacts/000023_alejandro_dominguez.jpg",
+					"affiliation": {
+						"id": 1,
+						"logo": "/api/mediastorage/photobank/organisations/logo_oag.jpg",
+						"acronym": "OAG",
+						"name": "Observatorio Ambiental Granadilla."
+					},
+					"inserted": "2015-01-29T13:07:58.808+00:00",
+					"updated": "2015-01-29T13:12:42.146+00:00",
+					"phone": null,
+					"email": "granadilla@oag-fundacion.org",
+					"note": null,
+					"mobile": null
+				}
+			}
+		]
+	}
+}

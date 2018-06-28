@@ -1,0 +1,63 @@
+{
+	"total": 1,
+	"_meta": {
+		"max_score": null
+	},
+	"_aggs": {
+		
+	},
+	"data": [
+		{
+			"_meta": {
+				"score": 1.0,
+				"version": 1,
+				"highlight": null
+			},
+			"id": 14,
+			"uuid": "uuid",
+			"name": "Lulú",
+			"image": "/api/mediastorage/photobank/platforms/Lulu.JPG",
+			"licence": null,
+			"inserted": "2015-01-29T13:07:58.808+00:00",
+			"updated": "2015-01-29T13:12:42.146+00:00",
+			"description": "Velero modelo Bavaria 40",
+			"contactPhone": null,
+			"platformType": {
+				"name": "Libre",
+				"id": 2,
+				"name_en": "Free"
+			},
+			"contacts": [
+				{
+					"id": 1,
+					"contact": {
+						"firstName": "Nuria",
+						"image": "/api/mediastorage/photobank/contacts/000009_nuria_macias_hernandez.jpg",
+						"surname": "Macías Hernández",
+						"id": 9
+					},
+					"organisation": {
+						"id": 1,
+						"logo": "/api/mediastorage/photobank/organisations/logo_oag.jpg",
+						"acronym": "OAG",
+						"name": "Observatorio Ambiental Granadilla."
+					},
+					"role": {
+						"name": "Libre",
+						"id": 2,
+						"name_en": "Free"
+					},
+					"startDate": null,
+					"endDate": null
+				}
+			],
+			"note": null,
+			"organisation": {
+				"id": 1,
+				"logo": "/api/mediastorage/photobank/organisations/logo_oag.jpg",
+				"acronym": "OAG",
+				"name": "Observatorio Ambiental Granadilla."
+			}
+		}
+	]
+}

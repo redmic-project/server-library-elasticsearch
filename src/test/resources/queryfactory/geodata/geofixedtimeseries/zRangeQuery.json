@@ -1,0 +1,80 @@
+{
+  "bool" : {
+    "must" : [
+      {
+        "has_parent" : {
+          "query" : {
+            "term" : {
+              "id" : {
+                "value" : "239",
+                "boost" : 1.0
+              }
+            }
+          },
+          "parent_type" : "activity",
+          "score" : true,
+          "ignore_unmapped" : false,
+          "boost" : 1.0
+        }
+      },
+      {
+        "bool" : {
+          "must" : [
+            {
+              "term" : {
+                "properties.site.id" : {
+                  "value" : "ft",
+                  "boost" : 1.0
+                }
+              }
+            }
+          ],
+          "disable_coord" : false,
+          "adjust_pure_negative" : true,
+          "boost" : 1.0
+        }
+      },
+      {
+        "bool" : {
+          "must" : [
+            {
+              "nested" : {
+                "query" : {
+                  "exists" : {
+                    "field" : "properties.measurements.dataDefinition.z",
+                    "boost" : 1.0
+                  }
+                },
+                "path" : "properties.measurements",
+                "ignore_unmapped" : false,
+                "score_mode" : "avg",
+                "boost" : 1.0
+              }
+            },
+            {
+              "script" : {
+                "script" : {
+                  "file" : "search-nested-by-z-range",
+                  "lang" : "groovy",
+                  "params" : {
+                    "zMin" : -5000.0,
+                    "zMax" : 5000.0,
+                    "basePath" : "dataDefinition",
+                    "nestedPath" : "properties.measurements"
+                  }
+                },
+                "boost" : 1.0
+              }
+            }
+          ],
+          "disable_coord" : false,
+          "adjust_pure_negative" : true,
+          "boost" : 1.0
+        }
+      }
+    ],
+    "disable_coord" : false,
+    "adjust_pure_negative" : true,
+    "boost" : 1.0
+  }
+}

@@ -1,0 +1,78 @@
+{
+	"total": 1,
+	"type": "FeatureCollection",
+	"_meta": {
+		"max_score": null
+	},
+	"_aggs": {},
+	"features": [{
+		"_meta": {
+			"category": "ar",
+			"score": null,
+			"version": null,
+			"highlight": null
+		},
+		"id": 23,
+		"uuid": "435wrwef34535",
+		"type": "Feature",
+		"geometry": {
+			"type": "MultiPolygon",
+		    "coordinates": [
+		        [
+		          [
+		            [101.2, 1.2], [101.8, 1.2], [101.8, 1.8], [101.2, 1.8], [101.2, 1.2]
+		          ],
+		          [
+		            [101.2, 1.2], [101.3, 1.2], [101.3, 1.3], [101.2, 1.3], [101.2, 1.2]
+		          ],
+		          [
+		            [101.6, 1.4], [101.7, 1.4], [101.7, 1.5], [101.6, 1.5], [101.6, 1.4]
+		          ],
+		          [
+		            [101.5, 1.6], [101.6, 1.6], [101.6, 1.7], [101.5, 1.7], [101.5, 1.6]
+		          ]
+		        ],
+		        [
+		          [
+		            [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0]
+		          ],
+		          [
+		            [100.35, 0.35], [100.65, 0.35], [100.65, 0.65], [100.35, 0.65], [100.35, 0.35]
+		          ]
+		        ]
+		      ]
+		},
+		"properties": {
+			"activityId": "2",
+			"path": "r.23",
+			"parent": null,
+			"areaType": {
+				"name": "Libre",
+				"id": 2,
+				"name_en": "Free"
+			},
+			"areaClassification": [{
+				"id": 3,
+				"startDate": "2012-02-16T19:19:00.000+00:00",
+				"endDate": "2012-02-16T19:19:00.000+00:00",
+				"type": {
+				  "id": 4,
+				  "path": "root.4",
+				  "code": "Attr",
+				  "level": 1,
+				  "name": "Otros",
+				  "name_en": "Others",
+				  "parent": null
+				},
+				"remark": "Classification remark"
+			}],
+			"code": "ae",
+			"description": "Area description",
+			"remark": "area remark",
+			"name": "Area",
+			"legalvalidity": null,
+			"inserted": "2016-05-11T09:15:54.639+00:00",
+			"updated": "2016-05-11T09:15:54.639+00:00"
+		}
+	}]
+}

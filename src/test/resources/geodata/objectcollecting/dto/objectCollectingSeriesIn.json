@@ -1,0 +1,48 @@
+{
+	"id": 12931,
+	"_parentId": "sdsd323sdds_3ed",
+	"_grandparentId": "3",
+	"z": -12.0,
+	"deviation": 100.0,
+	"radius": null,
+	"date": "2016-05-11T09:15:54.639+00:00",
+	"value": 2,
+	"remark": null,
+	"collectorName": null,
+	"collectionRegNo": null,
+	"qFlag": "0",
+	"vFlag": "U",
+	"confidence": 4,
+	"localityConfidence": 4,
+	"observationAngle": null,
+	"distance": null,
+	"sample": null,
+	"elements": null,
+	"analytics": null,
+	"attributes": null,
+	"metrics": null,
+	"molecular": null,
+	"taxon": null,
+	"animal": null,
+	"misidentification": null,
+	"object": [{
+		"id": 1,
+		"classification": [{
+				"objectType": 10
+			},{
+				"objectType": 8
+			}, {
+				"objectType": 1
+			}]
+	},{
+		"id": 2,
+		"classification": [{
+				"objectType": 11
+			},{
+				"objectType": 9
+			}, {
+				"objectType": 2
+			}]
+	}],
+	"dataDefinition": 1
+}

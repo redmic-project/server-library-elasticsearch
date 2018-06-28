@@ -1,0 +1,11 @@
+{
+	"id": 5,
+	"acronym": "ºC",
+	"unitType": {
+		"id": 6,
+		"name_en": "Recount",
+		"name": "Count"
+	},
+	"name": "conteo",
+	"name_en": "count"
+}

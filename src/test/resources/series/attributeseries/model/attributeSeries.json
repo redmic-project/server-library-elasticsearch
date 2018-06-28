@@ -1,0 +1,19 @@
+{
+	"_parentId": null,
+	"_grandparentId": null,
+	"id": 12939,
+	"startDate": "2012-02-16T19:19:00.000+00:00",
+	"endDate": "2012-02-17T19:19:00.000+00:00",
+	"remark": null,
+	"vFlag": "R",
+	"qFlag": "1",
+	"attributeType": {
+		"id": 10,
+		"path": "root.10",
+		"code": null,
+		"level": 1,
+		"name": "Desarrollo",
+		"name_en": "Development",
+		"leaves":null
+	}
+}

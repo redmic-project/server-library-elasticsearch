@@ -1,0 +1,76 @@
+{
+	"AphiaID": 1,
+	"rank": "Superdomain",
+	"scientificname": "Biota",
+	"child": {
+		"AphiaID": 2,
+		"rank": "Kingdom",
+		"scientificname": "Animalia",
+		"child": {
+			"AphiaID": 1065,
+			"rank": "Phylum",
+			"scientificname": "Arthropoda",
+			"child": {
+				"AphiaID": 1066,
+				"rank": "Subphylum",
+				"scientificname": "Crustacea",
+				"child": {
+					"AphiaID": 845959,
+					"rank": "Superclass",
+					"scientificname": "Multicrustacea",
+					"child": {
+						"AphiaID": 1071,
+						"rank": "Class",
+						"scientificname": "Malacostraca",
+						"child": {
+							"AphiaID": 1086,
+							"rank": "Subclass",
+							"scientificname": "Eumalacostraca",
+							"child": {
+								"AphiaID": 1090,
+								"rank": "Superorder",
+								"scientificname": "Peracarida",
+								"child": {
+									"AphiaID": 1133,
+									"rank": "Order",
+									"scientificname": "Tanaidacea",
+									"child": {
+										"AphiaID": 136152,
+										"rank": "Suborder",
+										"scientificname": "Tanaidomorpha",
+										"child": {
+											"AphiaID": 148687,
+											"rank": "Superfamily",
+											"scientificname": "Paratanaoidea",
+											"child": {
+												"AphiaID": 136160,
+												"rank": "Family",
+												"scientificname": "Leptocheliidae",
+												"child": {
+													"AphiaID": 246710,
+													"rank": "Subfamily",
+													"scientificname": "Leptocheliinae",
+													"child": {
+														"AphiaID": 136235,
+														"rank": "Genus",
+														"scientificname": "Leptochelia",
+														"child": {
+															"AphiaID": 136470,
+															"rank": "Species",
+															"scientificname": "Leptochelia dubia",
+															"child": []
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

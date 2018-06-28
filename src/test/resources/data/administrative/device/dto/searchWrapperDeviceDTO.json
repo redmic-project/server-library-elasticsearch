@@ -1,0 +1,59 @@
+{
+	"total": 1,
+	"_meta": {
+		"max_score": null
+	},
+	"_aggs": {
+		
+	},
+	"data": [
+		{
+			"_meta": {
+				"score": 1.0,
+				"version": 1,
+				"highlight": null
+			},
+			"id": 2,
+			"model": "KiwiSat202",
+			"deviceType": {
+				"name": "Libre",
+				"id": 2,
+				"name_en": "Free"
+			},
+			"platform": {
+				"id": 14,
+				"uuid": "uuid",
+				"name": "Lulú",
+				"image": "/api/mediastorage/photobank/platforms/Lulu.JPG"
+			},
+			"document": {
+				"id": 5911,
+				"year": 2015,
+				"author": "Djiba, A., Bamy, I. L., Sama Ould Bilal, A. & Van Waerebeek, K.",
+				"title": "Biodiversity of cetaceans in coastal waters of Northwest Africa: new insights through platform-of-opportunity visual surveying in 2011-2013",
+				"url": "/api/mediastorage/documents/BibOAG-05200.pdf"
+			},
+			"serialNumber": null,
+			"description": null,
+			"note": null,
+			"inserted": "2015-01-29T13:07:58.808+00:00",
+			"updated": "2015-01-29T13:12:42.146+00:00",
+			"adquisitionDate": null,
+			"manufacturedDate": null,
+			"calibrations": [{
+				"id": 1,
+				"data": null,
+				"date": null,
+				"method": null,
+				"note": null,
+				"contact": {
+					"firstName": "Nuria",
+					"image": "/api/mediastorage/photobank/contacts/000009_nuria_macias_hernandez.jpg",
+					"surname": "Macías Hernández",
+					"id": 9
+				}
+			}],
+			"name": "Terminal de localización satelital en tiempo real"
+		}
+	]
+}

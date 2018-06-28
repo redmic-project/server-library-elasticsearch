@@ -1,0 +1,60 @@
+package es.redmic.es.common.repository;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.elasticsearch.action.update.UpdateResponse;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import es.redmic.es.common.utils.ElasticPersistenceUtils;
+import es.redmic.es.data.common.repository.RWDataESRepository;
+import es.redmic.models.es.common.dto.SelectionWorkDTO;
+import es.redmic.models.es.common.model.Selection;
+import es.redmic.models.es.data.common.model.DataHitWrapper;
+import es.redmic.models.es.data.common.model.DataSearchWrapper;
+
+@Repository
+public class SelectionWorkRepository extends RWDataESRepository<Selection> {
+
+	@Autowired
+	ElasticPersistenceUtils<Selection> elasticPersistenceUtils;
+
+	public static String[] INDEX = { "user" };
+	public static String[] TYPE = { "selectionWork" };
+
+	public SelectionWorkRepository() {
+		super(INDEX, TYPE);
+	}
+
+	public DataSearchWrapper<?> findByUser(String user, String service) {
+
+		BoolQueryBuilder filter = QueryBuilders.boolQuery().must(QueryBuilders.termQuery("userId", user))
+				.must(QueryBuilders.termQuery("service", service));
+
+		return findBy(QueryBuilders.boolQuery().filter(filter));
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<String> getSelectedIds(String selectionId) {
+
+		DataHitWrapper<Selection> result = (DataHitWrapper<Selection>) findById(selectionId);
+		Selection selection = result.get_source();
+		if (selection != null)
+			return selection.getIds();
+		return new ArrayList<>();
+	}
+
+	@SuppressWarnings("unchecked")
+	public SelectionWorkDTO updateSelection(Selection model, String script) {
+
+		List<UpdateResponse> updateResponse = elasticPersistenceUtils.updateByBulk(elasticPersistenceUtils
+				.getUpdateScript(INDEX, TYPE, model.getId(), objectMapper.convertValue(model, Map.class), script));
+
+		return objectMapper.convertValue(updateResponse.get(0).getGetResult().getSource(), SelectionWorkDTO.class);
+
+	}
+}

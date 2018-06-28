@@ -1,0 +1,39 @@
+{
+	"took": 1,
+	"timed_out": false,
+	"_shards": {
+		"total": 5,
+		"successful": 5,
+		"failed": 0
+	},
+	"hits": {
+		"total": 2,
+		"max_score": null,
+		"hits": [
+			{
+				"_index": "administrative-domains",
+				"_type": "activityfield",
+				"_id": "14",
+				"_version": 1,
+				"_score": 1,
+				"_source": {
+					"name": "x",
+					"id": 14,
+					"name_en": "x"
+				}
+			},
+			{
+				"_index": "administrative-domains",
+				"_type": "activityfield",
+				"_id": "24",
+				"_version": 1,
+				"_score": 1,
+				"_source": {
+					"name": "y",
+					"id": 24,
+					"name_en": "y"
+				}
+			}
+		]
+	}
+}

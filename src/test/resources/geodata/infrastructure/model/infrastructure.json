@@ -1,0 +1,57 @@
+{
+	"id": 12931,
+	"uuid": "sdsd323sdds_3ed",
+	"_parent": null,
+	"type": "Feature",
+	"geometry": {
+		"type": "Point",
+		"coordinates": [-16.35215172, 28.35351045]
+	},
+	"properties": {
+		"geodataRelations": null,
+		"length": null,
+		"area": null,
+		"inserted": "2016-05-11T09:15:54.639+00:00",
+		"updated": "2016-05-11T09:15:54.639+00:00",
+		"weatherConditions": null,
+		"media": null,
+		"samplingPlace": null,
+		"site": {
+			"id": "if-12931",
+			"path": null,
+			"date": "2008-09-13T12:20:00.000+00:00",
+			"classification": [{
+				"type": {
+					"code": null,
+					"level": 2,
+					"path": "root.1.2",
+					"name": "Faro",
+					"id": 2,
+					"name_en": "Headlights"
+				}
+			},{
+				"type": {
+					"code": null,
+					"level": 1,
+					"path": "root.1",
+					"name": "Faros y señales",
+					"id": 1,
+					"name_en": "Headlights and Signs"
+				}
+			}],
+			"z": -12,
+			"deviation": null,
+			"rotate": 100,
+			"remark": "Remark",
+			"description": "Description",
+			"name": "name",
+			"code": "code",
+			"url": null,
+			"attributes": null,
+			"metrics": null
+		},
+		"inTrack": null,
+		"collect": null,
+		"measurements": null
+	}
+}

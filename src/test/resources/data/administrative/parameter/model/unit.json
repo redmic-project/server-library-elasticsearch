@@ -1,0 +1,11 @@
+{
+	"id": 3,
+	"acronym": "ºC",
+	"unitType": {
+		"id": 6,
+		"name_en": "Temperature",
+		"name": "Temperatura"
+	},
+	"name": "Grados centígrados",
+	"name_en": "Grados centígrados"
+}

@@ -1,0 +1,11 @@
+{
+	"id": "1231",
+	"status": "Starting",
+	"progress": 0,
+	"userId": 12,
+	"taskType": "ingest",
+	"taskName": "ingest-data-timeseries",
+	"startDate": "2016-11-02T14:17:12.524+00:00",
+	"endDate": null,
+	"updated": "2016-11-02T14:17:12.524+00:00"
+}

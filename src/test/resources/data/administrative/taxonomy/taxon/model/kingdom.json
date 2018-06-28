@@ -1,0 +1,25 @@
+{
+	"commonName": " ",
+	"worms": "http://www.marinespecies.org/aphia.php?p=taxdetails&id=1821",
+	"note": null,
+	"scientificName": "Chordata",
+	"validAs": null,
+	"path": "root.1",
+	"leaves": 278,
+	"authorship": "Haeckel, 1874",
+	"rank": {
+		"id": 2,
+		"name": "Libre",
+		"name_en": "Free"
+	},
+	"aphia": 1821,
+	"id": 1,
+	"inserted": "2015-01-29T13:07:58.808+00:00",
+	"updated": "2015-01-29T13:12:42.146+00:00",
+	"wormsUpdated": "2015-01-29T13:12:42.146+00:00",
+	"status": {
+		"id": 2,
+		"name": "Libre",
+		"name_en": "Free"
+	}
+}

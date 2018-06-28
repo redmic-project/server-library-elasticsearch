@@ -1,0 +1,50 @@
+{
+  "bool" : {
+    "must" : [
+      {
+        "has_child" : {
+          "query" : {
+            "bool" : {
+              "must" : [
+                {
+                  "geo_shape" : {
+                    "geometry" : {
+                      "shape" : {
+                        "type" : "envelope",
+                        "coordinates" : [
+                          [
+                            -180.0,
+                            90.0
+                          ],
+                          [
+                            -170.0,
+                            80.0
+                          ]
+                        ]
+                      },
+                      "relation" : "intersects"
+                    },
+                    "ignore_unmapped" : false,
+                    "boost" : 1.0
+                  }
+                }
+              ],
+              "disable_coord" : false,
+              "adjust_pure_negative" : true,
+              "boost" : 1.0
+            }
+          },
+          "type" : "geodata",
+          "score_mode" : "avg",
+          "min_children" : 0,
+          "max_children" : 2147483647,
+          "ignore_unmapped" : false,
+          "boost" : 1.0
+        }
+      }
+    ],
+    "disable_coord" : false,
+    "adjust_pure_negative" : true,
+    "boost" : 1.0
+  }
+}

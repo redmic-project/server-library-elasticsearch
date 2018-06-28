@@ -1,0 +1,15 @@
+{
+	"properties": {
+		"doc_count": 6,
+		"properties": {
+			"doc_count_error_upper_bound": 0,
+			"sum_other_doc_count": 0,
+			"buckets": [
+				{
+					"key": "Contenido en aceites y grasas",
+					"doc_count": 6
+				}
+			]
+		}
+	}
+}

@@ -1,0 +1,88 @@
+{
+  "bool" : {
+    "must" : [
+      {
+        "has_parent" : {
+          "query" : {
+            "term" : {
+              "id" : {
+                "value" : "239",
+                "boost" : 1.0
+              }
+            }
+          },
+          "parent_type" : "activity",
+          "score" : true,
+          "ignore_unmapped" : false,
+          "boost" : 1.0
+        }
+      },
+      {
+        "bool" : {
+          "must" : [
+            {
+              "bool" : {
+                "should" : [
+                  {
+                    "term" : {
+                      "properties.inTrack.id" : {
+                        "value" : "pt",
+                        "boost" : 1.0
+                      }
+                    }
+                  },
+                  {
+                    "term" : {
+                      "properties.inTrack.id" : {
+                        "value" : "at",
+                        "boost" : 1.0
+                      }
+                    }
+                  }
+                ],
+                "disable_coord" : false,
+                "adjust_pure_negative" : true,
+                "boost" : 1.0
+              }
+            }
+          ],
+          "disable_coord" : false,
+          "adjust_pure_negative" : true,
+          "boost" : 1.0
+        }
+      },
+      {
+        "bool" : {
+          "must" : [
+            {
+              "exists" : {
+                "field" : "properties.inTrack.z",
+                "boost" : 1.0
+              }
+            },
+            {
+              "script" : {
+                "script" : {
+                  "file" : "search-by-z-range",
+                  "lang" : "groovy",
+                  "params" : {
+                    "zMin" : -5000.0,
+                    "zMax" : 5000.0,
+                    "basePath" : "properties.inTrack"
+                  }
+                },
+                "boost" : 1.0
+              }
+            }
+          ],
+          "disable_coord" : false,
+          "adjust_pure_negative" : true,
+          "boost" : 1.0
+        }
+      }
+    ],
+    "disable_coord" : false,
+    "adjust_pure_negative" : true,
+    "boost" : 1.0
+  }
+}

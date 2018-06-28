@@ -1,0 +1,727 @@
+{
+	"id": 14,
+	"type": "Feature",
+	"geometry": {
+		"type": "Point",
+		"coordinates": [-16.35215172, 28.35351045]
+	},
+	"properties": {
+		"activityId": "a.1.2.3",
+		"inTrackIds": ["tr-124"],
+		"siteIds": ["si-124"],
+		"samplingPlaceIds": ["ln-124"],
+		"length": 123,
+		"area": 322,
+		"weatherConditions": [{
+			"id": 1,
+			"name": "planchado",
+			"acronym": "null",
+			"seaConditionType": {
+				"id": 1,
+				"name": "Wave condition",
+				"name_en": "null"
+			}
+		},{
+			"id": 20,
+			"name": "moderado",
+			"acronym": "null",
+			"seaConditionType": {
+				"id": 2,
+				"name": "Wind condition",
+				"name_en": "null"
+			}
+		},{
+			"id": 30,
+			"name": "despejado",
+			"acronym": "null",
+			"seaConditionType": {
+				"id": 3,
+				"name": "Sky condition",
+				"name_en": "null"
+			}
+		},{
+			"id": 40,
+			"name": "moderado",
+			"acronym": "null",
+			"seaConditionType": {
+				"id": 4,
+				"name": "Ground Swell",
+				"name_en": "null"
+			}
+		}],
+		"media": [
+			{
+				"id": 45,
+				"url": "https://redmic.es/photobank/basuraPlayaLaJaca.jpg"
+			}
+		],
+		"samplingPlace": {
+			"id": "a-23",
+			"name": "playa la jaca",
+			"code": "b-12",
+			"description": "null",
+			"remark": "null",
+			"startDate": "2012-02-16T19:19:00.000+00:00",
+			"endDate": "2012-02-16T19:19:00.000+00:00",
+			"lineType": {
+				"id": 22,
+				"path": "root.22",
+				"leaves": 0,
+				"level": 1,
+				"name": "Línea de muestreo",
+				"name_en": "Sampling line",
+				"code": null,
+				"description": "null",
+				"remark": null
+			},
+			"thematicUnit": [{
+				"id": 2,
+				"path": "r.24",
+				"code": "th-24",
+				"name": "clasificación territorial de playas",
+				"description": "null",
+				"theme": {
+					"id": 3,
+					"name": "Geology",
+					"name_en": "null"
+				},
+				"document": {
+					"id": 34,
+					"title": "Playas",
+					"author": "Pedro",
+					"url": "https://redmic.es/bibliography/playas.pdf"
+				}
+			}]
+		},
+		"site": {
+			"id": "st-14",
+			"code": "TGr00",
+			"name": "Boya OAG Granadilla",
+			"description": "Estación Boya del OAG en Granadilla con múltiples dispositivos",
+			"infrastructureType": {
+				"id": 1,
+				"name": "Boya",
+				"name_en": "null"
+			},
+			"z": 3,
+			"deviation": 0,
+			"date": "2012-02-16T19:19:00.000+00:00",
+			"rotate": 2,
+			"remark": "null",
+			"updated": "2016-05-11T09:15:54.639+00:00",
+			"attributes": [
+				{
+					"id": "22",
+					"qFlag": "1",
+					"vFlag": "R",
+					"date": "2012-02-16T19:19:00.000+00:00",
+					"remark": "null",
+					"condition": {
+						"id": 2,
+						"name": "bueno",
+						"attributeType": {
+							"id": 1,
+							"name": "Development",
+							"name_en": "null"
+						}
+					}
+				}
+			],
+			"metrics": [
+				{
+					"id": "1",
+					"value": 63.0,
+					"qFlag": "1",
+					"vFlag": "R",
+					"date": "2012-02-16T19:19:00.000+00:00",
+					"remark": "null",
+					"metricDefinition": {
+						"id": 1,
+						"name": "medida del caparazón",
+						"acronym": "cl",
+						"description": "medida del caparazón de la tortuga",
+						"metricGroup": {
+							"id": 1,
+							"name": "Turtles",
+							"name_en": "null"
+						},
+						"unit": {
+							"id": 3,
+							"acronym": "cm",
+							"unitType": {
+								"id": 2,
+								"name": "Longitud",
+								"name_en": "Length"
+							},
+							"name": "Centímetros",
+							"name_en": "null"
+						},
+						"device": {
+							"id": 31,
+							"model": "null",
+							"name": "Metro"
+						}
+					}
+				}
+			]
+		},
+		"inTrack": {
+			"id": "at-12931",
+			"z": -12,
+			"deviation": 100,
+			"date": "2008-09-13T12:20:00.000+01:00",
+			"bearing": "null",
+			"cumulativeKm": 145.58844953555382,
+			"cumulativeTime": 533820,
+			"speedKph": 2.020865830329698,
+			"hours": 156360,
+			"lastDistanceKm": 87.77293923065321,
+			"passDuration": 384,
+			"argosId": 78461,
+			"locationClass": "1",
+			"device": {
+				"id": 2,
+				"model": "KiwiSat202",
+				"name": "Terminal de localización satelital en tiempo real"
+			},
+			"vFlag": "D",
+			"qFlag": "1",
+			"censingStatus": {
+				"id": 1,
+				"name": "Effort",
+				"name_en": "null"
+			},
+			"platform": {
+				"id": 2,
+				"name": "barco",
+				"image": "null"
+			}
+		},
+		"collect": {
+			"id": "12931",
+			"z": -12,
+			"deviation": 100,
+			"radius": 50,
+			"date": "1883-06-28",
+			"value": 2,
+			"remark": "Revisado especies",
+			"collectorName": "Anónimo",
+			"collectionRegNo": "null",
+			"qFlag": "1",
+			"vFlag": "D",
+			"confidence": {
+				"id": 4,
+				"name_en": "High",
+				"name": "Alta"
+			},
+			"localityConfidence": {
+				"id": 4,
+				"name_en": "High",
+				"name": "Alta"
+			},
+			"updated": "2016-05-11T09:15:54.639+01:00",
+			"observationAngle": 23.0,
+			"distance": 333,
+			"sample": {
+				"id": 11,
+				"size": 2,
+				"description": "null",
+				"remark": "null",
+				"image": "https://redmic.es/...",
+				"sampleType": {
+					"id": 1,
+					"name": "water",
+					"name_en": "null"
+				},
+				"startDate": "2016-05-11T09:15:54.639+00:00",
+				"endDate": "2016-05-11T09:15:54.639+00:00"
+			},
+			"elements": [
+				{
+					"id": 11,
+					"registerNumber": "xc",
+					"media": [
+						{
+							"id": 2,
+							"url": "https://redmic.es/photobank/erizo2343"
+						}
+					],
+					"analytics": [
+						{
+							"id": "22",
+							"value": 63.0,
+							"qFlag": "1",
+							"vFlag": "R",
+							"remark": "null",
+							"date": "2012-02-16T19:19:00.000+00:00",
+							"organisation": {
+								"id": 2,
+								"name": "Laboratorio Pepito",
+								"logo": "null",
+								"acronym": "null"
+							},
+							"dataDefinition": {
+								"id": 20,
+								"z": 3,
+								"deviation": 0,
+								"isSerial": true,
+								"timeInterval": 3600,
+								"isRegularity": false,
+								"description": "Conteo de especies",
+								"device": {
+									"id": 31,
+									"model": "null",
+									"name": "Sensor de temperatura atmosférica"
+								},
+								"contactRole": {
+									"id": 3,
+									"name": "administrador",
+									"name_en": "administrator"
+								},
+								"contact": {
+									"id": 1,
+									"firstName": "Pepito",
+									"surname": "De los Palotes",
+									"image": "null"
+								},
+								"derivedData": false,
+								"minValue": 1,
+								"maxValue": 1000,
+								"significantDigits": 4
+							},
+							"parameter": {
+								"id": 3,
+								"name": "Temperatura",
+								"name_en": "null",
+								"path": "r.14.3",
+								"parameterType": {
+									"id": 1,
+									"name_en": "Physical",
+									"name": "Físicos"
+								}
+							},
+							"unit": {
+								"id": 3,
+								"acronym": "ºC",
+								"unitType": {
+									"id": 6,
+									"name_en": "Temperature",
+									"name": "Temperatura"
+								},
+								"name": "Grados centígrados",
+								"name_en": "null"
+							}
+						}
+					],
+					"attributes": [
+						{
+							"id": "22",
+							"qFlag": "1",
+							"vFlag": "R",
+							"date": "2012-02-16T19:19:00.000+00:00",
+							"remark": "null",
+							"condition": {
+								"id": 2,
+								"name": "bueno",
+								"attributeType": {
+									"id": 1,
+									"name": "Development",
+									"name_en": "null"
+								}
+							}
+						}
+					],
+					"metrics": [
+						{
+							"id": "1",
+							"value": 63.0,
+							"qFlag": "1",
+							"vFlag": "R",
+							"date": "2012-02-16T19:19:00.000+00:00",
+							"remark": "null",
+							"metricDefinition": {
+								"id": 1,
+								"name": "medida del caparazón",
+								"acronym": "cl",
+								"description": "medida del caparazón de la tortuga",
+								"metricGroup": {
+									"id": 1,
+									"name": "Turtles",
+									"name_en": "null"
+								},
+								"unit": {
+									"id": 3,
+									"acronym": "cm",
+									"unitType": {
+										"id": 6,
+										"name_en": "Longitud",
+										"name": "Length"
+									},
+									"name": "Longitud en centímetros",
+									"name_en": "null"
+								},
+								"device": {
+									"id": 31,
+									"model": "null",
+									"name": "Metro"
+								}
+							}
+						}
+					],
+					"molecular": [
+						{
+							"id": "22",
+							"qFlag": "1",
+							"vFlag": "R",
+							"description": "null",
+							"remark": "null",
+							"date": "2012-02-16T19:19:00.000+00:00",
+							"geoBankCode": "null",
+							"organisation": {
+								"id": 2,
+								"name": "Laboratorio Pepito",
+								"logo": "null",
+								"acronym": "null"
+							}
+						}
+					]
+				}
+			],
+			"analytics": [
+				{
+					"id": "22",
+					"value": 63.0,
+					"qFlag": "1",
+					"vFlag": "R",
+					"remark": "null",
+					"date": "2012-02-16T19:19:00.000+00:00",
+					"organisation": {
+						"id": 2,
+						"name": "Laboratorio Pepito",
+						"logo": "null",
+						"acronym": "null"
+					},
+					"dataDefinition": {
+						"id": 20,
+						"z": 3,
+						"deviation": 0,
+						"isSerial": true,
+						"timeInterval": 3600,
+						"isRegularity": false,
+						"description": "Conteo de especies",
+						"device": {
+							"id": 31,
+							"model": "null",
+							"name": "Sensor de temperatura atmosférica"
+						},
+						"contactRole": {
+							"id": 3,
+							"name": "administrador",
+							"name_en": "administrator"
+						},
+						"contact": {
+							"id": 1,
+							"firstName": "Pepito",
+							"surname": "De los Palotes",
+							"image": "null"
+						},
+						"derivedData": false,
+						"minValue": 1,
+						"maxValue": 1000,
+						"significantDigits": 4
+					},
+					"parameter": {
+						"id": 3,
+						"name": "Temperatura",
+						"name_en": "null",
+						"path": "r.14.3",
+						"parameterType": {
+							"id": 1,
+							"name": "Físicos",
+							"name_en": "Physical"
+						}
+					},
+					"unit": {
+						"id": 3,
+						"acronym": "ºC",
+						"unitType": {
+							"id": 6,
+							"name_en": "Temperature",
+							"name": "Temperatura"
+						},
+						"name": "Grados centígrados",
+						"name_en": "null"
+					}
+				}
+			],
+			"attributes": [
+				{
+					"id": "22",
+					"qFlag": "1",
+					"vFlag": "R",
+					"date": "2012-02-16T19:19:00.000+00:00",
+					"remark": null,
+					"condition": {
+						"id": 2,
+						"name": "bueno",
+						"attributeType": {
+							"id": 1,
+							"name": "Development",
+							"name_en": "null"
+						}
+					}
+				}
+			],
+			"metrics": [
+				{
+					"id": "1",
+					"value": 63.0,
+					"qFlag": "1",
+					"vFlag": "R",
+					"date": "2012-02-16T19:19:00.000+00:00",
+					"remark": "null",
+					"metricDefinition": {
+						"id": 1,
+						"name": "medida del caparazón",
+						"acronym": "cl",
+						"description": "medida del caparazón de la tortuga",
+						"metricGroup": {
+							"id": 1,
+							"name": "Turtles",
+							"name_en": null
+						},
+						"unit": {
+							"id": 3,
+							"acronym": "cm",
+							"name": "Centímetros",
+							"name_en": "Centimeters",
+							"unitType": {
+								"id": 1,
+								"name": "Longitud",
+								"name_en": "Length"
+							}
+						},
+						"device": {
+							"id": 31,
+							"model": "null",
+							"name": "Metro"
+						}
+					}
+				}
+			],
+			"molecular": [
+				{
+					"id": "22",
+					"qFlag": "1",
+					"vFlag": "R",
+					"description": "null",
+					"remark": "null",
+					"date": "2012-02-16T19:19:00.000+00:00",
+					"geoBankCode": "null",
+					"organisation": {
+						"id": 2,
+						"name": "Laboratorio Pepito",
+						"logo": null,
+						"acronym": null
+					}
+				}
+			],
+			"taxon": {
+				"id": 7271,
+				"validAs": null,
+				"rank": {
+					"id": 10,
+					"name_en": "Species",
+					"name": "Species"
+				},
+				"scientificName": "Ilia nucleus",
+				"authorship": "(Linnaeus, 1758)",
+				"path": "root.1.21.150.223.341.1077.2932.7271",
+				"leaves": 0,
+				"commonName": "Cangrejo boliche",
+				"aphia": 2423
+			},
+			"animal": {
+				"id": 7271,
+				"uuid": "uuid",
+				"name": "Ilia nucleus",
+				"taxon": {
+					"id": 7271,
+					"validAs": null,
+					"rank": {
+						"id": 10,
+						"name_en": "Species",
+						"name": "Species"
+					},
+					"scientificName": "Ilia nucleus",
+					"authorship": "(Linnaeus, 1758)",
+					"path": "root.1.21.150.223.341.1077.2932.7271",
+					"leaves": 0,
+					"commonName": "Cangrejo boliche",
+					"aphia": 2423
+				},
+				"photo": null
+			},
+			"misidentification": {
+				"id": 1,
+				"document": {
+					"id": 1,
+					"title": "Hola",
+					"author": "pepito",
+					"url": "http://redmic.es"
+				},
+				"taxon": null,
+				"note": null
+			},
+			"object": [
+				{
+					"id": 1,
+					"name": "Plástico",
+					"code": "xx",
+					"type": {
+						"id": 1,
+						"name": "OSPAR",
+						"name_en": null
+					},
+					"level": 1,
+					"paths": [
+						"r.1"
+					]
+				},
+				{
+					"id": 10,
+					"name": "pvc",
+					"code": "xx",
+					"type": null,
+					"level": 2,
+					"paths": [
+						"r.1.10",
+						"r.2.10"
+					]
+				},
+				{
+					"id": 2,
+					"name": "turismo",
+					"code": "tx",
+					"type": {
+						"id": 2,
+						"name": "Destino",
+						"name_en": null
+					},
+					"level": 1,
+					"paths": [
+						"r.2"
+					]
+				}
+			],
+			"dataDefinition": {
+				"id": 20,
+				"z": 3,
+				"deviation": 0,
+				"isSerial": true,
+				"timeInterval": 3600,
+				"isRegularity": false,
+				"description": "Conteo de especies",
+				"device": {
+					"id": 31,
+					"model": "null",
+					"name": "Sensor de temperatura atmosférica"
+				},
+				"contactRole": {
+					"id": 3,
+					"name": "administrador",
+					"name_en": "administrator"
+				},
+				"contact": {
+					"id": 1,
+					"firstName": "Pepito",
+					"surname": "De los Palotes",
+					"image": null
+				},
+				"derivedData": false,
+				"minValue": 1,
+				"maxValue": 1000,
+				"significantDigits": 4
+			}
+		},
+		"measurements": [
+			{
+				"data": {
+					"id": "12939",
+					"z": 3,
+					"deviation": 0,
+					"date": "2012-02-16T19:19:00.000+00:00",
+					"value": 63.0,
+					"remark": "null",
+					"qFlag": "1",
+					"vFlag": "R",
+					"sample": {
+						"id": 11,
+						"size": 2,
+						"description": "null",
+						"remark": "null",
+						"image": "https://redmic.es/...",
+						"sampleType": {
+							"id": 1,
+							"name": "water",
+							"name_en": null
+						},
+						"startDate": "2012-02-16T19:19:00.000+00:00",
+						"endDate": "2012-02-16T19:19:00.000+00:00"
+					}
+				},
+				"dataDefinition": {
+					"id": 20,
+					"z": 3,
+					"deviation": 0.0,
+					"isSerial": true,
+					"timeInterval": 3600,
+					"isRegularity": false,
+					"description": "Conteo de especies",
+					"device": {
+						"id": 31,
+						"model": "null",
+						"name": "Sensor de temperatura atmosférica"
+					},
+					"contactRole": {
+						"id": 3,
+						"name": "administrador",
+						"name_en": "administrator"
+					},
+					"contact": {
+						"id": 1,
+						"firstName": "Pepito",
+						"surname": "De los Palotes",
+						"image": null
+					},
+					"derivedData": false,
+					"minValue": 1,
+					"maxValue": 1000,
+					"significantDigits": 4
+				},
+				"parameter": {
+					"id": 3,
+					"name": "Temperatura",
+					"name_en": "null",
+					"path": "r.14.3",
+					"parameterType": {
+						"id": 1,
+						"name_en": "Physical",
+						"name": "Físicos"
+					}
+				},
+				"unit": {
+					"id": 3,
+					"acronym": "ºC",
+					"unitType": {
+						"id": 6,
+						"name_en": "Temperature",
+						"name": "Temperatura"
+					},
+					"name": "Grados centígrados",
+					"name_en": null
+				}
+			}
+		]
+	}
+}

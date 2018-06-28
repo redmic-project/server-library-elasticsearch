@@ -1,0 +1,41 @@
+{
+ 		"cumulative": 36708.11,
+ 		"firstTransmissionDate": null,
+ 		"shootingAltitude": 0,
+ 		"speed": 0.62,
+ 		"hours": 37.02,
+ 		"direction": "N ",
+ 		"date": "2009-08-29T12:32:00.000+01:00",
+ 		"messages120db": 0,
+ 		"posix": 1251581532,
+ 		"passDuration": 279,
+ 		"nopc": 4,
+ 		"cumulativeDays": 1.52,
+ 		"distance": 22.91,
+ 		"swapped": 0,
+ 		"locationClass": "1",
+ 		"displacement": 22,
+ 		"qflag": "1",
+ 		"transmitFrequency": "401 646948.3",
+ 		"lastTransmissionDate": null,
+ 		"device": {
+ 			"id": 1,
+ 			"model": null,
+ 			"name": "Tortuga"
+ 		},
+ 		"messagesReceived": 4,
+ 		"signalQuality": "68",
+ 		"vflag": "D",
+ 		"animal": {
+ 			"id": 2,
+ 			"uuid": "uuid",
+ 			"name": "K. Schroeder",
+ 			"photo": null,
+ 			"taxon": {
+ 				"id": 11941,
+ 				"scientificName": "Caretta caretta",
+ 				"authorship": "(Linnaeus, 1758)",
+ 				"path": "root.1.13.148.213.532.1504.4134.11941"
+ 			}
+ 		}
+ }

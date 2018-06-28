@@ -1,0 +1,72 @@
+{
+  "bool" : {
+    "must" : [
+      {
+        "has_parent" : {
+          "query" : {
+            "term" : {
+              "id" : {
+                "value" : "239",
+                "boost" : 1.0
+              }
+            }
+          },
+          "parent_type" : "activity",
+          "score" : true,
+          "ignore_unmapped" : false,
+          "boost" : 1.0
+        }
+      },
+      {
+        "bool" : {
+          "must" : [
+            {
+              "term" : {
+                "properties.site.id" : {
+                  "value" : "oc",
+                  "boost" : 1.0
+                }
+              }
+            }
+          ],
+          "disable_coord" : false,
+          "adjust_pure_negative" : true,
+          "boost" : 1.0
+        }
+      },
+      {
+        "has_child" : {
+          "query" : {
+            "bool" : {
+              "must" : [
+                {
+                  "range" : {
+                    "date" : {
+                      "from" : "2015-03-17T00:00:00.000Z",
+                      "to" : "2015-04-17T00:00:00.000Z",
+                      "include_lower" : true,
+                      "include_upper" : true,
+                      "boost" : 1.0
+                    }
+                  }
+                }
+              ],
+              "disable_coord" : false,
+              "adjust_pure_negative" : true,
+              "boost" : 1.0
+            }
+          },
+          "type" : "collecting",
+          "score_mode" : "avg",
+          "min_children" : 0,
+          "max_children" : 2147483647,
+          "ignore_unmapped" : false,
+          "boost" : 1.0
+        }
+      }
+    ],
+    "disable_coord" : false,
+    "adjust_pure_negative" : true,
+    "boost" : 1.0
+  }
+}

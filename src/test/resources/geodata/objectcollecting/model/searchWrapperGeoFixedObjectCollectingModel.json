@@ -1,0 +1,111 @@
+{
+	"took": 1,
+	"timed_out": false,
+	"_shards": {
+		"total": 5,
+		"successful": 5,
+		"failed": 0
+	},
+	"hits": {
+		"total": 1,
+		"max_score": null,
+		"hits": [{
+			"_index": "redmicv2",
+			"_type": "geodata",
+			"_id": "sdsd323sdds_3ed",
+			"_score": null,
+			"_parent": "3",
+			"_source": {
+				"id": "12931",
+				"uuid": "sdsd323sdds_3ed",
+				"type": "Feature",
+				"geometry": {
+					"type": "LineString",
+					"coordinates": [ [100.0, 0.0], [101.0, 1.0] ]
+				},
+				"properties": {
+					"geodataRelations": null,
+					"length": null,
+					"area": null,
+					"inserted": "2016-05-11T09:15:54.639+00:00",
+					"updated": "2016-05-11T09:15:54.639+00:00",
+					"samplingPlace": null,
+					"weatherConditions": null,
+					"site": {
+						"id": "oc-12931",
+						"path": "r.sdsd323sdds_3ed",
+						"code": "TGr00",
+						"name": "Meteo Boya OAG Granadilla",
+						"description": "Estacion Meterológica de la Boya del OAG en Granadilla",
+						"infrastructureType": null,
+						"z": null,
+						"deviation": null,
+						"date": null,
+						"remark": null,
+						"rotate": null,
+						"attributes": null,
+						"metrics": null
+					},
+					"inTrack": null,
+					"collect": null,
+					"measurements": [{
+						"data": null,
+						"dataDefinition": {
+							"id": 2,
+							"path": "r.sdsd323sdds_3ed.5.2",
+							"z": -12.0,
+							"deviation": 100,
+							"derivedData": null,
+							"description": "prueba basura",
+							"significantDigits": null,
+							"maxValue": null,
+							"minValue": null,
+							"device": {
+								"id": 2,
+								"model": "KiwiSat202",
+								"name": "Terminal de localización satelital en tiempo real"
+							},
+							"contact": {
+								"id": 1,
+								"firstName": "Pedro",
+								"surname": "Trujillo",
+								"image": ""
+							},
+							"contactRole": {
+								"id": 1,
+								"name": "Presidente",
+								"name_en": "President"
+							},
+							"timeInterval": null,
+							"isSerial": null,
+							"isRegularity": null
+						},
+						"parameter": {
+							"id": 5,
+							"path": "r.sdsd323sdds_3ed.5",
+							"leaves": 1,
+							"name": "Basura",
+							"name_en": "Trash",
+							"parameterType": {
+								"id": 1,
+								"name": "Físicos",
+								"name_en": "Physical"
+							}
+						},
+						"unit": {
+							"id": 5,
+							"acronym": "ºC",
+							"unitType": {
+								"id": 6,
+								"name_en": "Recount",
+								"name": "Count"
+							},
+							"name": "conteo",
+							"name_en": "count"
+						}
+					}]
+				}
+			}
+		}]
+	}
+}

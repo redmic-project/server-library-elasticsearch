@@ -1,0 +1,49 @@
+{
+	"_meta": {
+		"category": "ft",
+		"score": null,
+		"version": null
+	},
+	"id": 14,
+	"uuid": "sdsd323sdds_3ed",
+	"type": "Feature",
+	"geometry": {
+		"type": "Point",
+		"coordinates": [-16.35215172, 28.35351045]
+	},
+	"properties": {
+		"activityId": "a.1.2.3",
+		"inserted": "2016-05-11T09:15:54.639+00:00",
+		"updated": "2016-05-11T09:15:54.639+00:00",
+		"site": {
+			"id": 14,
+			"code": "TGr00",
+			"path": null,
+			"leaves": null,
+			"name": "Meteo Boya OAG Granadilla",
+			"description": "Estacion Meterológica de la Boya del OAG en Granadilla"
+		},
+		"measurements": [{
+			"dataDefinition": {
+				"id": 2,
+				"path": null,
+				"leaves": null,
+				"z": 3.0,
+				"deviation": 0,
+				"derivedData": false,
+				"description": "Temperatura atmosférica en grados centígrados",
+				"significantDigits": 4,
+				"maxValue": 50,
+				"minValue": 0,
+				"device": 2,
+				"contact": null,
+				"contactRole": null,
+				"timeInterval": 3600000,
+				"isSerial": true,
+				"isRegularity": false
+			},
+			"parameter": 3,
+			"unit": 3
+		}]
+	}
+}

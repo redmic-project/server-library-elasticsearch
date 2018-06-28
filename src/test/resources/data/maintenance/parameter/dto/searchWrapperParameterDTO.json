@@ -1,0 +1,41 @@
+{
+	"total": 1,
+	"_meta": {
+		"max_score": null
+	},
+	"_aggs": {
+		
+	},
+	"data": [
+		{
+			"_meta": {
+				"score": 1.0,
+				"version": 1,
+				"highlight": null
+			},
+			"parameterType": {
+				"name": "Libre",
+				"id": 2,
+				"name_en": "Free"
+			},
+			"acronym": null,
+			"name": "Recuento",
+			"name_en": "Recount",
+			"id": 42,
+			"units": [{
+				"id": 1,
+				"unit": {
+					"name": "Ejemplares",
+					"name_en": "ejem",
+					"id": 19,
+					"acronym": "Exx",
+					"unitType": {
+						"name": "Libre",
+						"id": 2,
+						"name_en": "Free"
+					}
+				}
+			}]
+		}
+	]
+}

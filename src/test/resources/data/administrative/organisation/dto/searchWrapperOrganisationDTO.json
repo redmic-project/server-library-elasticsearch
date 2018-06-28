@@ -1,0 +1,71 @@
+{
+	"total": 2,
+	"_meta": {
+		"max_score": null
+	},
+	"_aggs": {
+		
+	},
+	"data": [
+		{
+			"_meta": {
+				"score": 1.0,
+				"version": 1,
+				"highlight": null
+			},
+			"id": 20,
+			"logo": "/api/mediastorage/photobank/organisations/Gesplan.png",
+			"acronym": "GESPLAN",
+			"name": "Gestión y Planeamiento Territorial y Medioambiental",
+			"phone": "+34 922 887 887",
+			"organisationType": {
+				"id": 14,
+				"name": "Empresa pública",
+				"name_en": "Public company"
+			},
+			"country": {
+				"id": 6,
+				"code": "ES",
+				"name": "España",
+				"name_en": "Spain"
+			},
+			"inserted": "2015-01-29T13:07:58.808+00:00",
+			"updated": "2015-01-29T13:12:42.146+00:00",
+			"webpage": "http://www.gesplan.es",
+			"address": "Avenida Tres de Mayo, 71. 38005 Santa Cruz de Tenerife.",
+			"email": "tenerife@gesplan.org",
+			"description": "Sociedad creada por la Consejería de Medio Ambiente y Ordenación del Territorio del Gobierno de Canarias. Esta empresa se posiciona en el archipiélago como órgano instrumental para la aplicación de las políticas sobre el territorio en materia de ordenación y gestión.",
+			"note": "Tiene una sede en cada isla"
+		},
+		{
+			"_meta": {
+				"score": 1.0,
+				"version": 1,
+				"highlight": null
+			},
+			"id": 2,
+			"logo": "/api/mediastorage/photobank/organisations/Autoridad portuaria Santa Cruz de Tenerife.jpg",
+			"acronym": "Puertos de Tenerife",
+			"name": "Autoridad Portuaria de Santa Cruz de Tenerife",
+			"phone": "+34 922 605 400",
+			"organisationType": {
+				"id": 4,
+				"name": "Agencia gubernamental",
+				"name_en": "Governmental Agency"
+			},
+			"country": {
+				"id": 6,
+				"code": "ES",
+				"name": "España",
+				"name_en": "Spain"
+			},
+			"inserted": "2015-01-29T13:07:58.808+00:00",
+			"updated": "2015-01-29T13:12:42.146+00:00",
+			"webpage": "http://www.puertosdetenerife.org",
+			"address": "Avenida Francisco La Roche 49. 38001 Santa Cruz de Tenerife",
+			"email": "presidencia@puertosdetenerife.org",
+			"description": "La Autoridad Portuaria de Santa Cruz de Tenerife es un ente público dependiente de Puertos del Estado que gestiona 5 puertos de interés público en la provincia de Santa Cruz de Tenerife. Se encuentra en estudio la construcción de otros dos puertos en la isla de Tenerife. El actual presidente de la Autoridad Portuaria es Ricardo Melchior Navarro.",
+			"note": "La Autoridad Portuaria de Santa Cruz de Tenerife, con 4,6 millones de pasajeros, es la tercera de España en movimiento de pasajeros (tras Baleares y Bahía de Algeciras)."
+		}
+	]
+}

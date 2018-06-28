@@ -1,0 +1,47 @@
+{
+	"took": 1,
+	"timed_out": false,
+	"_shards": {
+		"total": 5,
+		"successful": 5,
+		"failed": 0
+	},
+	"hits": {
+		"total": 1,
+		"max_score": null,
+		"hits": [
+			{
+				"_index": "administrative",
+				"_type": "device",
+				"_id": "14",
+				"_version": 1,
+				"_score": 1,
+				"_source": {
+					"parameterType": {
+						"name": "Libre",
+						"id": 2,
+						"name_en": "Free"
+					},
+					"acronym": null,
+					"name": "Recuento",
+					"name_en": "Recount",
+					"id": 42,
+					"units": [{
+						"id": 1,
+						"unit": {
+							"unitType": {
+								"name": "Libre",
+								"id": 2,
+								"name_en": "Free"
+							},
+							"acronym": "Exx",
+							"name": "Ejemplares",
+							"name_en": "ejem",
+							"id": 19
+						}
+					}]
+				}
+			}
+		]
+	}
+}

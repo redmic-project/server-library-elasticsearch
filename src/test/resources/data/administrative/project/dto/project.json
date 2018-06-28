@@ -1,0 +1,108 @@
+{
+	"id": 12,
+	"path": "root.1.12",
+	"name": "Banco de datos de especies marinas de Canarias (DIADEMA)",
+	"code": "DIADEMA_Canarias",
+	"endDate": null,
+	"accessibility": {
+		"id": 2,
+		"name": "Libre",
+		"name_en": "Free"
+	},
+	"description": "Registro actualizado de la distribución de especies marinas en el ámbito de Canarias. Comprende los datos publicados en la bibliografía científica y los que se vayan incorporando a REDMIC según actividades concretas.",
+	"documents": [{
+		"id": 1,
+		"document": {
+			"id": 5911,
+			"title": "Biodiversity of cetaceans in coastal waters of Northwest Africa: new insights through platform-of-opportunity visual surveying in 2011-2013",
+			"author": "Djiba, A., Bamy, I. L., Sama Ould Bilal, A. & Van Waerebeek, K.",
+			"url": "/apimediastorage/documents/BibOAG-05200.pdf",
+			"year": "2015"
+		}
+	}],
+	"contacts": [
+		{
+			"id": 1,
+			"organisation": {
+				"id": 1,
+				"logo": "/api/mediastorage/photobank/organisations/logo_oag.jpg",
+				"acronym": "OAG",
+				"name": "Observatorio Ambiental Granadilla."
+			},
+			"role": {
+				"id": 2,
+				"name": "Libre",
+				"name_en": "Free"
+			},
+			"startDate": null,
+			"endDate": null,
+			"contact": {
+				"id": 9,
+				"firstName": "Nuria",
+				"image": "/api/mediastorage/photobank/contacts/000009_nuria_macias_hernandez.jpg",
+				"surname": "Macías Hernández"
+			}
+		}
+	],
+	"organisations": [
+		{
+			"id": 1,
+			"organisation": {
+				"id": 1,
+				"logo": "/api/mediastorage/photobank/organisations/logo_oag.jpg",
+				"acronym": "OAG",
+				"name": "Observatorio Ambiental Granadilla."
+			},
+			"role": {
+				"id": 2,
+				"name": "Libre",
+				"name_en": "Free"
+			},
+			"startDate": null,
+			"endDate": null
+		}
+	],
+	"platforms": [{
+		"id": 1,
+		"platform": {
+			"id": 14,
+			"uuid": "uuid",
+			"name": "Lulú",
+			"image": "/api/mediastorage/photobank/platforms/Lulu.JPG"
+		},
+		"contact": {
+				"id": 9,
+				"firstName": "Nuria",
+				"image": "/api/mediastorage/photobank/contacts/000009_nuria_macias_hernandez.jpg",
+				"surname": "Macías Hernández"
+		},
+		"role": {
+			"id": 2,
+			"name": "Libre",
+			"name_en": "Free"
+		},
+		"startDate": null,
+		"endDate": null
+	}],
+	"note": "Proyecto inicialmente conectado con Biota-mar del Gobierno de Canarias",
+	"scope": {
+		"id": 2,
+		"name": "Libre",
+		"name_en": "Free"
+	},
+	"startDate": "2009-01-01T00:00:00.000+00:00",
+	"inserted": "2015-01-29T13:07:58.808+00:00",
+	"updated": "2015-01-29T13:12:42.146+00:00",
+	"urlmapservice": null,
+	"parent": {
+		"id": 1,
+		"path": "root.1",
+		"name": "Banco de datos de especies marinas de la Macaronesia",
+		"rank": null
+	},
+	"projectGroup": {
+		"id": 2,
+		"name": "Libre",
+		"name_en": "Free"
+	}
+}

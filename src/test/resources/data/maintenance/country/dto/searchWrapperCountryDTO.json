@@ -1,0 +1,28 @@
+{
+	"total": 2,
+	"_meta": {
+		"max_score": null
+	},
+	"_aggs": {},
+	"data": [{
+		"_meta": {
+			"score": 1.0,
+			"version": 1,
+			"highlight": null
+		},
+		"code": "GB",
+		"name": "Reino Unido",
+		"id": 14,
+		"name_en": "United Kingdom"
+	}, {
+		"_meta": {
+			"score": 1.0,
+			"version": 1,
+			"highlight": null
+		},
+		"code": "CU",
+		"name": "Cuba",
+		"id": 5,
+		"name_en": "Cuba"
+	}]
+}

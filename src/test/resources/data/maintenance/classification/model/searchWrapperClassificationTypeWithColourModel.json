@@ -1,0 +1,37 @@
+{
+	"took": 1,
+	"timed_out": false,
+	"_shards": {
+		"total": 5,
+		"successful": 5,
+		"failed": 0
+	},
+	"hits": {
+		"total": 1,
+		"max_score": null,
+		"hits": [
+			{
+				"_index": "administrative-domains",
+				"_type": "activitytype",
+				"_id": "14",
+				"_version": 1,
+				"_score": 1,
+				"_source": {
+					"id": 4,
+					"path": "root.4",
+					"leaves": 0,
+					"code": "Attr",
+					"level": 1,
+					"description": null,
+					"document": null,
+					"inserted": "2017-09-07T12:05:56.799+00:00",
+					"updated": "2017-09-07T12:05:56.799+00:00",
+					"name": "Otros",
+					"name_en": "Others",
+					"parent": null,
+					"colour": "#ffffff"
+				}
+			}
+		]
+	}
+}

@@ -1,0 +1,49 @@
+{
+  "took" : 2,
+  "timed_out" : false,
+  "_shards" : {
+    "total" : 5,
+    "successful" : 5,
+    "failed" : 0
+  },
+  "hits" : {
+    "total" : 1,
+    "max_score" : 0.0,
+    "hits" : [ ]
+  },
+  "aggregations" : {
+    "properties.measurements.dataDefinition.device.id" : {
+      "doc_count" : 1,
+      "properties.measurements.dataDefinition.device.id" : {
+        "doc_count_error_upper_bound" : 0,
+        "sum_other_doc_count" : 0,
+        "buckets" : [ {
+          "key" : 4,
+          "doc_count" : 1
+        } ]
+      }
+    },
+    "properties.measurements.parameter.id" : {
+      "doc_count" : 1,
+      "properties.measurements.parameter.id" : {
+        "doc_count_error_upper_bound" : 0,
+        "sum_other_doc_count" : 0,
+        "buckets" : [ {
+          "key" : 14,
+          "doc_count" : 1
+        } ]
+      }
+    },
+    "properties.measurements.unit.id" : {
+      "doc_count" : 1,
+      "properties.measurements.unit.id" : {
+        "doc_count_error_upper_bound" : 0,
+        "sum_other_doc_count" : 0,
+        "buckets" : [ {
+          "key" : 7,
+          "doc_count" : 1
+        } ]
+      }
+    }
+  }
+}

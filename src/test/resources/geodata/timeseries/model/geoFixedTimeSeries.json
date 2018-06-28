@@ -1,0 +1,92 @@
+{
+	"id": 14,
+	"uuid": "sdsd323sdds_3ed",
+	"_parent": null,
+	"type": "Feature",
+	"geometry": {
+		"type": "Point",
+		"coordinates": [
+			-16.35215172,
+			28.35351045
+		]
+	},
+	"properties": {
+		"geodataRelations": null,
+		"length": null,
+		"area": null,
+		"weatherConditions": null,
+		"media": null,
+		"samplingPlace": null,
+		"inserted": "2016-05-11T09:15:54.639+00:00",
+		"updated": "2016-05-11T09:15:54.639+00:00",
+		"site": {
+			"id": "ft-14",
+			"code": "TGr00",
+			"path": "r.sdsd323sdds_3ed",
+			"leaves": 1,
+			"name": "Meteo Boya OAG Granadilla",
+			"description": "Estacion Meterológica de la Boya del OAG en Granadilla",
+			"url": null,
+			"classification": null,
+			"z": null,
+			"deviation": null,
+			"date": null,
+			"remark": null,
+			"rotate": null,
+			"attributes": null,
+			"metrics": null
+		},
+		"inTrack": null,
+		"collect": null,
+		"measurements": [
+			{
+				"data": null,
+				"dataDefinition": {
+					"id": 2,
+					"path": "r.sdsd323sdds_3ed.3.2",
+					"leaves": 0,
+					"z": 3.0,
+					"deviation": 0,
+					"derivedData": false,
+					"description": "Temperatura atmosférica en grados centígrados",
+					"significantDigits": 4,
+					"maxValue": 50,
+					"minValue": 0,
+					"device": {
+						"id": 2,
+						"model": "KiwiSat202",
+						"name": "Terminal de localización satelital en tiempo real"
+					},
+					"contact": null,
+					"contactRole": null,
+					"timeInterval": 3600000,
+					"isSerial": true,
+					"isRegularity": false
+				},
+				"parameter": {
+					"id": 3,
+					"path": "r.sdsd323sdds_3ed.3",
+					"leaves": 1,
+					"name": "Temperatura",
+					"name_en": "Tempeture",
+					"parameterType": {
+						"id": 1,
+						"name": "Físicos",
+						"name_en": "Physical"
+					}
+				},
+				"unit": {
+					"id": 3,
+					"acronym": "ºC",
+					"unitType": {
+						"id": 6,
+						"name_en": "Temperature",
+						"name": "Temperatura"
+					},
+					"name": "Grados centígrados",
+					"name_en": "Grados centígrados"
+				}
+			}
+		]
+	}
+}

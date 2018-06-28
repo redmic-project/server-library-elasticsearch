@@ -1,0 +1,73 @@
+{
+	"id": 14,
+	"uuid": "sdsd323sdds_3ed",
+	"_meta": {
+		"category": "citation",
+		"score": null,
+		"version": null
+	},
+	"type": "Feature",
+	"geometry": {
+		"type": "Point",
+		"coordinates": [
+			-16.35215172,
+			28.35351045
+		]
+	},
+	"category": "citation",
+	"properties": {
+		"activityId": "a.1.2.3",
+		"id": 12931,
+		"date": "1883-06-28",
+		"speciesConfidence": {
+			"id": 4,
+			"name_en": "High",
+			"name": "Alta"
+		},
+		"confidence": {
+			"id": 4,
+			"name_en": "High",
+			"name": "Alta"
+		},
+		"misidentification": {
+			"id": 1,
+			"document": {
+				"id": 1,
+				"title": "Hola",
+				"author": "pepito",
+				"url": "http://redmic.es",
+				"year": null
+			},
+			"taxon": {
+				"scientificName": "Chordata",
+				"path": "root.1.13",
+				"authorship": "Haeckel, 1874",
+				"rank": {
+					"id": 2,
+					"name": "Libre",
+					"name_en": "Free"
+				},
+				"id": 13
+			},
+			"note": null
+		},
+		"specimenCount": 2,
+		"z": -12,
+		"deviation": 100,
+		"taxon": {
+			"scientificName": "Chordata",
+			"path": "root.1.13",
+			"authorship": "Haeckel, 1874",
+			"rank": {
+				"id": 2,
+				"name": "Libre",
+				"name_en": "Free"
+			},
+			"id": 13
+		},
+		"radius": 50,
+		"remark": "Revisado especies",
+		"collectorName": "Anónimo",
+		"updated": "2016-05-11T09:15:54.639+01:00"
+	}
+}

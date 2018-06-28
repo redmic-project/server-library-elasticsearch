@@ -1,0 +1,11 @@
+{
+	"path": null,
+	"parameterType": {
+		"name": "Físicos",
+		"id": 1,
+		"name_en": "Physical"
+	},
+	"name": "Profundidad",
+	"id": 6,
+	"name_en": "Depth"
+}

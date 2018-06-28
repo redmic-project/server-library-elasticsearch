@@ -1,0 +1,177 @@
+{
+  "bool" : {
+    "must" : [
+      {
+        "has_parent" : {
+          "query" : {
+            "term" : {
+              "id" : {
+                "value" : "817",
+                "boost" : 1.0
+              }
+            }
+          },
+          "parent_type" : "activity",
+          "score" : true,
+          "ignore_unmapped" : false,
+          "boost" : 1.0
+        }
+      },
+      {
+        "bool" : {
+          "must" : [
+            {
+              "term" : {
+                "properties.samplingPlace.id" : {
+                  "value" : "il",
+                  "boost" : 1.0
+                }
+              }
+            }
+          ],
+          "disable_coord" : false,
+          "adjust_pure_negative" : true,
+          "boost" : 1.0
+        }
+      },
+      {
+        "has_child" : {
+          "query" : {
+            "bool" : {
+              "must" : [
+                {
+                  "terms" : {
+                    "qFlag" : [
+                      "1"
+                    ],
+                    "boost" : 1.0
+                  }
+                },
+                {
+                  "terms" : {
+                    "vFlag" : [
+                      "U"
+                    ],
+                    "boost" : 1.0
+                  }
+                }
+              ],
+              "disable_coord" : false,
+              "adjust_pure_negative" : true,
+              "boost" : 1.0
+            }
+          },
+          "type" : "timeseries",
+          "score_mode" : "avg",
+          "min_children" : 0,
+          "max_children" : 2147483647,
+          "ignore_unmapped" : false,
+          "boost" : 1.0,
+          "inner_hits" : {
+            "ignore_unmapped" : false,
+            "from" : 0,
+            "size" : 3,
+            "version" : false,
+            "explain" : false,
+            "track_scores" : false
+          }
+        }
+      }
+    ],
+    "disable_coord" : false,
+    "adjust_pure_negative" : true,
+    "boost" : 1.0
+  }
+}
+{
+  "bool" : {
+    "must" : [
+      {
+        "has_parent" : {
+          "query" : {
+            "term" : {
+              "id" : {
+                "value" : "817",
+                "boost" : 1.0
+              }
+            }
+          },
+          "parent_type" : "activity",
+          "score" : true,
+          "ignore_unmapped" : false,
+          "boost" : 1.0
+        }
+      },
+      {
+        "bool" : {
+          "must" : [
+            {
+              "term" : {
+                "properties.samplingPlace.id" : {
+                  "value" : "il",
+                  "boost" : 1.0
+                }
+              }
+            }
+          ],
+          "disable_coord" : false,
+          "adjust_pure_negative" : true,
+          "boost" : 1.0
+        }
+      },
+      {
+        "has_child" : {
+          "query" : {
+            "bool" : {
+              "must" : [
+                {
+                  "bool" : {
+                    "must" : [
+                      {
+                        "match" : {
+                          "value" : {
+                            "query" : 0.0,
+                            "operator" : "OR",
+                            "prefix_length" : 0,
+                            "max_expansions" : 50,
+                            "fuzzy_transpositions" : true,
+                            "lenient" : false,
+                            "zero_terms_query" : "NONE",
+                            "boost" : 1.0
+                          }
+                        }
+                      }
+                    ],
+                    "disable_coord" : false,
+                    "adjust_pure_negative" : true,
+                    "boost" : 1.0
+                  }
+                }
+              ],
+              "disable_coord" : false,
+              "adjust_pure_negative" : true,
+              "boost" : 1.0
+            }
+          },
+          "type" : "timeseries",
+          "score_mode" : "avg",
+          "min_children" : 0,
+          "max_children" : 2147483647,
+          "ignore_unmapped" : false,
+          "boost" : 1.0,
+          "inner_hits" : {
+            "ignore_unmapped" : false,
+            "from" : 0,
+            "size" : 3,
+            "version" : false,
+            "explain" : false,
+            "track_scores" : false
+          }
+        }
+      }
+    ],
+    "disable_coord" : false,
+    "adjust_pure_negative" : true,
+    "boost" : 1.0
+  }
+}

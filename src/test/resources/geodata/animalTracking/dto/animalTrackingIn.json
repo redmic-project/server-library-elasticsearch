@@ -1,0 +1,32 @@
+{
+	"id": 12931,
+	"uuid": "sdsd323sdds_3ed",
+	"type": "Feature",
+	"geometry": {
+		"type": "Point",
+		"coordinates": [-16.35215172, 28.35351045]
+	},
+	"category": "animalTracking",
+	"properties": {
+		"activityId": "a.1.2.3",
+		"date": "2008-09-13T12:20:00.000+00:00",
+		"inserted": "2016-05-11T09:15:54.639+00:00",
+		"updated": "2016-05-11T09:15:54.639+00:00",
+		"bearing": "null",
+		"cumulativeKm": 145.58844953555382,
+		"cumulativeTime": 533820,
+		"speedKph": 2.020865830329698,
+		"hours": 156360,
+		"lastDistanceKm": 87.77293923065321,
+		"passDuration": 384,
+		"argosId": 78461,
+		"locationClass": "1",
+		"device": 2,
+		"vFlag": "D",
+		"qFlag": "1",
+		"z": -12,
+		"deviation": 100,
+		"radius": 50,
+		"animal": 7271
+	}
+}

@@ -1,0 +1,99 @@
+{
+	"type": "FeatureCollection",
+	"features": [
+		{
+			"id": 1,
+			"type": "Feature",
+			"properties": {
+				"inserted": "2017-04-05T11:28:58.418+00:00",
+				"updated": "2017-08-22T08:39:36.292+00:00",
+				"activityId": "817",
+				"z": null,
+				"deviation": null,
+				"value": 0,
+				"dataDefinition": {
+					"id": 6,
+					"path": null,
+					"leaves": 0,
+					"z": 0,
+					"deviation": null,
+					"description": "Batimetrías",
+					"device": {
+						"id": 2,
+						"name": "Terminal de localización satelital en tiempo real",
+						"model": "KiwiSat202"
+					},
+					"contact": null,
+					"contactRole": null,
+					"derivedData": true,
+					"significantDigits": null,
+					"maxValue": null,
+					"minValue": null,
+					"timeInterval": null,
+					"isSerial": false,
+					"isRegularity": false
+				},
+				"unit": {
+					"id": 6,
+					"name": "Metros",
+					"acronym": "m",
+					"name_en": "Meters",
+					"unitType": {
+						"id": 1,
+						"name": "Longitud",
+						"name_en": "Longitude"
+					}
+				},
+				"parameter": {
+					"id": 6,
+					"path": null,
+					"leaves": 0,
+					"acronym": null,
+					"name": "Profundidad",
+					"name_en": "Depth",
+					"parameterType": {
+						"id": 1,
+						"name": "Físicos",
+						"name_en": "Physical"
+					}
+				},
+				"lineType": {
+					"id": 9,
+					"name": "Isobata",
+					"name_en": "Isobat",
+					"code": null,
+					"level": 1,
+					"path": "root.9",
+					"remark": null,
+					"parent": null
+				},
+				"qFlag": "1",
+				"vFlag": "U"
+			},
+			"geometry": {
+				"coordinates": [
+					[-17.952792723000016, 27.841551251999988],
+					[-17.952881233000028, 27.841645517000018],
+					[-17.952736245999972, 27.841822631000014],
+					[-17.95271326599999, 27.841600040999992],
+					[-17.952792723000016, 27.841551251999988]
+				],
+				"type": "LineString"
+			},
+			"uuid": "4c583f88-a043-4668-983d-9de38291bde2",
+			"_meta": {
+				"score": 3.6321092,
+				"version": null,
+				"highlight": null,
+				"category": "il"
+			}
+		}
+	],
+	"_aggs": {
+		
+	},
+	"_meta": {
+		"max_score": 3.6321092
+	},
+	"total": 1
+}

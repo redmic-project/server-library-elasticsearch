@@ -1,0 +1,38 @@
+{
+	"total": 2,
+	"_meta": {
+		"max_score": null
+	},
+	"_aggs": {},
+	"data": [{
+		"_meta": {
+			"score": 1.0,
+			"version": 1,
+			"highlight": null
+		},
+		"activityField": {
+			"name": "Biodiversidad",
+			"id": 5,
+			"name_en": "Biodiversity"
+		},
+		"name": "Varamientos",
+		"description": "Registro de animales que aparecen varados en la costa, generalmente por tener algún problema de salud.",
+		"id": 14,
+		"name_en": "Strandings"
+	}, {
+		"_meta": {
+			"score": 1.0,
+			"version": 1,
+			"highlight": null
+		},
+		"activityField": {
+			"name": "Especial",
+			"id": 8,
+			"name_en": "Special"
+		},
+		"name": "Video",
+		"description": "Especiales",
+		"id": 24,
+		"name_en": "Video"
+	}]
+}

@@ -1,0 +1,10 @@
+{
+	"id": 3,
+	"name": "Temperatura",
+	"name_en": "Tempeture",
+	"parameterType": {
+		"id": 1,
+		"name": "Físicos",
+		"name_en": "Physical"
+	}
+}

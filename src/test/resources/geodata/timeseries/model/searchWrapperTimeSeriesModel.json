@@ -1,0 +1,54 @@
+{
+	"_shards": {
+		"total": 2,
+		"failed": 0,
+		"successful": 2
+	},
+	"hits": {
+		"hits": [
+			{
+				"_index": "activity",
+				"_type": "timeseries",
+				"_source": {
+					"_parentId": "sdsd323sdds_3ed",
+					"_grandparentId": "3",
+					"date": "2016-05-11T09:15:54.639+00:00",
+					"vFlag": "U",
+					"qFlag": "0",
+					"remark": null,
+					"id": 12931,
+					"dataDefinition": 9,
+					"value": 2
+				},
+				"_id": 12931,
+				"sort": [
+					1338553800000
+				],
+				"_score": null
+			},{
+				"_index": "activity",
+				"_type": "timeseries",
+				"_source": {
+					"_parentId": "sdsd323sdds_3ed",
+					"_grandparentId": "3",
+					"date": "2016-05-12T09:15:54.639+00:00",
+					"vFlag": "U",
+					"qFlag": "0",
+					"remark": null,
+					"id": 12932,
+					"dataDefinition": 9,
+					"value": 3
+				},
+				"_id": 12932,
+				"sort": [
+					1338571800000
+				],
+				"_score": null
+			}
+		],
+		"total": 2,
+		"max_score": null
+	},
+	"took": 4,
+	"timed_out": false
+}

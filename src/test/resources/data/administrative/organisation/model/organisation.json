@@ -1,0 +1,25 @@
+{
+	"id": 1,
+	"logo": "/api/mediastorage/photobank/organisations/logo_oag.jpg",
+	"acronym": "OAG",
+	"name": "Observatorio Ambiental Granadilla.",
+	"phone": "+34 922 298 700",
+	"organisationType": {
+		"name": "Libre",
+		"id": 2,
+		"name_en": "Free"
+	},
+	"country": {
+		"id": 2,
+		"code": "es",
+		"name": "España",
+		"name_en": "Spain"
+	},
+	"inserted": "2015-01-29T13:07:58.808+00:00",
+	"updated": "2015-01-29T13:12:42.146+00:00",
+	"webpage": "http://www.oag-fundacion.org",
+	"address": "Edificio Puerto Ciudad, oficina 1B. Muelle de Enlace 38001 Santa Cruz de Tenerife",
+	"email": "info@oag-fundacion.org",
+	"description": "Fundación pública del sector estatal Observatorio Ambiental del Puerto de Granadilla, encargada de la vigilancia ambiental de esta infraestructura y hacer el seguimiento de la biodiversidad como medida compensatoria.",
+	"note": "El OAG creó y gestiona REDMIC"
+}

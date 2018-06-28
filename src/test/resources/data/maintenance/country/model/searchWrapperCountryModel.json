@@ -1,0 +1,41 @@
+{
+	"took": 1,
+	"timed_out": false,
+	"_shards": {
+		"total": 5,
+		"successful": 5,
+		"failed": 0
+	},
+	"hits": {
+		"total": 2,
+		"max_score": null,
+		"hits": [
+			{
+				"_index": "administrative-domains",
+				"_type": "activitytype",
+				"_id": "14",
+				"_version": 1,
+				"_score": 1,
+				"_source": {
+					"code": "GB",
+					"name": "Reino Unido",
+					"id": 14,
+					"name_en": "United Kingdom"
+				}
+			},
+			{
+				"_index": "administrative-domains",
+				"_type": "activitytype",
+				"_id": "24",
+				"_version": 1,
+				"_score": 1,
+				"_source": {
+					"code": "CU",
+					"name": "Cuba",
+					"id": 5,
+					"name_en": "Cuba"
+				}
+			}
+		]
+	}
+}

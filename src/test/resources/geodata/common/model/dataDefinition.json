@@ -1,0 +1,30 @@
+{
+	"id": 2,
+	"path": null,
+	"z": -12.0,
+	"deviation": 100,
+	"derivedData": null,
+	"description": "prueba basura",
+	"significantDigits": null,
+	"maxValue": null,
+	"minValue": null,
+	"device": {
+		"id": 2,
+		"model": "KiwiSat202",
+		"name": "Terminal de localización satelital en tiempo real"
+	},
+	"contact": {
+		"id": 1,
+		"firstName": "Pedro",
+		"surname": "Trujillo",
+		"image": ""
+	},
+	"contactRole": {
+		"id": 1,
+		"name": "Presidente",
+		"name_en": "President"
+	},
+	"timeInterval": null,
+	"isSerial": null,
+	"isRegularity": null
+}

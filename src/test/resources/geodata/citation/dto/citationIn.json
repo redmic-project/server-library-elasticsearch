@@ -1,0 +1,26 @@
+{
+	"id": 12931,
+	"uuid": "sdsd323sdds_3ed",
+	"type": "Feature",
+	"geometry": {
+		"type": "Point",
+		"coordinates": [-16.35215172, 28.35351045]
+	},
+	"properties": {
+		"activityId": "a.1.2.3",
+		"startDate": "1883-06-28T00:00:00.001+00:00",
+		"endDate": "1883-06-28T00:00:00.001+00:00",
+		"speciesConfidence": 4,
+		"confidence": 4,
+		"misidentification": 1,
+		"specimenCount": 2,
+		"z": -12,
+		"deviation": 100,
+		"taxon": 7271,
+		"radius": 50,
+		"remark": "Revisado especies",
+		"collectorName": "Anónimo",
+		"inserted": "2016-05-11T09:15:54.639+00:00",
+		"updated": "2016-05-11T09:15:54.639+00:00"
+	}
+}

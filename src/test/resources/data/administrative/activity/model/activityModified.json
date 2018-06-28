@@ -1,0 +1,69 @@
+{
+	"id": 60,
+	"path": "root.1.12.60",
+	"name": "Volcado de citas del documento BibOAG-00697 modified",
+	"rank": {
+		"id": 3,
+		"name": "Actividad",
+		"name_en": "Activity"
+	},
+	"code": "VDOC-00697",
+	"endDate": "2014-10-06T09:00:00.000+00:00",
+	"accessibility": {
+		"id": 2,
+		"name": "Libre",
+		"name_en": "Free"
+	},
+	"count": 0,
+	"description": "Localización de especies contenidas en el documento: Catálogo de los cumáceos (Crustacea, Malacostraca) de las islas Canarias",
+	"documents": [{
+		"id": 1,
+		"document": {
+			"id": 4727,
+			"title": "Catálogo de los cumáceos (Crustacea, Malacostraca) de las islas Canarias",
+			"author": "Corbera, J., Brito, M. d. C., Núñez, J. & Riera, R.",
+			"url": "/api/mediastorage/documents/BibOAG-00697.pdf"
+		}
+	}],
+	"contacts": [{
+		"id": 1,
+		"organisation": {
+			"id": 1,
+			"logo": "/api/mediastorage/photobank/organisations/logo_oag.jpg",
+			"acronym": "OAG",
+			"name": "Observatorio Ambiental Granadilla"
+		},
+		"role": {
+			"id": 7,
+			"name": "Corólogo/a",
+			"name_en": "Corologist"
+		},
+		"startDate": null,
+		"endDate": null,
+		"contact": {
+			"id": 6,
+			"firstName": "Ainoa",
+			"surname": "Poladura Martín",
+			"image": "/api/mediastorage/photobank/contacts/Ainoa Poladura.JPG"
+		}
+	}],
+	"organisations": [],
+	"platforms": [],
+	"note": "Código Biota-Mar nº CM0001. Especies revisadas",
+	"scope": null,
+	"startDate": "2011-02-07T09:00:00.000+00:00",
+	"inserted": "2016-05-11T07:13:52.048+00:00",
+	"updated": "2016-05-11T07:13:52.048+00:00",
+	"urlmapservice": null,
+	"activityType": {
+		"id": 10,
+		"activityField": {
+			"id": 5,
+			"name": "Biodiversidad",
+			"name_en": "Biodiversity"
+		},
+		"name": "Corología documentada",
+		"description": "Biológicas"
+	},
+	"activityCategory": "ci"
+}

@@ -1,0 +1,173 @@
+{
+	"took": 1,
+	"timed_out": false,
+	"_shards": {
+		"total": 5,
+		"successful": 5,
+		"failed": 0
+	},
+	"hits": {
+		"total": 2,
+		"max_score": null,
+		"hits": [{
+			"_index": "redmicv2",
+			"_type": "geodata",
+			"_id": "sdsd323sdds_3ed",
+			"_score": null,
+			"_parent": "3",
+			"_source": {
+				"id": "12931",
+				"uuid": "sdsd323sdds_3ed",
+				"type": "Feature",
+				"geometry": {
+					"type": "Point",
+					"coordinates": [-16.50891417, 28.0611774]
+				},
+				"properties": {
+					"geodataRelations": null,
+					"length": null,
+					"area": null,
+					"inserted": "2016-05-11T09:15:54.639+00:00",
+					"updated": "2016-05-11T09:15:54.639+00:00",
+					"samplingPlace": null,
+					"weatherConditions": null,
+					"site": null,
+					"inTrack": null,
+					"collect": {
+						"id": "ci-12931",
+						"z": -12,
+						"deviation": 100,
+						"radius": 50,
+						"startDate": "1883-06-28T00:00:00.001+00:00",
+						"endDate": "1883-06-28T00:00:00.001+00:00",
+						"value": 2,
+						"remark": "",
+						"taxon": {
+							"id": 82,
+							"validAs": null,
+							"rank": {
+								"id": 10,
+								"name_en": "Species",
+								"name": "Species"
+							},
+							"scientificName": "Ilia nucleus",
+							"authorship": "(Linnaeus, 1758)",
+							"path": "s.1.3.4.6.7.82",
+							"commonname": "Cangrejo boliche"
+						},
+						"misidentification": {
+							"id": 1,
+							"goodIdentification": "s.2.32.32.2",
+							"document": {
+								"id": 1,
+								"title": "Hola",
+								"author": null,
+								"year": null,
+								"url": null
+							}
+						},
+						"collectorName": "Anónimo",
+						"collectionRegNo": null,
+						"qFlag": "1",
+						"vFlag": "D",
+						"confidence": {
+							"id": 4,
+							"name_en": "High",
+							"name": "Alta"
+						},
+						"localityConfidence": {
+							"id": 4,
+							"name_en": "High",
+							"name": "Alta"
+						},
+						"observationAngle": null,
+						"distance": null,
+						"sampleId": null,
+						"elements": null,
+						"analytics": null,
+						"attributes": null,
+						"metrics": null,
+						"object": null,
+						"dataDefinition": null
+					},
+					"measurements": null
+				}
+			}
+		}, {
+			"_index": "redmicv2",
+			"_type": "geodata",
+			"_id": "sdsd323sdds_3ed",
+			"_score": null,
+			"_parent": "3",
+			"_source": {
+				"id": "12931",
+				"uuid": "sdsd323sdds_3ed",
+				"type": "Feature",
+				"geometry": {
+					"type": "Point",
+					"coordinates": [-17.50891417, 29.0611774]
+				},
+				"properties": {
+					"activityId": "3",
+					"geodataRelations": null,
+					"length": null,
+					"area": null,
+					"inserted": "2016-05-11T09:15:54.639+00:00",
+					"updated": "2016-05-11T09:15:54.639+00:00",
+					"samplingPlace": null,
+					"weatherConditions": null,
+					"site": null,
+					"inTrack": null,
+					"collect": {
+						"id": "ci-12931",
+						"z": -12,
+						"deviation": 100,
+						"radius": 50,
+						"startDate": "1883-06-28T00:00:00.001+00:00",
+						"endDate": "1883-06-28T00:00:00.001+00:00",
+						"value": 2,
+						"remark": "",
+						"taxon": {
+							"id": 82,
+							"validAs": null,
+							"rank": {
+								"id": 10,
+								"name_en": "Species",
+								"name": "Species"
+							},
+							"scientificName": "Ilia nucleus",
+							"authorship": "(Linnaeus, 1758)",
+							"path": "s.1.3.4.6.7.82",
+							"commonname": "Cangrejo boliche"
+						},
+						"misidentification": null,
+						"collectorName": "Anónimo",
+						"collectionRegNo": null,
+						"qFlag": "1",
+						"vFlag": "D",
+						"confidence": {
+							"id": 4,
+							"name_en": "High",
+							"name": "Alta"
+						},
+						"localityConfidence": {
+							"id": 4,
+							"name_en": "High",
+							"name": "Alta"
+						},
+						"observationAngle": null,
+						"distance": null,
+						"sampleId": null,
+						"elements": null,
+						"analytics": null,
+						"attributes": null,
+						"metrics": null,
+						"object": null,
+						"dataDefinition": null
+					},
+					"measurements": null
+				}
+			}
+		}]
+	}
+}

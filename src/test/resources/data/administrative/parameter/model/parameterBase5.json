@@ -1,0 +1,10 @@
+{
+	"id": 5,
+	"name": "Basura",
+	"name_en": "Trash",
+	"parameterType": {
+		"id": 1,
+		"name": "Físicos",
+		"name_en": "Physical"
+	}
+}

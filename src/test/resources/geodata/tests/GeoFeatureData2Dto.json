@@ -1,0 +1,5 @@
+[{
+	"dataIn": "/geodata/citation/model/SearchWrapperCitationModel.json",
+	"dataOut": "/geodata/citation/dto/CitationDTO.json",
+	"classOut": "es.redmic.models.es.geojson.citation.dto.CitationDTO"
+}]

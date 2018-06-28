@@ -1,0 +1,114 @@
+{
+	"id": 60,
+	"path": "root.1.12.60",
+	"name": "Volcado de citas del documento BibOAG-00697",
+	"rank": {
+		"id": 2,
+		"name": "Libre",
+		"name_en": "Free"
+	},
+	"code": "VDOC-00697",
+	"endDate": "2014-10-06T09:00:00.000+00:00",
+	"accessibility": {
+		"id": 2,
+		"name": "Libre",
+		"name_en": "Free"
+	},
+	"description": "Localización de especies contenidas en el documento: Catálogo de los cumáceos (Crustacea, Malacostraca) de las islas Canarias",
+	"documents": [{
+		"id": 1,
+		"document" : {
+			"id": 5911,
+			"title": "Biodiversity of cetaceans in coastal waters of Northwest Africa: new insights through platform-of-opportunity visual surveying in 2011-2013",
+			"author": "Djiba, A., Bamy, I. L., Sama Ould Bilal, A. & Van Waerebeek, K.",
+			"url": "/api/mediastorage/documents/BibOAG-05200.pdf",
+			"year": "2015"
+		}
+	}],
+	"contacts": [
+		{
+			"id": 1,
+			"organisation": {
+				"id": 1,
+				"logo": "/api/mediastorage/photobank/organisations/logo_oag.jpg",
+				"acronym": "OAG",
+				"name": "Observatorio Ambiental Granadilla."
+			},
+			"role": {
+				"id": 2,
+				"name": "Libre",
+				"name_en": "Free"
+			},
+			"startDate": null,
+			"endDate": null,
+			"contact": {
+				"id": 9,
+				"firstName": "Nuria",
+				"image": "/api/mediastorage/photobank/contacts/000009_nuria_macias_hernandez.jpg",
+				"surname": "Macías Hernández"
+			}
+		}
+	],
+	"organisations": [
+		{
+			"id": 1,
+			"organisation": {
+				"id": 1,
+				"logo": "/api/mediastorage/photobank/organisations/logo_oag.jpg",
+				"acronym": "OAG",
+				"name": "Observatorio Ambiental Granadilla."
+			},
+			"role": {
+				"id": 2,
+				"name": "Libre",
+				"name_en": "Free"
+			},
+			"startDate": null,
+			"endDate": null
+		}
+	],
+	"platforms": [{
+		"id": 1,
+		"platform": {
+			"id": 14,
+			"uuid": "uuid",
+			"name": "Lulú",
+			"image": "/api/mediastorage/photobank/platforms/Lulu.JPG"
+		},
+		"contact": {
+				"id": 9,
+				"firstName": "Nuria",
+				"image": "/api/mediastorage/photobank/contacts/000009_nuria_macias_hernandez.jpg",
+				"surname": "Macías Hernández"
+		},
+		"role": {
+			"id": 2,
+			"name": "Libre",
+			"name_en": "Free"
+		},
+		"startDate": null,
+		"endDate": null
+	}],
+	"note": "Código Biota-Mar nº CM0001. Especies revisadas",
+	"scope": {
+		"id": 2,
+		"name": "Libre",
+		"name_en": "Free"
+	},
+	"startDate": "2011-02-07T09:00:00.000+00:00",
+	"inserted": "2016-05-11T07:13:52.048+00:00",
+	"updated": "2016-05-11T07:13:52.048+00:00",
+	"urlmapservice": null,
+	"activityType": {
+		"activityField": {
+			"name": "Libre",
+			"id": 2,
+			"name_en": "Free"
+		},
+		"name": "Varamientos",
+		"id": 14,
+		"name_en": "Strandings",
+		"description": ""
+	},
+	"activityCategory": "ci"
+}

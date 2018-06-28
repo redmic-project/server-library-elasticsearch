@@ -1,0 +1,49 @@
+{
+	"took": 1,
+	"timed_out": false,
+	"_shards": {
+		"total": 5,
+		"successful": 5,
+		"failed": 0
+	},
+	"hits": {
+		"total": 1,
+		"max_score": null,
+		"hits": [
+			{
+				"_index": "administrative",
+				"_type": "device",
+				"_id": "14",
+				"_version": 1,
+				"_score": 1,
+				"_source": {
+					"id": 1,
+					"name": "Datos de la meteo",
+					"description": "Definición de un dispositivo con una unidad determinada",
+					"acronym": null,
+					"metricGroup": {
+						"name": "Libre",
+						"id": 2,
+						"name_en": "Free"
+					},
+					"device": {
+						"id": 2,
+						"model": "KiwiSat202",
+						"name": "Terminal de localización satelital en tiempo real"
+					},
+					"unit": {
+						"unitType": {
+							"name": "Libre",
+							"id": 2,
+							"name_en": "Free"
+						},
+						"acronym": "Exx",
+						"name": "Ejemplares",
+						"name_en": "ejem",
+						"id": 19
+					}
+				}
+			}
+		]
+	}
+}

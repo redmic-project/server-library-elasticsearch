@@ -1,0 +1,67 @@
+{
+	"total": 1,
+	"type": "FeatureCollection",
+	"_meta": {
+		"max_score": null
+	},
+	"_aggs": {},
+	"features": [{
+		"_meta": {
+			"category": "if",
+			"score": null,
+			"version": null,
+			"highlight": null
+		},
+		"id": 12931,
+		"uuid": "sdsd323sdds_3ed",
+		"properties": {
+			"activityId": "3",
+			"date": "2008-09-13T12:20:00.000+00:00",
+			"infrastructureType": {
+				"code": null,
+				"level": 2,
+				"path": "root.1.2",
+				"name": "Faros",
+				"id": 2,
+				"name_en": "Headlights",
+				"parent": null
+			},
+			"z": -12,
+			"rotate": 100,
+			"remark": "Remark",
+			"description": "Description",
+			"name": "name",
+			"code": "code",
+			"url": "http://webcam.es",
+			"inserted": "2016-05-11T09:15:54.639+00:00",
+			"updated": "2016-05-11T09:15:54.639+00:00",
+			"attributes": [{
+				"id": 3,
+				"_meta": {
+					 "score": 9.428813,
+					 "version": null,
+					 "highlight": null
+				},
+				"remark": "Cámara go pro",
+				"startDate": null,
+				"endDate": null,
+				"attributeType": {
+					"id": 1,
+					"path": "root.1",
+					"code": null,
+					"level": 1,
+					"name": "Otro",
+					"name_en": "Other",
+					"parent": null
+				},
+				"qFlag": "1",
+				"vFlag": "A"
+			}]
+		},
+		"geometry": {
+			"type": "Point",
+			"coordinates": [-16.50891417, 28.0611774]
+		},
+		"type": "Feature"
+	}]
+}

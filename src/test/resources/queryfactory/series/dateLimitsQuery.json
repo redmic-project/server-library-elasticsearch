@@ -1,0 +1,36 @@
+{
+  "bool" : {
+    "must" : [
+      {
+        "has_parent" : {
+          "query" : {
+            "term" : {
+              "id" : {
+                "value" : "AS65565sWEWEsd",
+                "boost" : 1.0
+              }
+            }
+          },
+          "parent_type" : "activity",
+          "score" : true,
+          "ignore_unmapped" : false,
+          "boost" : 1.0
+        }
+      },
+      {
+        "range" : {
+          "date" : {
+            "from" : "2015-03-17T00:00:00.000Z",
+            "to" : "2015-04-17T00:00:00.000Z",
+            "include_lower" : true,
+            "include_upper" : true,
+            "boost" : 1.0
+          }
+        }
+      }
+    ],
+    "disable_coord" : false,
+    "adjust_pure_negative" : true,
+    "boost" : 1.0
+  }
+}

@@ -1,0 +1,218 @@
+{
+  "bool" : {
+    "must" : [
+      {
+        "has_child" : {
+          "query" : {
+            "bool" : {
+              "must" : [
+                {
+                  "bool" : {
+                    "should" : [
+                      {
+                        "terms" : {
+                          "properties.inTrack.qFlag" : [
+                            "1"
+                          ],
+                          "boost" : 1.0
+                        }
+                      },
+                      {
+                        "terms" : {
+                          "properties.collect.qFlag" : [
+                            "1"
+                          ],
+                          "boost" : 1.0
+                        }
+                      },
+                      {
+                        "has_child" : {
+                          "query" : {
+                            "bool" : {
+                              "must" : [
+                                {
+                                  "terms" : {
+                                    "qFlag" : [
+                                      "1"
+                                    ],
+                                    "boost" : 1.0
+                                  }
+                                },
+                                {
+                                  "terms" : {
+                                    "vFlag" : [
+                                      "U"
+                                    ],
+                                    "boost" : 1.0
+                                  }
+                                }
+                              ],
+                              "disable_coord" : false,
+                              "adjust_pure_negative" : true,
+                              "boost" : 1.0
+                            }
+                          },
+                          "type" : "timeseries",
+                          "score_mode" : "avg",
+                          "min_children" : 0,
+                          "max_children" : 2147483647,
+                          "ignore_unmapped" : false,
+                          "boost" : 1.0
+                        }
+                      },
+                      {
+                        "has_child" : {
+                          "query" : {
+                            "bool" : {
+                              "must" : [
+                                {
+                                  "terms" : {
+                                    "qFlag" : [
+                                      "1"
+                                    ],
+                                    "boost" : 1.0
+                                  }
+                                },
+                                {
+                                  "terms" : {
+                                    "vFlag" : [
+                                      "U"
+                                    ],
+                                    "boost" : 1.0
+                                  }
+                                }
+                              ],
+                              "disable_coord" : false,
+                              "adjust_pure_negative" : true,
+                              "boost" : 1.0
+                            }
+                          },
+                          "type" : "collecting",
+                          "score_mode" : "avg",
+                          "min_children" : 0,
+                          "max_children" : 2147483647,
+                          "ignore_unmapped" : false,
+                          "boost" : 1.0
+                        }
+                      }
+                    ],
+                    "disable_coord" : false,
+                    "adjust_pure_negative" : true,
+                    "boost" : 1.0
+                  }
+                },
+                {
+                  "bool" : {
+                    "should" : [
+                      {
+                        "terms" : {
+                          "properties.inTrack.vFlag" : [
+                            "U"
+                          ],
+                          "boost" : 1.0
+                        }
+                      },
+                      {
+                        "terms" : {
+                          "properties.collect.vFlag" : [
+                            "U"
+                          ],
+                          "boost" : 1.0
+                        }
+                      },
+                      {
+                        "has_child" : {
+                          "query" : {
+                            "bool" : {
+                              "must" : [
+                                {
+                                  "terms" : {
+                                    "qFlag" : [
+                                      "1"
+                                    ],
+                                    "boost" : 1.0
+                                  }
+                                },
+                                {
+                                  "terms" : {
+                                    "vFlag" : [
+                                      "U"
+                                    ],
+                                    "boost" : 1.0
+                                  }
+                                }
+                              ],
+                              "disable_coord" : false,
+                              "adjust_pure_negative" : true,
+                              "boost" : 1.0
+                            }
+                          },
+                          "type" : "timeseries",
+                          "score_mode" : "avg",
+                          "min_children" : 0,
+                          "max_children" : 2147483647,
+                          "ignore_unmapped" : false,
+                          "boost" : 1.0
+                        }
+                      },
+                      {
+                        "has_child" : {
+                          "query" : {
+                            "bool" : {
+                              "must" : [
+                                {
+                                  "terms" : {
+                                    "qFlag" : [
+                                      "1"
+                                    ],
+                                    "boost" : 1.0
+                                  }
+                                },
+                                {
+                                  "terms" : {
+                                    "vFlag" : [
+                                      "U"
+                                    ],
+                                    "boost" : 1.0
+                                  }
+                                }
+                              ],
+                              "disable_coord" : false,
+                              "adjust_pure_negative" : true,
+                              "boost" : 1.0
+                            }
+                          },
+                          "type" : "collecting",
+                          "score_mode" : "avg",
+                          "min_children" : 0,
+                          "max_children" : 2147483647,
+                          "ignore_unmapped" : false,
+                          "boost" : 1.0
+                        }
+                      }
+                    ],
+                    "disable_coord" : false,
+                    "adjust_pure_negative" : true,
+                    "boost" : 1.0
+                  }
+                }
+              ],
+              "disable_coord" : false,
+              "adjust_pure_negative" : true,
+              "boost" : 1.0
+            }
+          },
+          "type" : "geodata",
+          "score_mode" : "avg",
+          "min_children" : 0,
+          "max_children" : 2147483647,
+          "ignore_unmapped" : false,
+          "boost" : 1.0
+        }
+      }
+    ],
+    "disable_coord" : false,
+    "adjust_pure_negative" : true,
+    "boost" : 1.0
+  }
+}

@@ -1,0 +1,103 @@
+{
+	"took": 1,
+	"timed_out": false,
+	"_shards": {
+		"total": 5,
+		"successful": 5,
+		"failed": 0
+	},
+	"hits": {
+		"total": 1,
+		"max_score": null,
+		"hits": [{
+			"_index": "redmicv2",
+			"_type": "geodata",
+			"_id": "sdsd323sdds_3ed",
+			"_score": null,
+			"_parent": "3",
+			"_source": {
+				"id": "12931",
+				"uuid": "sdsd323sdds_3ed",
+				"type": "Feature",
+				"geometry": {
+					"type": "Point",
+					"coordinates": [-16.50891417, 28.0611774]
+				},
+				"properties": {
+					"geodataRelations": null,
+					"length": null,
+					"area": null,
+					"inserted": "2016-05-11T09:15:54.639+00:00",
+					"updated": "2016-05-11T09:15:54.639+00:00",
+					"samplingPlace": null,
+					"weatherConditions": null,
+					"site": {
+						"date": "2008-09-13T12:20:00.000+00:00",
+						"classification": [{
+							"type": {
+								"code": null,
+								"level": 1,
+								"path": "root.1",
+								"name": "Faros y señales",
+								"id": 1,
+								"name_en": "Headlights and Signs"
+							}
+						},{
+							"type": {
+								"code": null,
+								"level": 2,
+								"path": "root.1.2",
+								"name": "Faros",
+								"id": 2,
+								"name_en": "Headlights"
+							}
+						}],
+						"z": -12,
+						"rotate": 100,
+						"remark": "Remark",
+						"description": "Description",
+						"name": "name",
+						"code": "code",
+						"url": "http://webcam.es"
+					},
+					"inTrack": null,
+					"collect": null
+				}
+			},
+			"inner_hits": {
+				"attributeseries": {
+					"hits": {
+						"total": 1,
+						"max_score": 9.428813,
+						"hits": [{
+							"_index": "activity",
+							"_type": "attributeseries",
+							"_id": "1",
+							"_score": 9.428813,
+							"_routing": "3",
+							"_parent": "sdsd323sdds_3ed",
+							"_source": {
+								"id": 3,
+								"remark": "Cámara go pro",
+								"startDate": null,
+								"endDate": null,
+								"attributeType": {
+									"id": 1,
+									"path": "root.1",
+									"leaves": 0,
+									"code": null,
+									"level": 1,
+									"name": "Otro",
+									"name_en": "Other",
+									"parent": null
+								},
+								"qFlag": "1",
+								"vFlag": "A"
+							}
+						}]
+					}
+				}
+			}
+		}]
+	}
+}

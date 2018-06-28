@@ -1,0 +1,42 @@
+{
+	"total": 1,
+	"_meta": {
+		"max_score": null
+	},
+	"_aggs": {
+		
+	},
+	"data": [
+		{
+			"_meta": {
+				"score": 1.0,
+				"version": 1,
+				"highlight": null
+			},
+			"id": 1,
+			"document": {
+				"id": 5911,
+				"author": "Djiba, A., Bamy, I. L., Sama Ould Bilal, A. & Van Waerebeek, K.",
+				"title": "Biodiversity of cetaceans in coastal waters of Northwest Africa: new insights through platform-of-opportunity visual surveying in 2011-2013",
+				"url": "/api/mediastorage/documents/BibOAG-05200.pdf",
+				"year": 2015
+			},
+			"taxon": {
+				"scientificName": "Chordata",
+				"path": "root.1.13",
+				"authorship": "Haeckel, 1874",
+				"id": 13
+			},
+			"note": "nnn",
+			"badIdentity": {
+				"scientificName": "Chordata",
+				"path": "root.1.13",
+				"authorship": "Haeckel, 1874",
+				"id": 13
+			},
+			"citations": [
+				"sdsd323sdds_3ed"
+			]
+		}
+	]
+}

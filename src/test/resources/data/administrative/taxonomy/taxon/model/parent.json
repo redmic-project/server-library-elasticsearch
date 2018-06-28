@@ -1,0 +1,18 @@
+{
+	"_index": "taxon",
+	"_type": "taxons",
+	"_id": "1",
+	"_version": 1,
+	"_score": 1, 
+	"_source": {
+		"path": "root.1",
+		"scientificName": "Animalia",
+		"authorship": null,
+		"rank": {
+			"name": "Kingdom",
+			"id": 1,
+			"name_en": "Kingdom"
+		},
+		"id": 1
+	}
+}

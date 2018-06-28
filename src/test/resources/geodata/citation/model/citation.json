@@ -1,0 +1,98 @@
+{
+	"id": 12931,
+	"uuid": "sdsd323sdds_3ed",
+	"_parent": null,
+	"type": "Feature",
+	"geometry": {
+		"type": "Point",
+		"coordinates": [-16.35215172, 28.35351045]
+	},
+	"properties": {
+		"geodataRelations": null,
+		"length": null,
+		"area": null,
+		"inserted": "2016-05-11T09:15:54.639+00:00",
+		"updated": "2016-05-11T09:15:54.639+00:00",
+		"weatherConditions": null,
+		"media": null,
+		"samplingPlace": null,
+		"site": null,
+		"inTrack": null,
+		"collect": {
+			"id": "ci-12931",
+			"z": -12,
+			"deviation": 100,
+			"radius": 50,
+			"startDate": "1883-06-28T00:00:00.001+00:00",
+			"endDate": "1883-06-28T00:00:00.001+00:00",
+			"value": 2,
+			"remark": "Revisado especies",
+			"collectorName": "Anónimo",
+			"collectionRegNo": null,
+			"qFlag": "1",
+			"vFlag": "A",
+			"confidence": {
+				"id": 4,
+				"name_en": "High",
+				"name": "Alta"
+			},
+			"localityConfidence": {
+				"id": 4,
+				"name_en": "High",
+				"name": "Alta"
+			},
+			"observationAngle": null,
+			"distance": null,
+			"sample": null,
+			"elements": null,
+			"analytics": null,
+			"attributes": null,
+			"metrics": null,
+			"molecular": null,
+			"taxon": {
+				"id": 7271,
+				"validAs": null,
+				"rank": {
+					"id": 10,
+					"name_en": "Species",
+					"name": "Species"
+				},
+				"scientificName": "Ilia nucleus",
+				"authorship": "(Linnaeus, 1758)",
+				"path": "root.1.21.150.223.341.1077.2932.7271",
+				"leaves": 0,
+				"commonName": "Cangrejo boliche",
+				"aphia": 2423,
+				"parent": null,
+				"status": null
+			},
+			"animal": null,
+			"misidentification": {
+				"id": 1,
+				"document": {
+					"id": 1,
+					"title": "Hola",
+					"author": "pepito",
+					"url": "http://redmic.es",
+					"year": null
+				},
+				"taxon": {
+					"id": 7271,
+					"rank": {
+						"id": 10,
+						"name_en": "Species",
+						"name": "Species"
+					},
+					"scientificName": "Ilia nucleus",
+					"authorship": "(Linnaeus, 1758)",
+					"path": "root.1.21.150.223.341.1077.2932.7271",
+					"leaves": 0
+				},
+				"note": null
+			},
+			"object": null,
+			"dataDefinition": null
+		},
+		"measurements": null
+	}
+}

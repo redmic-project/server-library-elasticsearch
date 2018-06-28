@@ -1,0 +1,18 @@
+{
+	"firstName": "Nuria modified",
+	"image": "/api/mediastorage/photobank/contacts/000009_nuria_macias_hernandez.jpg",
+	"note": "Trabajó en el OAG con Biota-mar del 1-6-2010 al 31-12-2010",
+	"phone": "922 63 20 31",
+	"affiliation": {
+	"acronym": "OAG",
+	"name": "Observatorio Ambiental Granadilla",
+	"logo": "/api/mediastorage/photobank/organisations/logo_oag.jpg",
+	"id": 1
+	},
+	"surname": "Macías Hernández",
+	"mobile": "686 731 928",
+	"id": 9,
+	"inserted": "2015-01-29T13:07:58.808+00:00",
+	"updated": "2015-01-29T13:12:42.146+00:00",
+	"email": null
+}

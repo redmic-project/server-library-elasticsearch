@@ -1,0 +1,59 @@
+{
+	"total": 2,
+	"_meta": {
+		"max_score": null
+	},
+	"_aggs": {
+		
+	},
+	"data": [
+		{
+			"_meta": {
+				"score": 1.0,
+				"version": 1,
+				"highlight": null
+			},
+			"remark": null,
+			"code": "BibOAG-05200",
+			"year": 2015,
+			"documentType": {
+				"name": "Libro de colección",
+				"id": 15,
+				"name_en": "Serial book "
+			},
+			"author": "Djiba, A., Bamy, I. L., Sama Ould Bilal, A. & Van Waerebeek, K.",
+			"language": "en",
+			"source": "Vol. 115. In: Intergovernmental Oceanographic Commision Technical Series. Paris: IOC - UNESCO. Pp.283-297.",
+			"title": "Biodiversity of cetaceans in coastal waters of Northwest Africa: new insights through platform-of-opportunity visual surveying in 2011-2013",
+			"url": "/api/mediastorage/documents/BibOAG-05200.pdf",
+			"inserted": "2016-05-12T08:25:48.445+00:00",
+			"id": 5911,
+			"keyword": "Fauna,Canarias,Avistamientos,Cabo Verde,Cetaceos,REDMIC",
+			"updated": null
+		},
+		{
+			"_meta": {
+				"score": 1.0,
+				"version": 1,
+				"highlight": null
+			},
+			"remark": null,
+			"code": "BibOAG-05204",
+			"year": 2015,
+			"documentType": {
+				"name": "Libro de colección",
+				"id": 15,
+				"name_en": "Serial book "
+			},
+			"author": "Santana Casiano, J. M. & González Dávila, M.",
+			"language": "en",
+			"source": "Vol. 115. In: Intergovernmental Oceanographic Commision Technical Series. Paris: IOC - UNESCO. Pp.343-349.",
+			"title": "Ocean acidification in the Canary Islands Large Marine Ecosystem",
+			"url": "/api/mediastorage/documents/BibOAG-05204.pdf",
+			"inserted": "2016-05-12T08:25:48.445+00:00",
+			"id": 5916,
+			"keyword": "Oceanografía,Canarias,Cambio climático,Acidificación marina,Cabo Verde,REDMIC",
+			"updated": null
+		}
+	]
+}

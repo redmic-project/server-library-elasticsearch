@@ -1,0 +1,57 @@
+{
+	"took": 1,
+	"timed_out": false,
+	"_shards": {
+		"total": 5,
+		"successful": 5,
+		"failed": 0
+	},
+	"hits": {
+		"total": 1,
+		"max_score": null,
+		"hits": [
+			{
+				"_index": "administrative",
+				"_type": "device",
+				"_id": "14",
+				"_version": 1,
+				"_score": 1,
+				"_source": {
+					"commonName": " ",
+					"worms": "http://www.marinespecies.org/aphia.php?p=taxdetails&id=1821",
+					"note": null,
+					"scientificName": "Chordata",
+					"validAs": {
+						"path": "root.1",
+						"scientificName": "Animalia",
+						"authorship": null,
+						"rank": {
+							"name": "Kingdom",
+							"id": 1,
+							"name_en": "Kingdom"
+						},
+						"id": 1
+					},
+					"path": "root.1",
+					"leaves": 278,
+					"authorship": "Haeckel, 1874",
+					"rank": {
+						"id": 2,
+						"name": "Libre",
+						"name_en": "Free"
+					},
+					"aphia": 1821,
+					"id": 13,
+					"inserted": "2015-01-29T13:07:58.808+00:00",
+					"updated": "2015-01-29T13:12:42.146+00:00",
+					"wormsUpdated": "2016-06-29T21:59:13.000+00:00",
+					"status": {
+						"id": 2,
+						"name": "Libre",
+						"name_en": "Free"
+					}
+				}
+			}
+		]
+	}
+}

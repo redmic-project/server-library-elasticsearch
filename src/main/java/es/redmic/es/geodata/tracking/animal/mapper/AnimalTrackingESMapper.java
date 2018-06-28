@@ -1,0 +1,26 @@
+package es.redmic.es.geodata.tracking.animal.mapper;
+
+import org.springframework.stereotype.Component;
+
+import es.redmic.es.common.utils.DataMapperUtils;
+import es.redmic.models.es.common.DataPrefixType;
+import es.redmic.models.es.geojson.common.model.GeoPointData;
+import es.redmic.models.es.geojson.tracking.animal.dto.AnimalTrackingDTO;
+import ma.glasnost.orika.CustomMapper;
+import ma.glasnost.orika.MappingContext;
+
+@Component
+public class AnimalTrackingESMapper extends CustomMapper<GeoPointData, AnimalTrackingDTO> {
+
+	@Override
+	public void mapBtoA(AnimalTrackingDTO b, GeoPointData a, MappingContext context) {
+
+		if ( a.getProperties() != null) {
+			
+			String id = DataMapperUtils.convertIdentifier(b.getId(), DataPrefixType.ANIMAL_TRACKING);
+			a.getProperties().getCollect().setId(id);
+			a.getProperties().getInTrack().setId(id);
+			a.set_parentId(b.getProperties().getActivityId());
+		}
+	}
+}

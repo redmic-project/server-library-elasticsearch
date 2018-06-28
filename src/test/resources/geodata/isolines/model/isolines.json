@@ -1,0 +1,175 @@
+{
+	"geometry": {
+		"coordinates": [
+			[
+				[
+					-17.952792723000016,
+					27.841551251999988
+				],
+				[
+					-17.952823801000022,
+					27.84156339499998
+				],
+				[
+					-17.952867368,
+					27.841601973000024
+				],
+				[
+					-17.952881233000028,
+					27.841645517000018
+				],
+				[
+					-17.952861960999996,
+					27.84167957699998
+				],
+				[
+					-17.952815262,
+					27.84176879900002
+				],
+				[
+					-17.952799411,
+					27.84180549199999
+				],
+				[
+					-17.952773921000016,
+					27.84182353800003
+				],
+				[
+					-17.952736245999972,
+					27.841822631000014
+				],
+				[
+					-17.952707483999973,
+					27.84180231900001
+				],
+				[
+					-17.952702386,
+					27.841764000000012
+				],
+				[
+					-17.952715996999984,
+					27.841726994
+				],
+				[
+					-17.95273536000002,
+					27.841700059000004
+				],
+				[
+					-17.952715978000015,
+					27.841628938999975
+				],
+				[
+					-17.95271326599999,
+					27.841600040999992
+				],
+				[
+					-17.952724365999984,
+					27.84157147799999
+				],
+				[
+					-17.952758464999988,
+					27.84155279700002
+				],
+				[
+					-17.952792723000016,
+					27.841551251999988
+				]
+			]
+		],
+		"type": "MultiLineString"
+	},
+	"id": 1,
+	"type": "Feature",
+	"uuid": "4c583f88-a043-4668-983d-9de38291bde2",
+	"properties": {
+		"area": null,
+		"length": null,
+		"media": null,
+		"weatherConditions": null,
+		"geodataRelations": null,
+		"samplingPlace": {
+			"code": null,
+			"endDate": null,
+			"name": null,
+			"description": null,
+			"remark": null,
+			"id": "il-1",
+			"path": null,
+			"classification": [{
+				"type": {
+					"id": 10,
+					"path": "root.9.10",
+					"code": null,
+					"level": 2,
+					"name": "Isobata10",
+					"name_en": "Isobat10"
+				}
+			},{
+				"type": {
+					"id": 9,
+					"path": "root.9",
+					"code": null,
+					"level": 1,
+					"name": "Isobata9",
+					"name_en": "Isobat9"
+				}
+			}],
+			"areaType": null,
+			"areaClassification": null,
+			"startDate": null
+		},
+		"site": null,
+		"inserted": "2017-04-05T11:28:58.418+00:00",
+		"updated": "2017-08-22T08:39:36.292+00:00",
+		"collect": null,
+		"inTrack": null,
+		"measurements": [
+			{
+				"unit": {
+					"unitType": {
+						"name": "Longitud",
+						"id": 1,
+						"name_en": "Longitude"
+					},
+					"acronym": "m",
+					"name": "Metros",
+					"id": 6,
+					"name_en": "Meters"
+				},
+				"data": null,
+				"dataDefinition": {
+					"maxValue": null,
+					"description": "Batimetrías",
+					"deviation": null,
+					"significantDigits": null,
+					"isSerial": false,
+					"path": null,
+					"minValue": null,
+					"isRegularity": false,
+					"contact": null,
+					"derivedData": true,
+					"contactRole": null,
+					"timeInterval": null,
+					"z": 0,
+					"id": 6,
+					"device": {
+						"name": "Terminal de localización satelital en tiempo real",
+						"model": "KiwiSat202",
+						"id": 2
+					}
+				},
+				"parameter": {
+					"path": null,
+					"parameterType": {
+						"name": "Físicos",
+						"id": 1,
+						"name_en": "Physical"
+					},
+					"name": "Profundidad",
+					"id": 6,
+					"name_en": "Depth"
+				}
+			}
+		]
+	}
+}

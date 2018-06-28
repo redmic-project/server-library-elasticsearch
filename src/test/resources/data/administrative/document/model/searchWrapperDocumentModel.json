@@ -1,0 +1,67 @@
+{
+	"took": 1,
+	"timed_out": false,
+	"_shards": {
+		"total": 5,
+		"successful": 5,
+		"failed": 0
+	},
+	"hits": {
+		"total": 2,
+		"max_score": null,
+		"hits": [
+			{
+				"_index": "administrative",
+				"_type": "organisation",
+				"_id": "14",
+				"_version": 1,
+				"_score": 1,
+				"_source": {
+					"remark": null,
+					"code": "BibOAG-05200",
+					"year": 2015,
+					"documentType": {
+						"name": "Libro de colección",
+						"id": 15,
+						"name_en": "Serial book "
+					},
+					"author": "Djiba, A., Bamy, I. L., Sama Ould Bilal, A. & Van Waerebeek, K.",
+					"language": "en",
+					"source": "Vol. 115. In: Intergovernmental Oceanographic Commision Technical Series. Paris: IOC - UNESCO. Pp.283-297.",
+					"title": "Biodiversity of cetaceans in coastal waters of Northwest Africa: new insights through platform-of-opportunity visual surveying in 2011-2013",
+					"url": "/api/mediastorage/documents/BibOAG-05200.pdf",
+					"inserted": "2016-05-12T08:25:48.445+00:00",
+					"id": 5911,
+					"keywords": ["Fauna","Cetaceos","Avistamientos","Canarias","Cabo Verde","REDMIC"],
+					"updated": null
+				}
+			},
+			{
+				"_index": "administrative",
+				"_type": "organisation",
+				"_id": "24",
+				"_version": 1,
+				"_score": 1,
+				"_source": {
+					"remark": null,
+					"code": "BibOAG-05204",
+					"year": 2015,
+					"documentType": {
+						"name": "Libro de colección",
+						"id": 15,
+						"name_en": "Serial book "
+					},
+					"author": "Santana Casiano, J. M. & González Dávila, M.",
+					"language": "en",
+					"source": "Vol. 115. In: Intergovernmental Oceanographic Commision Technical Series. Paris: IOC - UNESCO. Pp.343-349.",
+					"title": "Ocean acidification in the Canary Islands Large Marine Ecosystem",
+					"url": "/api/mediastorage/documents/BibOAG-05204.pdf",
+					"inserted": "2016-05-12T08:25:48.445+00:00",
+					"id": 5916,
+					"keywords": ["Canarias", "Oceanografía", "Cabo Verde", "Acidificación marina", "Cambio climático", "REDMIC"],
+					"updated": null
+				}
+			}
+		]
+	}
+}

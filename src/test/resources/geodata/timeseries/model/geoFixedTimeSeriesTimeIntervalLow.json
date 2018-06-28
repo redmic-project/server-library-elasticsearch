@@ -1,0 +1,113 @@
+{
+	"took": 1,
+	"timed_out": false,
+	"_shards": {
+		"total": 5,
+		"successful": 5,
+		"failed": 0
+	},
+	"hits": {
+		"total": 1,
+		"max_score": null,
+		"hits": [
+			{
+				"_index": "redmicv2",
+				"_type": "geodata",
+				"_id": "sdsd323sdds_3ed",
+				"_score": null,
+				"_source": {
+					"id": 14,
+					"uuid": "sdsd323sdds_3ed",
+					"type": "Feature",
+					"geometry": {
+						"type": "Point",
+						"coordinates": [
+							-16.35215172,
+							28.35351045
+						]
+					},
+					"properties": {
+						"activityId": "a.1.2.3",
+						"inTrackIds": null,
+						"siteIds": null,
+						"samplingPlaceIds": null,
+						"length": null,
+						"area": null,
+						"weatherConditions": null,
+						"media": null,
+						"samplingPlace": null,
+						"updated": null,
+						"inserted": null,
+						"site": {
+							"id": "ft-14",
+							"code": "TGr00",
+							"path": "r.TGr00",
+							"leaves": 1,
+							"name": "Meteo Boya OAG Granadilla",
+							"description": "Estacion Meterológica de la Boya del OAG en Granadilla",
+							"infrastructureType": null,
+							"z": null,
+							"deviation": null,
+							"date": null,
+							"remark": null,
+							"rotate": null,
+							"attributes": null,
+							"metrics": null
+						},
+						"inTrack": null,
+						"collect": null,
+						"measurements": [
+							{
+								"data": null,
+								"dataDefinition": {
+									"id": 9,
+									"path": "r.TGr00.14.9",
+									"z": -2,
+									"deviation": null,
+									"derivedData": false,
+									"description": "Contenido en aceite en z -2",
+									"significantDigits": null,
+									"maxValue": null,
+									"minValue": null,
+									"device": {
+										"id": 4,
+										"model": "SDR-T10",
+										"name": "Terminal de localización satelital en tiempo real"
+									},
+									"contact": null,
+									"contactRole": null,
+									"timeInterval": 1800000,
+									"isSerial": true,
+									"isRegularity": true
+								},
+								"parameter": {
+									"id": 3,
+									"path": "r.TGr00.3",
+									"leaves": 1,
+									"name": "Temperatura",
+									"name_en": "Tempeture",
+									"parameterType": {
+										"id": 1,
+										"name": "Físicos",
+										"name_en": "Physical"
+									}
+								},
+								"unit": {
+									"id": 3,
+									"acronym": "ºC",
+									"unitType": {
+										"id": 6,
+										"name_en": "Temperature",
+										"name": "Temperatura"
+									},
+									"name": "Grados centígrados",
+									"name_en": "Grados centígrados"
+								}
+							}
+						]
+					}
+				}
+			}
+		]
+	}
+}
