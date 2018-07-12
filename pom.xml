@@ -84,6 +84,12 @@
 			<version>${elasticsearch.version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.elasticsearch.client</groupId>
+			<artifactId>x-pack-transport</artifactId>
+			<version>${elasticsearch.version}</version>
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/org.locationtech.spatial4j/spatial4j -->
 		<dependency>
 			<groupId>org.locationtech.spatial4j</groupId>
