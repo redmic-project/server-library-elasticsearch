@@ -33,6 +33,7 @@ public class EsClientProvider {
 		this.addresses = config.getAddresses();
 		this.port = config.getPort();
 		this.clusterName = config.getClusterName();
+		this.xpackSecurityUser = config.getXpackSecurityUser();
 	}
 
 	public TransportClient getClient() {
