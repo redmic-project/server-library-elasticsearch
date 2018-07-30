@@ -26,12 +26,12 @@ public abstract class ActivityCommonESRepository<TModel extends ActivityBase> ex
 
 	@Override
 	protected String[] getDefaultSearchFields() {
-		return new String[] { "name", "name.suggest", "code" };
+		return new String[] { "name", "name.suggest", "code", "code.suggest" };
 	}
 
 	@Override
 	protected String[] getDefaultHighlightFields() {
-		return new String[] { "name", "name.suggest", "code" };
+		return new String[] { "name", "name.suggest", "code", "code.suggest" };
 	}
 
 	@Override
