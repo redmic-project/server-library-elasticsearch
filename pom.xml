@@ -30,7 +30,6 @@
 		<redmic.utils.version>0.6.0</redmic.utils.version>
 
 		<!-- OTHERS -->
-		<elasticsearch.version>5.6.4</elasticsearch.version>
 		<elasticsearch.x-pack.version>5.6.1</elasticsearch.x-pack.version>
 		<spatial4j.version>0.6</spatial4j.version>
 		<ma.glasnost.orika.core.version>1.4.6</ma.glasnost.orika.core.version>
@@ -78,12 +77,6 @@
 		</dependency>
 
 		<!-- Otros -->
-
-		<dependency>
-			<groupId>org.elasticsearch.client</groupId>
-			<artifactId>transport</artifactId>
-			<version>${elasticsearch.version}</version>
-		</dependency>
 
 		<dependency>
 			<groupId>org.elasticsearch.client</groupId>
