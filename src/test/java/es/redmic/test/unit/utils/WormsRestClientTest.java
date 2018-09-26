@@ -122,6 +122,10 @@ public class WormsRestClientTest extends JsonToBeanTestUtil {
 	@Test
 	public void getAphiaRecordsByName_ReturnRecords_IfRequestIsCorrect() throws Exception {
 
+		DomainES species = new DomainES();
+		species.setId(10L);
+		when(taxonRankESService.findByName_en("Species")).thenReturn(species);
+
 		WormsListDTO result = service.findAphiaRecordsByScientificName("Leptochelia dubia");
 
 		assertNotNull(result);

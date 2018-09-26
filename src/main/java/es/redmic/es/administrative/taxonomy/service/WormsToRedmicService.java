@@ -370,7 +370,17 @@ public class WormsToRedmicService {
 
 	public WormsListDTO findAphiaRecordsByScientificName(String scientificName) {
 
-		WormsListDTO result = (WormsListDTO) client.get(APHIA_RECORDS_BY_NAME + scientificName, WormsListDTO.class);
+		WormsListDTO wormsList = (WormsListDTO) client.get(APHIA_RECORDS_BY_NAME + scientificName, WormsListDTO.class),
+				result = new WormsListDTO();
+
+		for (WormsDTO dto : wormsList) {
+
+			RankDTO rank = orikaMapper.getMapperFacade().map(rankESService.findByName_en(dto.getRank()), RankDTO.class);
+
+			if (rank.getId() >= 10) {
+				result.add(dto);
+			}
+		}
 
 		return result != null ? result : new WormsListDTO();
 	}
