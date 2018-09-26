@@ -28,8 +28,8 @@ public class WormsESMapper extends CustomMapper<WormsDTO, TaxonDTO> {
 		b.setAuthorship(a.getAuthority());
 		b.setScientificName(a.getScientificname());
 		b.setWorms(a.getUrl());
-		b.setStatus(mapperFacade.map(statusESService.findByName(a.getStatus()), StatusDTO.class));
-		b.setRank(mapperFacade.map(rankESService.findByName(a.getRank()), RankDTO.class));
+		b.setStatus(mapperFacade.map(statusESService.findByName_en(a.getStatus()), StatusDTO.class));
+		b.setRank(mapperFacade.map(rankESService.findByName_en(a.getRank()), RankDTO.class));
 
 		b.setWormsUpdated(a.getModified());
 	}

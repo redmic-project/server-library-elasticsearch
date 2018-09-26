@@ -86,8 +86,8 @@ public class WormsRestClientTest extends JsonToBeanTestUtil {
 
 		DomainES kingdom = new DomainES();
 		kingdom.setName_en("kingdom");
-		when(taxonRankESService.findByName(anyString())).thenReturn(kingdom);
-		when(statusESService.findByName(anyString())).thenReturn(new DomainES());
+		when(taxonRankESService.findByName_en(anyString())).thenReturn(kingdom);
+		when(statusESService.findByName_en(anyString())).thenReturn(new DomainES());
 	}
 
 	@Test
