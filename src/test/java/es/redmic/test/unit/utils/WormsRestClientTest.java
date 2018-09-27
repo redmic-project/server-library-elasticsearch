@@ -11,6 +11,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.joda.time.DateTime;
@@ -84,6 +85,9 @@ public class WormsRestClientTest extends JsonToBeanTestUtil {
 
 		Whitebox.setInternalState(service, "ranks", getRanks());
 
+		Whitebox.setInternalState(service, "speciesRankLabel",
+				new ArrayList<String>(Arrays.asList("Species", "Subspecies", "Variety")));
+
 		DomainES kingdom = new DomainES();
 		kingdom.setName_en("kingdom");
 		when(taxonRankESService.findByName_en(anyString())).thenReturn(kingdom);
@@ -121,10 +125,6 @@ public class WormsRestClientTest extends JsonToBeanTestUtil {
 
 	@Test
 	public void getAphiaRecordsByName_ReturnRecords_IfRequestIsCorrect() throws Exception {
-
-		DomainES species = new DomainES();
-		species.setId(10L);
-		when(taxonRankESService.findByName_en("Species")).thenReturn(species);
 
 		WormsListDTO result = service.findAphiaRecordsByScientificName("Leptochelia dubia");
 

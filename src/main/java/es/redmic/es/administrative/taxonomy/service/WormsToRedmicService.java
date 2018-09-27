@@ -1,5 +1,6 @@
 package es.redmic.es.administrative.taxonomy.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -53,6 +54,8 @@ public class WormsToRedmicService {
 
 	private List<RankDTO> ranks;
 
+	private List<String> speciesRankLabel = new ArrayList<>();
+
 	private final Logger LOGGER = LoggerFactory.getLogger(WormsToRedmicService.class);
 
 	public WormsToRedmicService() {
@@ -62,6 +65,12 @@ public class WormsToRedmicService {
 	@PostConstruct
 	private void init() {
 		ranks = rankESService.getRankClassification();
+
+		for (RankDTO rank : ranks) {
+			if (rank.getId() >= 10) {
+				speciesRankLabel.add(rank.getName_en());
+			}
+		}
 	}
 
 	/*
@@ -375,9 +384,7 @@ public class WormsToRedmicService {
 
 		for (WormsDTO dto : wormsList) {
 
-			RankDTO rank = orikaMapper.getMapperFacade().map(rankESService.findByName_en(dto.getRank()), RankDTO.class);
-
-			if (rank.getId() >= 10) {
+			if (speciesRankLabel.contains(dto.getRank())) {
 				result.add(dto);
 			}
 		}
