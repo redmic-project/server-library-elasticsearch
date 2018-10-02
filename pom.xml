@@ -1,16 +1,49 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<parent>
-		<groupId>es.redmic.lib</groupId>
-		<artifactId>libs</artifactId>
-		<version>0.6.0</version>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.0.0.RELEASE</version>
+		<relativePath />
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
+	<groupId>es.redmic.lib</groupId>
 	<artifactId>elasticsearch</artifactId>
 	<packaging>jar</packaging>
+	<version>0.6.0</version>
 	<name>ElasticSearch</name>
+	<description>ElasticSearch library </description>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<java.version>1.8</java.version>
+
+		<!-- REDMIC -->
+		<redmic.models.version>0.6.0</redmic.models.version>
+		<redmic.exceptions.version>0.6.0</redmic.exceptions.version>
+		<redmic.utils.version>0.6.0</redmic.utils.version>
+
+		<!-- OTHERS -->
+		<elasticsearch.x-pack.version>5.6.1</elasticsearch.x-pack.version>
+		<spatial4j.version>0.6</spatial4j.version>
+		<ma.glasnost.orika.core.version>1.4.6</ma.glasnost.orika.core.version>
+		<commons-io.version>2.6</commons-io.version>
+
+		<jsonassert.version>1.5.0</jsonassert.version>
+		<powermock.version>1.7.3</powermock.version>
+
+		<!-- Version plugins -->
+		<jacoco.version>0.8.1</jacoco.version>
+
+		<!-- Environment variables -->
+		<env.MAVEN_REPO_URL>https://artifactory.redmic.net/artifactory</env.MAVEN_REPO_URL>
+	</properties>
 
 	<dependencies>
 
@@ -18,21 +51,21 @@
 		<dependency>
 			<groupId>es.redmic.lib</groupId>
 			<artifactId>models</artifactId>
-			<version>${redmic.version}</version>
+			<version>${redmic.models.version}</version>
 			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>es.redmic.lib</groupId>
 			<artifactId>exceptions</artifactId>
-			<version>${redmic.version}</version>
+			<version>${redmic.exceptions.version}</version>
 			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>es.redmic.lib</groupId>
 			<artifactId>utils</artifactId>
-			<version>${redmic.version}</version>
+			<version>${redmic.utils.version}</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -47,28 +80,40 @@
 
 		<dependency>
 			<groupId>org.elasticsearch.client</groupId>
-			<artifactId>transport</artifactId>
-			<version>${elasticsearch.version}</version>
+			<artifactId>x-pack-transport</artifactId>
+			<version>${elasticsearch.x-pack.version}</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.locationtech.spatial4j/spatial4j -->
 		<dependency>
 			<groupId>org.locationtech.spatial4j</groupId>
 			<artifactId>spatial4j</artifactId>
-			<version>0.6</version>
+			<version>${spatial4j.version}</version>
 		</dependency>
 		<!-- De momento usa versión vieja por problemas con mapper de geo -->
 		<dependency>
 			<groupId>ma.glasnost.orika</groupId>
 			<artifactId>orika-core</artifactId>
-			<version>1.4.6</version>
+			<version>${ma.glasnost.orika.core.version}</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>${commons-io.version}</version>
+		</dependency>
+		
+		<!-- Logs -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<scope>provided</scope>
 		</dependency>
 
 		<!-- tests -->
@@ -99,5 +144,41 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
+	<distributionManagement>
+		<repository>
+			<id>central</id>
+			<name>redmic-releases</name>
+			<url>${env.MAVEN_REPO_URL}/libs-release-local</url>
+		</repository>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<name>redmic-snapshots</name>
+			<url>${env.MAVEN_REPO_URL}/libs-snapshot-local</url>
+			<uniqueVersion>false</uniqueVersion>
+		</snapshotRepository>
+	</distributionManagement>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${jacoco.version}</version>
+				<executions>
+					<execution>
+						<id>pre-unit-test</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>post-unit-test</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>

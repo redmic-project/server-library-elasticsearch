@@ -17,6 +17,11 @@ public class DomainESRepository<TModel extends BaseES<Long>> extends RWDataESRep
 		return findBy(QueryBuilders.boolQuery().filter(QueryBuilders.termQuery("name", name)));
 	}
 
+	public DataSearchWrapper<?> findByName_en(String name) {
+
+		return findBy(QueryBuilders.boolQuery().filter(QueryBuilders.termQuery("name_en", name)));
+	}
+
 	@Override
 	protected String[] getDefaultSearchFields() {
 		return new String[] { "name", "name.suggest" };

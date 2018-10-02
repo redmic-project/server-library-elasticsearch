@@ -28,6 +28,17 @@ public abstract class DomainESService<TModel extends DomainES, TDTO extends DTO>
 	}
 
 	@SuppressWarnings("unchecked")
+	public DomainES findByName_en(String name) {
+
+		DataSearchWrapper<DomainES> registers = (DataSearchWrapper<DomainES>) repository.findByName_en(name);
+		List<DomainES> sourceList = registers.getSourceList();
+		if (sourceList.size() == 0)
+			return null;
+
+		return sourceList.get(0);
+	}
+
+	@SuppressWarnings("unchecked")
 	@Override
 	public TModel mapper(TDTO dtoToIndex) {
 		return (TModel) orikaMapper.getMapperFacade().map(dtoToIndex, DomainES.class);

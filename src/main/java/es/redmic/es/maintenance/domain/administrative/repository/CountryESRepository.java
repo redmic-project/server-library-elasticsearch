@@ -13,4 +13,19 @@ public class CountryESRepository extends DomainESRepository<Country> {
 	public CountryESRepository() {
 		super(INDEX, TYPE);
 	}
+	
+	@Override
+	protected String[] getDefaultSearchFields() {
+		return new String[] { "name", "name.suggest", "code", "code.suggest" };
+	}
+
+	@Override
+	protected String[] getDefaultHighlightFields() {
+		return new String[] { "name", "name.suggest", "code", "code.suggest" };
+	}
+
+	@Override
+	protected String[] getDefaultSuggestFields() {
+		return new String[] { "name", "code" };
+	}
 }

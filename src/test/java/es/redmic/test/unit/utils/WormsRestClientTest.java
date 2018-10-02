@@ -11,6 +11,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.joda.time.DateTime;
@@ -84,10 +85,13 @@ public class WormsRestClientTest extends JsonToBeanTestUtil {
 
 		Whitebox.setInternalState(service, "ranks", getRanks());
 
+		Whitebox.setInternalState(service, "speciesRankLabel",
+				new ArrayList<String>(Arrays.asList("Species", "Subspecies", "Variety")));
+
 		DomainES kingdom = new DomainES();
 		kingdom.setName_en("kingdom");
-		when(taxonRankESService.findByName(anyString())).thenReturn(kingdom);
-		when(statusESService.findByName(anyString())).thenReturn(new DomainES());
+		when(taxonRankESService.findByName_en(anyString())).thenReturn(kingdom);
+		when(statusESService.findByName_en(anyString())).thenReturn(new DomainES());
 	}
 
 	@Test

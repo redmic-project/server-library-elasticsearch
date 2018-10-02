@@ -59,8 +59,8 @@ public class WormsMapperTest extends MapperTestUtil {
 		factory.addMapper(mapper);
 
 		DomainES domain = (DomainES) getBean(domainModel, DomainES.class);
-		when(taxonRankESService.findByName(anyString())).thenReturn(domain);
-		when(statusESService.findByName(anyString())).thenReturn(domain);
+		when(taxonRankESService.findByName_en(anyString())).thenReturn(domain);
+		when(statusESService.findByName_en(anyString())).thenReturn(domain);
 	}
 
 	@Test

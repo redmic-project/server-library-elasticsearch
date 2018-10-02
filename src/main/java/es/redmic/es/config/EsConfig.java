@@ -7,14 +7,16 @@ public class EsConfig {
 	private List<String> addresses;
 	private Integer port;
 	private String clusterName;
+	private String xpackSecurityUser;
 	
 	public EsConfig() {
 	}
 	
-	public EsConfig(List<String> addresses, Integer port, String clusterName) {
+	public EsConfig(List<String> addresses, Integer port, String clusterName, String xpackSecurityUser) {
 		this.addresses = addresses;
 		this.port = port;
 		this.clusterName = clusterName;
+		this.xpackSecurityUser = xpackSecurityUser;
 	}
 	
 	public List<String> getAddresses() {
@@ -34,5 +36,11 @@ public class EsConfig {
 	}
 	public void setClusterName(String clusterName) {
 		this.clusterName = clusterName;
+	}
+	public String getXpackSecurityUser() {
+		return xpackSecurityUser;
+	}
+	public void setXpackSecurityUser(String xpackSecurityUser) {
+		this.xpackSecurityUser = xpackSecurityUser;
 	}
 }
