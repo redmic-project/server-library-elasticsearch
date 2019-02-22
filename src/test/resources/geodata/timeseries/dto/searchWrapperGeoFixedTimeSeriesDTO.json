@@ -33,7 +33,8 @@
 					"path": "r.sdsd323sdds_3ed",
 					"leaves": 1,
 					"name": "Meteo Boya OAG Granadilla",
-					"description": "Estacion Meterológica de la Boya del OAG en Granadilla"
+					"description": "Estacion Meterológica de la Boya del OAG en Granadilla",
+					"dashboard": "https://redmic.es/dashboard"
 				},
 				"measurements": [
 					{

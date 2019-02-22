@@ -56,6 +56,7 @@
 						"rotate": 100,
 						"remark": "Remark",
 						"description": "Description",
+						"dashboard": null,
 						"name": "name",
 						"code": "code",
 						"url": "http://webcam.es"
