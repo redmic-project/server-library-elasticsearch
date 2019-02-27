@@ -48,8 +48,8 @@ public abstract class GeoFixedBaseESRepository<TModel extends Feature<GeoDataPro
 
 	/*
 	 * Función que sobrescribe a getTermQuery de RElasticSearchRepository para
-	 * añadir implementación específica para crear una query a apartir de una
-	 * serie de términos obtenidos por el controlador.
+	 * añadir implementación específica para crear una query a apartir de una serie
+	 * de términos obtenidos por el controlador.
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -60,7 +60,7 @@ public abstract class GeoFixedBaseESRepository<TModel extends Feature<GeoDataPro
 			query.must(QueryBuilders.nestedQuery("properties.measurements",
 					QueryBuilders.termsQuery("properties.measurements.parameter.path.hierarchy", ids), ScoreMode.Avg));
 		}
-		return query;
+		return super.getTermQuery(terms, query);
 	}
 
 	@Override
