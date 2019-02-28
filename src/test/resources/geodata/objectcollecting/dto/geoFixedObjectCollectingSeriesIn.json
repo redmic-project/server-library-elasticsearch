@@ -16,7 +16,8 @@
 			"leaves": null,
 			"code": "TGr00",
 			"name": "Meteo Boya OAG Granadilla",
-			"description": "Estacion Meterológica de la Boya del OAG en Granadilla"
+			"description": "Estacion Meterológica de la Boya del OAG en Granadilla",
+			"dashboard": "https://redmic.es/dashboard"
 		},
 		"measurements": [{
 			"dataDefinition": {
