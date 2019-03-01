@@ -13,7 +13,7 @@
 	<groupId>es.redmic.lib</groupId>
 	<artifactId>elasticsearch</artifactId>
 	<packaging>jar</packaging>
-	<version>0.6.0</version>
+	<version>0.6.1</version>
 	<name>ElasticSearch</name>
 	<description>ElasticSearch library </description>
 
@@ -25,7 +25,7 @@
 		<java.version>1.8</java.version>
 
 		<!-- REDMIC -->
-		<redmic.models.version>0.6.0</redmic.models.version>
+		<redmic.models.version>0.6.1</redmic.models.version>
 		<redmic.exceptions.version>0.6.0</redmic.exceptions.version>
 		<redmic.utils.version>0.6.0</redmic.utils.version>
 
