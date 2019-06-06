@@ -48,8 +48,6 @@ import es.redmic.es.administrative.taxonomy.repository.AnimalESRepository;
 import es.redmic.es.administrative.taxonomy.repository.SpeciesESRepository;
 import es.redmic.es.administrative.taxonomy.service.AnimalESService;
 import es.redmic.es.administrative.taxonomy.service.SpeciesESService;
-import es.redmic.es.atlas.repository.LayerESRepository;
-import es.redmic.es.atlas.service.LayerESService;
 import es.redmic.es.data.common.repository.RWDataESRepository;
 import es.redmic.es.geodata.citation.repository.CitationESRepository;
 import es.redmic.es.geodata.citation.service.CitationESService;
@@ -89,8 +87,6 @@ import es.redmic.es.maintenance.domain.administrative.taxonomy.service.TrophicRe
 import es.redmic.es.series.common.repository.RWSeriesESRepository;
 import es.redmic.es.series.objectcollecting.repository.ObjectCollectingSeriesESRepository;
 import es.redmic.es.series.objectcollecting.service.ObjectCollectingSeriesESService;
-import es.redmic.models.es.administrative.model.Activity;
-import es.redmic.models.es.administrative.model.ActivityReferences;
 import es.redmic.models.es.administrative.model.Contact;
 import es.redmic.models.es.administrative.model.ContactCompact;
 import es.redmic.models.es.administrative.taxonomy.model.Animal;
@@ -195,13 +191,6 @@ public class MultiLevelReferencesTest extends ReferencesBaseTest {
 						"properties.measurements.dataDefinition.contactRole.id", 3, true));
 
 		/* Complex domains and metaData nested */
-
-		config.add(new MetaDataReferencesConfig<Activity>().setServiceClass(ActivityESService.class)
-				.setRepositoryClass(ActivityESRepository.class).setModelClass(Activity.class)
-				.addDependence("layerESService", LayerESService.class, LayerESRepository.class,
-						ActivityReferences.class, "activities.id", 1, true)
-				.setDataInPath("/data/administrative/activity/model/activity.json")
-				.setDataInModifiedPath("/data/administrative/activity/model/activityModified.json"));
 
 		config.add(new MetaDataReferencesConfig<Contact>().setServiceClass(ContactESService.class)
 				.setRepositoryClass(ContactESRepository.class).setModelClass(Contact.class)

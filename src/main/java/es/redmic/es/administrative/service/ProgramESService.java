@@ -24,7 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.redmic.es.administrative.repository.ProgramESRepository;
-import es.redmic.es.atlas.service.LayerESService;
 import es.redmic.models.es.administrative.dto.ProgramDTO;
 import es.redmic.models.es.administrative.model.Program;
 import es.redmic.models.es.common.model.ReferencesES;
@@ -33,9 +32,6 @@ import es.redmic.models.es.common.model.ReferencesES;
 public class ProgramESService extends ActivityBaseAbstractESService<Program, ProgramDTO> {
 
 	private String rankId = "1";
-
-	@Autowired
-	private LayerESService layerESService;
 
 	@Autowired
 	public ProgramESService(ProgramESRepository repository) {
@@ -53,13 +49,14 @@ public class ProgramESService extends ActivityBaseAbstractESService<Program, Pro
 	@Override
 	public void postUpdate(ReferencesES<Program> reference) {
 
-		layerESService.updateActivity(reference);
 	}
 
+	@Override
 	public String getRankId() {
 		return rankId;
 	}
 
+	@Override
 	public void setRankId(String rankId) {
 		this.rankId = rankId;
 	}

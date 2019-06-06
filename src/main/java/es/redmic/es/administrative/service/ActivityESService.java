@@ -24,7 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.redmic.es.administrative.repository.ActivityESRepository;
-import es.redmic.es.atlas.service.LayerESService;
 import es.redmic.models.es.administrative.dto.ActivityDTO;
 import es.redmic.models.es.administrative.model.Activity;
 import es.redmic.models.es.common.dto.JSONCollectionDTO;
@@ -38,105 +37,101 @@ import es.redmic.models.es.maintenance.administrative.model.ActivityTypeCompact;
 public class ActivityESService extends ActivityBaseAbstractESService<Activity, ActivityDTO> {
 
 	private String rankId = "3";
-	
-	@Autowired
-	private LayerESService layerESService;
-	
+
 	private ActivityESRepository repository;
-	
-	/*Clase del modelo indexado en la referencia*/
+
+	/* Clase del modelo indexado en la referencia */
 	private static Class<ActivityTypeCompact> activityTypeClassInReference = ActivityTypeCompact.class;
-	/*Path de elastic para buscar por accessibility*/
+	/* Path de elastic para buscar por accessibility */
 	private String activityTypePropertyPath = "activityType.id";
 
-	
 	@Autowired
 	public ActivityESService(ActivityESRepository repository) {
 		super(repository);
 		this.repository = repository;
 	}
-	
+
 	@Override
 	public Activity mapper(ActivityDTO dtoToIndex) {
 		Activity model = super.mapper(dtoToIndex);
-		
+
 		model.setRank(getRank(getRankId()));
 		return model;
 	}
-	
+
 	/**
-	 * Función para modificar las referencias de activityType en activity en caso de ser necesario.
+	 * Función para modificar las referencias de activityType en activity en caso de
+	 * ser necesario.
 	 * 
-	 * @param reference clase que encapsula el modelo de activityType antes y después de ser modificado.
+	 * @param reference
+	 *            clase que encapsula el modelo de activityType antes y después de
+	 *            ser modificado.
 	 */
-	
+
 	public void updateActivityType(ReferencesES<ActivityType> reference) {
-		
+
 		updateReference(reference, activityTypeClassInReference, activityTypePropertyPath);
 	}
-	
-	
+
 	/**
-	 * Función para modificar las referencias de activityBase en su repositorio en caso de ser necesario.
+	 * Función para modificar las referencias de activityBase en su repositorio en
+	 * caso de ser necesario.
 	 * 
-	 * @param reference clase que encapsula el modelo de activityBase antes y después de ser modificado.
+	 * @param reference
+	 *            clase que encapsula el modelo de activityBase antes y después de
+	 *            ser modificado.
 	 */
 
-	public void updateActivityBase(ReferencesES<Activity> reference) {}
+	public void updateActivityBase(ReferencesES<Activity> reference) {
+	}
 
-	
 	@Override
 	public void postUpdate(ReferencesES<Activity> reference) {
 		updateActivityBase(reference);
-		layerESService.updateActivity(reference);
 	}
-	
+
 	public JSONCollectionDTO findBySpecies(DataQueryDTO dto, String speciesId) {
-		
+
 		DataSearchWrapper<Activity> result = repository.findBySpecies(dto, speciesId);
-		return orikaMapper.getMapperFacade().map(result.getHits(), JSONCollectionDTO.class,
-				getMappingContext());
+		return orikaMapper.getMapperFacade().map(result.getHits(), JSONCollectionDTO.class, getMappingContext());
 	}
-	
+
 	public JSONCollectionDTO getActivitiesByProject(String projectId) {
-		
+
 		DataSearchWrapper<Activity> result = repository.findByParent(projectId);
-		return orikaMapper.getMapperFacade().map(result.getHits(), JSONCollectionDTO.class,
-				getMappingContext());
+		return orikaMapper.getMapperFacade().map(result.getHits(), JSONCollectionDTO.class, getMappingContext());
 	}
-	
+
 	public JSONCollectionDTO getActivitiesByContact(DataQueryDTO dto, Long contactId) {
-		
+
 		DataSearchWrapper<Activity> result = repository.findByContacts(dto, contactId);
-		return orikaMapper.getMapperFacade().map(result.getHits(), JSONCollectionDTO.class,
-				getMappingContext());
+		return orikaMapper.getMapperFacade().map(result.getHits(), JSONCollectionDTO.class, getMappingContext());
 	}
-	
+
 	public JSONCollectionDTO getActivitiesByOrganisation(DataQueryDTO dto, Long organisationId) {
-		
+
 		DataSearchWrapper<Activity> result = repository.findByOrganisations(dto, organisationId);
-		return orikaMapper.getMapperFacade().map(result.getHits(), JSONCollectionDTO.class,
-				getMappingContext());
+		return orikaMapper.getMapperFacade().map(result.getHits(), JSONCollectionDTO.class, getMappingContext());
 	}
-	
+
 	public JSONCollectionDTO getActivitiesByDocument(DataQueryDTO dto, Long documentId) {
-		
+
 		DataSearchWrapper<Activity> result = repository.findByDocuments(dto, documentId);
-		return orikaMapper.getMapperFacade().map(result.getHits(), JSONCollectionDTO.class,
-				getMappingContext());
+		return orikaMapper.getMapperFacade().map(result.getHits(), JSONCollectionDTO.class, getMappingContext());
 	}
-	
+
 	public JSONCollectionDTO getActivitiesByPlatform(DataQueryDTO dto, Long platformId) {
-		
+
 		DataSearchWrapper<Activity> result = repository.findByPlatforms(dto, platformId);
-		return orikaMapper.getMapperFacade().map(result.getHits(), JSONCollectionDTO.class,
-				getMappingContext());
+		return orikaMapper.getMapperFacade().map(result.getHits(), JSONCollectionDTO.class, getMappingContext());
 	}
-	
+
+	@Override
 	public String getRankId() {
 		return rankId;
 	}
 
+	@Override
 	public void setRankId(String rankId) {
 		this.rankId = rankId;
 	}
