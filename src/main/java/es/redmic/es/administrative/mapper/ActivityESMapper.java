@@ -9,8 +9,10 @@ import es.redmic.es.maintenance.domain.administrative.service.ActivityRankESServ
 import es.redmic.es.maintenance.domain.administrative.service.ActivityTypeESService;
 import es.redmic.models.es.administrative.dto.ActivityBaseDTO;
 import es.redmic.models.es.administrative.dto.ActivityDTO;
+import es.redmic.models.es.administrative.dto.ActivityResourceDTO;
 import es.redmic.models.es.administrative.model.Activity;
 import es.redmic.models.es.administrative.model.Project;
+import es.redmic.models.es.administrative.model.ActivityResource;
 import es.redmic.models.es.common.dto.DomainDTO;
 import es.redmic.models.es.common.dto.DomainImplDTO;
 import es.redmic.models.es.common.model.DomainES;
@@ -39,6 +41,9 @@ public class ActivityESMapper extends ActivityBaseESMapper<Activity, ActivityDTO
 
 		b.setParent(mapperFacade.map(getParent(a), ActivityBaseDTO.class));
 
+		if (a.getResources() != null)
+			b.setResources(mapperFacade.mapAsList(a.getResources(), ActivityResourceDTO.class));
+
 		super.mapAtoB(a, b, context);
 	}
 
@@ -54,6 +59,9 @@ public class ActivityESMapper extends ActivityBaseESMapper<Activity, ActivityDTO
 				DataMapperUtils.getObjectFactoryContext(activityTypeESService)));
 
 		a.setPath(getPath(b));
+
+		a.setResources(mapperFacade.mapAsList(b.getResources(), ActivityResource.class));
+
 		super.mapBtoA(b, a, context);
 	}
 
