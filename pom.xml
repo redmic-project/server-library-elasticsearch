@@ -13,7 +13,7 @@
 	<groupId>es.redmic.lib</groupId>
 	<artifactId>elasticsearch</artifactId>
 	<packaging>jar</packaging>
-	<version>0.8.0</version>
+	<version>0.8.0-feature-refactoring</version>
 	<name>ElasticSearch</name>
 	<description>ElasticSearch library </description>
 
