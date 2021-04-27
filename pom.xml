@@ -13,7 +13,7 @@
 	<groupId>es.redmic.lib</groupId>
 	<artifactId>elasticsearch</artifactId>
 	<packaging>jar</packaging>
-	<version>0.7.0</version>
+	<version>0.7.0-feature-cleanAtlasComponents</version>
 	<name>ElasticSearch</name>
 	<description>ElasticSearch library </description>
 
