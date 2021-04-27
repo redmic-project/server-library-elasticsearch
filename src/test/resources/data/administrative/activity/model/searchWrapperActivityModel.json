@@ -27,6 +27,12 @@
 					},
 					"code": "VDOC-00697",
 					"endDate": "2014-10-06T09:00:00.000+00:00",
+					"resources": [{
+						"id": 1,
+						"name": "Dataset",
+						"description": "Descarga de dataset en CKAN",
+						"urlResource": "https://ckan.redmic.es"
+					}],
 					"accessibility": {
 						"id": 2,
 						"name": "Libre",
