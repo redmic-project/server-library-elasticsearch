@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>es.redmic</groupId>
 		<artifactId>server-parent</artifactId>
-		<version>0.1.0</version>
+		<version>0.2.0</version>
 		<relativePath />
 	</parent>
 
@@ -19,15 +19,18 @@
 
 	<properties>
 		<!-- REDMIC -->
-		<redmic.models.version>0.6.1-legacy-0.6</redmic.models.version>
-		<redmic.exceptions.version>0.6.0</redmic.exceptions.version>
-		<redmic.utils.version>0.6.0</redmic.utils.version>
+		<redmic.models.version>0.12.0-feature-refactoring</redmic.models.version>
+		<redmic.exceptions.version>0.10.0</redmic.exceptions.version>
+		<redmic.utils.version>0.10.0</redmic.utils.version>
 
 		<!-- OTHERS -->
+		<elasticsearch.version>5.6.16</elasticsearch.version>
 		<elasticsearch.x-pack.version>5.6.1</elasticsearch.x-pack.version>
-		<spatial4j.version>0.6</spatial4j.version>
+		<jts-core.version>1.16.0</jts-core.version>
+		<spatial4j.version>0.7</spatial4j.version>
 		<ma.glasnost.orika.core.version>1.4.6</ma.glasnost.orika.core.version>
 		<commons-io.version>2.6</commons-io.version>
+		<jackson-datatype-jts.version>1.0-2.7</jackson-datatype-jts.version>
 
 		<jsonassert.version>1.5.0</jsonassert.version>
 		<powermock.version>1.7.3</powermock.version>
@@ -72,6 +75,19 @@
 			<version>${elasticsearch.x-pack.version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.locationtech.jts</groupId>
+			<artifactId>jts-core</artifactId>
+			<version>${jts-core.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>xerces</groupId>
+					<artifactId>xercesImpl</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+
 		<!-- https://mvnrepository.com/artifact/org.locationtech.spatial4j/spatial4j -->
 		<dependency>
 			<groupId>org.locationtech.spatial4j</groupId>
@@ -92,6 +108,13 @@
 			<version>${commons-io.version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.graphhopper.external</groupId>
+			<artifactId>jackson-datatype-jts</artifactId>
+			<version>${jackson-datatype-jts.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
 		<!-- Logs -->
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
@@ -105,6 +128,13 @@
 		</dependency>
 
 		<!-- tests -->
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>org.skyscreamer</groupId>
 			<artifactId>jsonassert</artifactId>
