@@ -105,7 +105,7 @@
                                       {
                                         "script" : {
                                           "script" : {
-                                            "file" : "search-by-z-range",
+                                            "id" : "search-by-z-range",
                                             "params" : {
                                               "zMin" : -5000.0,
                                               "zMax" : 5000.0,
@@ -177,7 +177,7 @@
                                       {
                                         "script" : {
                                           "script" : {
-                                            "file" : "search-by-z-range",
+                                            "id" : "search-by-z-range",
                                             "params" : {
                                               "zMin" : -5000.0,
                                               "zMax" : 5000.0,
@@ -273,7 +273,7 @@
                                       {
                                         "script" : {
                                           "script" : {
-                                            "file" : "search-by-z-range",
+                                            "id" : "search-by-z-range",
                                             "params" : {
                                               "zMin" : -5000.0,
                                               "zMax" : 5000.0,
@@ -345,7 +345,7 @@
                                       {
                                         "script" : {
                                           "script" : {
-                                            "file" : "search-by-z-range",
+                                            "id" : "search-by-z-range",
                                             "params" : {
                                               "zMin" : -5000.0,
                                               "zMax" : 5000.0,
@@ -441,7 +441,7 @@
                                       {
                                         "script" : {
                                           "script" : {
-                                            "file" : "search-by-z-range",
+                                            "id" : "search-by-z-range",
                                             "params" : {
                                               "zMin" : -5000.0,
                                               "zMax" : 5000.0,
@@ -513,7 +513,7 @@
                                       {
                                         "script" : {
                                           "script" : {
-                                            "file" : "search-by-z-range",
+                                            "id" : "search-by-z-range",
                                             "params" : {
                                               "zMin" : -5000.0,
                                               "zMax" : 5000.0,
@@ -561,7 +561,7 @@
                             {
                               "script" : {
                                 "script" : {
-                                  "file" : "search-by-z-range",
+                                  "id" : "search-by-z-range",
                                   "params" : {
                                     "zMin" : -5000.0,
                                     "zMax" : 5000.0,
@@ -588,7 +588,7 @@
                             {
                               "script" : {
                                 "script" : {
-                                  "file" : "search-by-z-range",
+                                  "id" : "search-by-z-range",
                                   "params" : {
                                     "zMin" : -5000.0,
                                     "zMax" : 5000.0,
@@ -615,7 +615,7 @@
                             {
                               "script" : {
                                 "script" : {
-                                  "file" : "search-by-z-range",
+                                  "id" : "search-by-z-range",
                                   "params" : {
                                     "zMin" : -5000.0,
                                     "zMax" : 5000.0,
@@ -650,7 +650,7 @@
                             {
                               "script" : {
                                 "script" : {
-                                  "file" : "search-nested-by-z-range",
+                                  "id" : "search-nested-by-z-range",
                                   "params" : {
                                     "zMin" : -5000.0,
                                     "zMax" : 5000.0,
@@ -710,7 +710,7 @@
                                       {
                                         "script" : {
                                           "script" : {
-                                            "file" : "search-by-z-range",
+                                            "id" : "search-by-z-range",
                                             "params" : {
                                               "zMin" : -5000.0,
                                               "zMax" : 5000.0,
@@ -782,7 +782,7 @@
                                       {
                                         "script" : {
                                           "script" : {
-                                            "file" : "search-by-z-range",
+                                            "id" : "search-by-z-range",
                                             "params" : {
                                               "zMin" : -5000.0,
                                               "zMax" : 5000.0,

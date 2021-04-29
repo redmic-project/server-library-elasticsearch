@@ -26,7 +26,7 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.json.JSONException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import es.redmic.es.common.queryFactory.geodata.CitationQueryUtils;
@@ -58,9 +58,6 @@ public class CitationQueryTest extends BaseQueryTest {
 				DataQueryUtils.getHierarchicalQuery(dataQueryDTO, parentId));
 
 		String queryExpected = getExpectedQuery("/queryfactory/geodata/citation/zRangeQuery.json");
-
-		System.out.println(queryExpected);
-		System.out.println(query.toString());
 
 		JSONAssert.assertEquals(queryExpected, query.toString(), false);
 	}
