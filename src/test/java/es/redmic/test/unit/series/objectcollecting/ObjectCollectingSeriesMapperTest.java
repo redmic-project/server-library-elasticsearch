@@ -9,9 +9,9 @@ package es.redmic.test.unit.series.objectcollecting;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,7 +31,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -48,16 +48,16 @@ import es.redmic.test.unit.geodata.common.MapperTestUtil;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ObjectCollectingSeriesMapperTest extends MapperTestUtil {
-	
+
 	@Mock
 	ConfidenceESService confidenceService;
-	
+
 	@Mock
 	ObjectTypeESService objectService;
-	
+
 	@InjectMocks
 	ObjectCollectingESMapper objectMapper;
-	
+
 	@InjectMocks
 	ObjectCollectingSeriesESMapper mapper;
 
@@ -70,25 +70,25 @@ public class ObjectCollectingSeriesMapperTest extends MapperTestUtil {
 			classificationObjectGroup9 = "/geodata/objectcollecting/model/classificationObject9.json",
 			classificationObjectGroup10 = "/geodata/objectcollecting/model/classificationObject10.json",
 			classificationObjectGroup11 = "/geodata/objectcollecting/model/classificationObject11.json";
-	
+
 	@Before
 	public void setupTest() throws IOException {
-		
+
 		factory.addMapper(objectMapper);
 		factory.addMapper(mapper);
-		
-		
+
+
 		DomainES confidence = (DomainES) getBean(confidenceModel, DomainES.class);
-		
+
 		ObjectType objectExpected1 = (ObjectType) getBean(classificationObjectGroup1, ObjectType.class);
 		ObjectType objectExpected2 = (ObjectType) getBean(classificationObjectGroup2, ObjectType.class);
 		ObjectType objectExpected8 = (ObjectType) getBean(classificationObjectGroup8, ObjectType.class);
 		ObjectType objectExpected9 = (ObjectType) getBean(classificationObjectGroup9, ObjectType.class);
 		ObjectType objectExpected10 = (ObjectType) getBean(classificationObjectGroup10, ObjectType.class);
 		ObjectType objectExpected11 = (ObjectType) getBean(classificationObjectGroup11, ObjectType.class);
-		
+
 		when(confidenceService.findById(any(String.class))).thenReturn(confidence);
-		
+
 		when(objectService.findById("1")).thenReturn(objectExpected1);
 		when(objectService.findById("2")).thenReturn(objectExpected2);
 		when(objectService.findById("8")).thenReturn(objectExpected8);
@@ -99,7 +99,7 @@ public class ObjectCollectingSeriesMapperTest extends MapperTestUtil {
 
 	@Test
 	public void mapperDtoToModel() throws JsonParseException, JsonMappingException, IOException, JSONException {
-		
+
 		mapperDtoToModel(dtoInPath, modelOutPath, ObjectCollectingSeriesDTO.class, ObjectCollectingSeries.class);
 	}
 }

@@ -9,9 +9,9 @@ package es.redmic.test.unit.objectFactory;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,7 +33,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import com.bedatadriven.jackson.datatype.jts.JtsModule;
@@ -53,13 +53,13 @@ import ma.glasnost.orika.impl.DefaultMapperFactory;
 import ma.glasnost.orika.metadata.TypeFactory;
 
 /*
- * 
+ *
  * Test de ModelESFactory que es una componente genérica que pasándole un servicio y una clase
  * hace un get a elastic del item y rellena el modelo.
- * 
+ *
  * Se testea un caso específico; rellenar un modelo TaxonValid. Los demás casos son equivalentes por
  * tanto, se dan por testeados.
- * 
+ *
  * */
 @RunWith(MockitoJUnitRunner.class)
 public class ModelESFactoryTest {
@@ -69,7 +69,7 @@ public class ModelESFactoryTest {
 
 	@InjectMocks
 	ModelESFactory objectFactory;
-	
+
 	ObjectMapper jacksonMapper = new ObjectMapper()
 			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false).registerModule(new JtsModule());
 
@@ -87,7 +87,7 @@ public class ModelESFactoryTest {
 		taxon.setScientificName("taxonPrueba");
 
 		when(service.findById(any(String.class))).thenReturn(taxon);
-		
+
 		taxonExpected = factory.getMapperFacade().map(taxon, TaxonValid.class);
 	}
 

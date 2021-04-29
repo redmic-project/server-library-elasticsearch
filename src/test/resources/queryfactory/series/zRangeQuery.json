@@ -30,7 +30,6 @@
               "script" : {
                 "script" : {
                   "file" : "search-by-z-range",
-                  "lang" : "groovy",
                   "params" : {
                     "zMin" : -5000.0,
                     "zMax" : 5000.0,
@@ -41,13 +40,11 @@
               }
             }
           ],
-          "disable_coord" : false,
           "adjust_pure_negative" : true,
           "boost" : 1.0
         }
       }
     ],
-    "disable_coord" : false,
     "adjust_pure_negative" : true,
     "boost" : 1.0
   }

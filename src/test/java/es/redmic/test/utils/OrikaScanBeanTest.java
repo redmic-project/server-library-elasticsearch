@@ -9,9 +9,9 @@ package es.redmic.test.utils;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,14 +21,15 @@ package es.redmic.test.utils;
  */
 
 import org.joda.time.DateTime;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
 
 import es.redmic.es.common.objectFactory.ModelESFactory;
 import es.redmic.es.config.OrikaScanBeanESItfc;
@@ -49,12 +50,12 @@ import ma.glasnost.orika.metadata.TypeFactory;
 
 /**
  * A bean mapper designed for Spring suitable for dependency injection.
- * 
+ *
  * Provides an implementation of {@link MapperFacade} which can be injected. In
  * addition it is "Spring aware" in that it can autodiscover any implementations
  * of {@link Mapper} or {@link Converter} that are managed beans within it's
  * parent {@link ApplicationContext}.
- * 
+ *
  * @author Ken Blair
  */
 @Component
@@ -104,12 +105,20 @@ public class OrikaScanBeanTest extends ConfigurableMapper implements OrikaScanBe
 		factory.registerObjectFactory(new GeometryESFactory<MultiLineString>(),
 				TypeFactory.<MultiLineString>valueOf(MultiLineString.class));
 
+		factory.classMap(Geometry.class, Geometry.class)
+				.customize(new CustomMapper<Geometry, Geometry>() {
+				}).register();
+
+		factory.registerObjectFactory(new GeometryESFactory<Geometry>(),
+				TypeFactory.<Geometry>valueOf(Geometry.class));
+
 		factory.getConverterFactory().registerConverter(new PassThroughConverter(DateTime.class));
 		factory.getConverterFactory().registerConverter(new PassThroughConverter(Point.class));
 		factory.getConverterFactory().registerConverter(new PassThroughConverter(LineString.class));
 		factory.getConverterFactory().registerConverter(new PassThroughConverter(Polygon.class));
 		factory.getConverterFactory().registerConverter(new PassThroughConverter(MultiPolygon.class));
 		factory.getConverterFactory().registerConverter(new PassThroughConverter(MultiLineString.class));
+		factory.getConverterFactory().registerConverter(new PassThroughConverter(Geometry.class));
 	}
 
 	public <T> void addObjectFactory(ObjectFactory<T> objectFactory, Type<T> targetType) {
