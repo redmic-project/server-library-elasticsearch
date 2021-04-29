@@ -9,9 +9,9 @@ package es.redmic.es.geodata.citation.repository;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,10 +27,9 @@ import java.util.Map;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.locationtech.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
-
-import com.vividsolutions.jts.geom.Point;
 
 import es.redmic.es.common.queryFactory.geodata.CitationQueryUtils;
 import es.redmic.es.common.queryFactory.geodata.DataQueryUtils;
@@ -97,21 +96,21 @@ public class CitationESRepository extends GeoPresenceESRepository<GeoPointData> 
 
 	@Override
 	protected String[] getDefaultSearchFields() {
-		return new String[] { 
-				"properties.collect.taxon.scientificName", 
-				"properties.collect.taxon.scientificName.suggest", 
+		return new String[] {
+				"properties.collect.taxon.scientificName",
+				"properties.collect.taxon.scientificName.suggest",
 				"properties.collect.taxon.authorship",
 				"properties.collect.taxon.authorship.suggest",
 				"properties.collect.taxon.commonName",
 				"properties.collect.taxon.commonName.suggest",
-				
-				"properties.collect.taxon.validAs.scientificName", 
-				"properties.collect.taxon.validAs.scientificName.suggest", 
+
+				"properties.collect.taxon.validAs.scientificName",
+				"properties.collect.taxon.validAs.scientificName.suggest",
 				"properties.collect.taxon.validAs.authorship",
 				"properties.collect.taxon.validAs.authorship.suggest",
 				"properties.collect.taxon.validAs.commonName",
 				"properties.collect.taxon.validAs.commonName.suggest",
-				
+
 				"properties.collect.taxon.missidentification.scientificName",
 				"properties.collect.taxon.missidentification.scientificName.suggest",
 				"properties.collect.taxon.misidentification.authorship",
@@ -123,7 +122,7 @@ public class CitationESRepository extends GeoPresenceESRepository<GeoPointData> 
 
 	@Override
 	protected String[] getDefaultHighlightFields() {
-		return new String[] { 
+		return new String[] {
 				"properties.collect.taxon.scientificName.suggest",
 				"properties.collect.taxon.authorship.suggest",
 				"properties.collect.taxon.commonName.suggest"
@@ -132,15 +131,15 @@ public class CitationESRepository extends GeoPresenceESRepository<GeoPointData> 
 
 	@Override
 	protected String[] getDefaultSuggestFields() {
-		return new String[] { 
+		return new String[] {
 				"properties.collect.taxon.scientificName",
 				"properties.collect.taxon.authorship",
 				"properties.collect.taxon.commonName",
-				
+
 				"properties.collect.taxon.validAs.scientificName",
 				"properties.collect.taxon.validAs.authorship",
 				"properties.collect.taxon.validAs.commonName",
-				
+
 				"properties.collect.taxon.missidentification.scientificName",
 				"properties.collect.taxon.misidentification.authorship",
 				"properties.collect.taxon.misidentification.commonName"

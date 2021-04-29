@@ -9,9 +9,9 @@ package es.redmic.es.geodata.common.repository;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,21 +25,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
-import org.apache.commons.lang.StringUtils;
-import org.elasticsearch.action.delete.DeleteResponse;
+import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.index.IndexRequest;
-import org.elasticsearch.action.index.IndexResponse;
-import org.elasticsearch.action.support.WriteRequest.RefreshPolicy;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.action.update.UpdateResponse;
-import org.elasticsearch.rest.RestStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import es.redmic.es.common.utils.ElasticPersistenceUtils;
-import es.redmic.exception.elasticsearch.ESIndexException;
-import es.redmic.exception.elasticsearch.ESUpdateException;
 import es.redmic.models.es.common.model.ReferencesES;
 import es.redmic.models.es.common.utils.HierarchicalUtils;
 import es.redmic.models.es.geojson.common.model.Feature;
@@ -50,50 +43,30 @@ public abstract class RWGeoDataESRepository<TModel extends Feature<?, ?>> extend
 	@Autowired
 	ElasticPersistenceUtils<TModel> elasticPersistenceUtils;
 
-	public RWGeoDataESRepository(String[] index, String[] type) {
+	protected RWGeoDataESRepository(String[] index, String type) {
 		super(index, type);
 	}
 
 	public TModel save(TModel modelToIndex) {
 
-		String parentId = modelToIndex.get_parentId();
-
-		// @formatter:off
-
-		IndexResponse result = ESProvider.getClient().prepareIndex(getIndex()[0], getType()[0])
-				.setSource(convertTModelToSource(modelToIndex)).setId(modelToIndex.getUuid()).setParent(parentId)
-				.setRefreshPolicy(RefreshPolicy.IMMEDIATE).execute().actionGet();
-
-		// @formatter:on
-
-		if (!result.status().equals(RestStatus.CREATED)) {
-
-			LOGGER.debug("Error indexando en " + getIndex()[0] + " " + getType()[0]);
-			throw new ESIndexException();
-		}
-
-		return modelToIndex;
+		return elasticPersistenceUtils.save(getIndex()[0], getType(), modelToIndex, modelToIndex.getUuid(), modelToIndex.get_parentId());
 	}
 
 	public List<TModel> save(List<TModel> modelToIndexList) {
 
-		List<IndexRequest> indexRequestList = new ArrayList<IndexRequest>();
+		List<IndexRequest> indexRequestList = new ArrayList<>();
 
 		for (TModel modelToIndex : modelToIndexList) {
 
 			String parentId = modelToIndex.get_parentId();
 
-			IndexRequest indexRequest = new IndexRequest();
-			indexRequest.index(getIndex()[0]);
-			indexRequest.type(getType()[0]);
-			indexRequest.source(convertTModelToSource(modelToIndex));
-			indexRequest.id(modelToIndex.getUuid());
-			indexRequest.parent(parentId);
+			IndexRequest indexRequest = elasticPersistenceUtils.getIndexRequest(
+				getIndex(modelToIndex), getType(), modelToIndex, modelToIndex.getUuid(), parentId);
 			indexRequestList.add(indexRequest);
 		}
 
-		if (indexRequestList.size() == 0)
-			return null;
+		if (indexRequestList.isEmpty())
+			return new ArrayList<>();
 
 		elasticPersistenceUtils.indexByBulk(indexRequestList);
 
@@ -102,40 +75,19 @@ public abstract class RWGeoDataESRepository<TModel extends Feature<?, ?>> extend
 
 	public TModel update(TModel modelToIndex) {
 
-		UpdateRequest updateRequest = new UpdateRequest();
-		updateRequest.setRefreshPolicy(RefreshPolicy.IMMEDIATE);
-		updateRequest.index(getIndex()[0]);
-		updateRequest.type(getType()[0]);
-		updateRequest.id(modelToIndex.getUuid());
-		updateRequest.parent(modelToIndex.get_parentId());
-		updateRequest.doc(convertTModelToSource(modelToIndex));
-		updateRequest.fetchSource(true);
-
-		UpdateResponse result;
-		try {
-			result = ESProvider.getClient().update(updateRequest).get();
-		} catch (InterruptedException | ExecutionException e) {
-			throw new ESUpdateException(e);
-		}
-		return objectMapper.convertValue(result.getGetResult().getSource(), typeOfTModel);
+		return elasticPersistenceUtils.update(
+			getIndex(modelToIndex), getType(), modelToIndex, modelToIndex.getUuid(), modelToIndex.get_parentId(), typeOfTModel);
 	}
 
 	public Boolean delete(String id, String parentId) {
 
-		// @formatter:off
-
-		DeleteResponse result = ESProvider.getClient().prepareDelete(getIndex()[0], getType()[0], id)
-				.setParent(parentId).setRefreshPolicy(RefreshPolicy.IMMEDIATE).execute().actionGet();
-
-		// @formatter:on
-
-		return result.status().equals(RestStatus.OK);
+		return elasticPersistenceUtils.delete(getIndex()[0], getType(), id, parentId);
 	}
 
 	/**
 	 * Función para modificar todas las referencias que tengan id igual al del
 	 * model pasado, vía request simple.
-	 * 
+	 *
 	 * @param model
 	 *            Modelo de la referencia a modificar de tipo map
 	 *            <string,object>.
@@ -146,21 +98,21 @@ public abstract class RWGeoDataESRepository<TModel extends Feature<?, ?>> extend
 
 	public List<ReferencesES<TModel>> multipleUpdateByRequest(Map<String, Object> model, String path) {
 
-		Map<String, Object> fields = new HashMap<String, Object>();
+		Map<String, Object> fields = new HashMap<>();
 
 		String[] pathSplit = path.split("\\.");
 
 		if (pathSplit == null || pathSplit.length == 0)
-			return new ArrayList<ReferencesES<TModel>>();
+			return new ArrayList<>();
 
 		fields.put(pathSplit[0], model);
 
 		List<TModel> oldItems = findWithSpecificReference(path, Long.parseLong(model.get("id").toString()));
 
-		if (oldItems == null || oldItems.size() <= 0)
-			return new ArrayList<ReferencesES<TModel>>();
+		if (oldItems == null || oldItems.isEmpty())
+			return new ArrayList<>();
 
-		List<UpdateRequest> requestBuilder = new ArrayList<UpdateRequest>();
+		List<UpdateRequest> requestBuilder = new ArrayList<>();
 
 		for (int i = 0; i < oldItems.size(); i++) {
 			requestBuilder.addAll(elasticPersistenceUtils.getUpdateRequest(getIndex(), getType(),
@@ -173,7 +125,7 @@ public abstract class RWGeoDataESRepository<TModel extends Feature<?, ?>> extend
 	/**
 	 * Función para modificar todas las referencias que tengan id igual al del
 	 * model pasado, vía script.
-	 * 
+	 *
 	 * @param model
 	 *            Modelo de la referencia a modificar de tipo map
 	 *            <string,object>.
@@ -193,7 +145,7 @@ public abstract class RWGeoDataESRepository<TModel extends Feature<?, ?>> extend
 	/**
 	 * Función para modificar todas las referencias que tengan id igual al del
 	 * model pasado, vía script.
-	 * 
+	 *
 	 * @param model
 	 *            Modelo de la referencia a modificar de tipo map
 	 *            <string,object>.
@@ -211,14 +163,14 @@ public abstract class RWGeoDataESRepository<TModel extends Feature<?, ?>> extend
 	public List<ReferencesES<TModel>> multipleUpdateByScript(Map<String, Object> model, String path, int nestingDepth,
 			Boolean nestedProperty) {
 
-		Map<String, Object> fields = new HashMap<String, Object>();
+		Map<String, Object> fields = new HashMap<>();
 		String[] pathSplit = path.split("\\.");
 		fields.put("item", model);
 
 		String script;
 
 		List<TModel> oldItems;
-		if (!nestedProperty) {
+		if (Boolean.FALSE.equals(nestedProperty)) {
 			oldItems = findWithSpecificReference(path, Long.parseLong(model.get("id").toString()));
 			fields.put("propertyPath", StringUtils.join(Arrays.copyOf(pathSplit, pathSplit.length - 1), "."));
 			script = "update-property";
@@ -230,10 +182,10 @@ public abstract class RWGeoDataESRepository<TModel extends Feature<?, ?>> extend
 			fields.put("nestedPath", fieldProperty);
 			script = "update-nested";
 		}
-		if (oldItems == null || oldItems.size() <= 0)
-			return new ArrayList<ReferencesES<TModel>>();
+		if (oldItems == null || oldItems.isEmpty())
+			return new ArrayList<>();
 
-		List<UpdateRequest> requestBuilder = new ArrayList<UpdateRequest>();
+		List<UpdateRequest> requestBuilder = new ArrayList<>();
 
 		for (int i = 0; i < oldItems.size(); i++) {
 			requestBuilder.addAll(elasticPersistenceUtils.getUpdateScript(getIndex(), getType(),
@@ -246,7 +198,7 @@ public abstract class RWGeoDataESRepository<TModel extends Feature<?, ?>> extend
 	/**
 	 * Función para eliminar todas las referencias que tengan id igual al
 	 * pasado, vía script.
-	 * 
+	 *
 	 * @param id
 	 *            identificador de la referencia.
 	 * @param path
@@ -262,20 +214,20 @@ public abstract class RWGeoDataESRepository<TModel extends Feature<?, ?>> extend
 	public List<ReferencesES<TModel>> multipleDeleteByScript(String id, String path, String script,
 			Boolean isNestedProperty) {
 
-		Map<String, Object> fields = new HashMap<String, Object>();
+		Map<String, Object> fields = new HashMap<>();
 		fields.put("item", id);
 		String fieldProperty = HierarchicalUtils.getParentPath(path);
 
 		List<TModel> oldItems;
-		if (!isNestedProperty)
+		if (Boolean.FALSE.equals(isNestedProperty))
 			oldItems = findWithSpecificReference(path, Long.parseLong(id));
 		else
 			oldItems = findWithNestedReference(fieldProperty, path, Long.parseLong(id));
 
-		if (oldItems == null || oldItems.size() <= 0)
-			return new ArrayList<ReferencesES<TModel>>();
+		if (oldItems == null || oldItems.isEmpty())
+			return new ArrayList<>();
 
-		List<UpdateRequest> requestBuilder = new ArrayList<UpdateRequest>();
+		List<UpdateRequest> requestBuilder = new ArrayList<>();
 
 		for (int i = 0; i < oldItems.size(); i++) {
 			requestBuilder.addAll(elasticPersistenceUtils.getUpdateScript(getIndex(), getType(),
@@ -289,7 +241,7 @@ public abstract class RWGeoDataESRepository<TModel extends Feature<?, ?>> extend
 	 * Función que dado una lista de request y una lista de items originales,
 	 * ejecuta los request vía bulk y retorna una lista de referencias, es
 	 * decir, lista de items antes y despues de ser modificados.
-	 * 
+	 *
 	 * @param requestBuilder
 	 *            Lista de request a ejecutar.
 	 * @param oldItems
@@ -299,11 +251,11 @@ public abstract class RWGeoDataESRepository<TModel extends Feature<?, ?>> extend
 
 	public List<ReferencesES<TModel>> multipleUpdate(List<UpdateRequest> requestBuilder, List<TModel> oldItems) {
 
-		if (requestBuilder.size() > 0) {
-			List<ReferencesES<TModel>> results = new ArrayList<ReferencesES<TModel>>();
+		if (!requestBuilder.isEmpty()) {
+			List<ReferencesES<TModel>> results = new ArrayList<>();
 			List<UpdateResponse> updates = elasticPersistenceUtils.updateByBulk(requestBuilder);
 			for (int i = 0; i < updates.size(); i++) {
-				ReferencesES<TModel> references = new ReferencesES<TModel>(oldItems.get(i),
+				ReferencesES<TModel> references = new ReferencesES<>(oldItems.get(i),
 						objectMapper.convertValue(updates.get(i).getGetResult().getSource(), typeOfTModel));
 				results.add(references);
 			}

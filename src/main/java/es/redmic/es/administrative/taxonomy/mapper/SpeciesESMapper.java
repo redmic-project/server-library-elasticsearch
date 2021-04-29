@@ -9,9 +9,9 @@ package es.redmic.es.administrative.taxonomy.mapper;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,7 +23,7 @@ package es.redmic.es.administrative.taxonomy.mapper;
 import java.util.Arrays;
 import java.util.HashSet;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -104,33 +104,33 @@ public class SpeciesESMapper extends TaxonBaseESMapper<Species, SpeciesDTO> {
 			b.setEcology(mapperFacade.map(a.getPeculiarity().getEcology(), EcologyDTO.class));
 		if (a.getPeculiarity().getEndemicity() != null)
 			b.setEndemicity(mapperFacade.map(a.getPeculiarity().getEndemicity(), EndemicityDTO.class));
-		if (a.getPeculiarity().getEuProtection() != null)	
+		if (a.getPeculiarity().getEuProtection() != null)
 			b.setEuProtection(mapperFacade.map(a.getPeculiarity().getEuProtection(), EUProtectionDTO.class));
-		if (a.getPeculiarity().getInterest() != null)	
+		if (a.getPeculiarity().getInterest() != null)
 			b.setInterest(mapperFacade.map(a.getPeculiarity().getInterest(), InterestDTO.class));
-		if (a.getPeculiarity().getOrigin() != null)	
+		if (a.getPeculiarity().getOrigin() != null)
 			b.setOrigin(mapperFacade.map(a.getPeculiarity().getOrigin(), OriginDTO.class));
-		if (a.getPeculiarity().getPermanence() != null)	
+		if (a.getPeculiarity().getPermanence() != null)
 			b.setPermanence(mapperFacade.map(a.getPeculiarity().getPermanence(), PermanenceDTO.class));
-		if (a.getPeculiarity().getSpainProtection() != null)	
+		if (a.getPeculiarity().getSpainProtection() != null)
 			b.setSpainProtection(mapperFacade.map(a.getPeculiarity().getSpainProtection(), SpainProtectionDTO.class));
-		if (a.getPeculiarity().getTrophicRegime() != null)	
+		if (a.getPeculiarity().getTrophicRegime() != null)
 			b.setTrophicRegime(mapperFacade.map(a.getPeculiarity().getTrophicRegime(), TrophicRegimeDTO.class));
-		
+
 		if (a.getPeculiarity().getPopularNames() != null)
 			b.setPopularNames(StringUtils.join(a.getPeculiarity().getPopularNames(), ','));
 	}
 
 	@Override
 	public void mapBtoA(SpeciesDTO b, Species a, MappingContext context) {
-		
+
 		super.mapBtoA(b, a, context);
 		Peculiarity peculiarity = new Peculiarity();
 
 		if (b.getCanaryCatalogue() != null)
 			peculiarity.setCanaryCatalogue(mapperFacade.map(mapperFacade.newObject(b.getCanaryCatalogue(), DataMapperUtils.getBaseType(),
 					DataMapperUtils.getObjectFactoryContext(documentService)), DocumentCompact.class));
-		
+
 		if (b.getEuDirective() != null)
 			peculiarity.setEuDirective(mapperFacade.map(mapperFacade.newObject(b.getEuDirective(), DataMapperUtils.getBaseType(),
 					DataMapperUtils.getObjectFactoryContext(documentService)), DocumentCompact.class));
@@ -138,7 +138,7 @@ public class SpeciesESMapper extends TaxonBaseESMapper<Species, SpeciesDTO> {
 		if (b.getSpainCatalogue() != null)
 			peculiarity.setSpainCatalogue(mapperFacade.map(mapperFacade.newObject(b.getSpainCatalogue(), DataMapperUtils.getBaseType(),
 					DataMapperUtils.getObjectFactoryContext(documentService)), DocumentCompact.class));
-		
+
 		if (b.getCanaryProtection() != null)
 			peculiarity.setCanaryProtection((DomainES) mapperFacade.newObject(b.getCanaryProtection(), DataMapperUtils.getBaseType(),
 					DataMapperUtils.getObjectFactoryContext(canaryProtectionService)));
@@ -148,31 +148,31 @@ public class SpeciesESMapper extends TaxonBaseESMapper<Species, SpeciesDTO> {
 		if (b.getEndemicity() != null)
 			peculiarity.setEndemicity((DomainES) mapperFacade.newObject(b.getEndemicity(), DataMapperUtils.getBaseType(),
 					DataMapperUtils.getObjectFactoryContext(endemicityService)));
-		if (b.getEuProtection() != null)	
+		if (b.getEuProtection() != null)
 			peculiarity.setEuProtection((DomainES) mapperFacade.newObject(b.getEuProtection(), DataMapperUtils.getBaseType(),
 					DataMapperUtils.getObjectFactoryContext(euProtectionService)));
-		if (b.getInterest() != null)	
+		if (b.getInterest() != null)
 			peculiarity.setInterest((DomainES) mapperFacade.newObject(b.getInterest(), DataMapperUtils.getBaseType(),
 					DataMapperUtils.getObjectFactoryContext(interestService)));
-		if (b.getOrigin() != null)	
+		if (b.getOrigin() != null)
 			peculiarity.setOrigin((DomainES) mapperFacade.newObject(b.getOrigin(), DataMapperUtils.getBaseType(),
 					DataMapperUtils.getObjectFactoryContext(originService)));
-		if (b.getPermanence() != null)	
+		if (b.getPermanence() != null)
 			peculiarity.setPermanence((DomainES) mapperFacade.newObject(b.getPermanence(), DataMapperUtils.getBaseType(),
 					DataMapperUtils.getObjectFactoryContext(permanenceService)));
-		if (b.getSpainProtection() != null)	
+		if (b.getSpainProtection() != null)
 			peculiarity.setSpainProtection((DomainES) mapperFacade.newObject(b.getSpainProtection(), DataMapperUtils.getBaseType(),
 					DataMapperUtils.getObjectFactoryContext(spainProtectionService)));
-		if (b.getTrophicRegime() != null)	
+		if (b.getTrophicRegime() != null)
 			peculiarity.setTrophicRegime((DomainES) mapperFacade.newObject(b.getTrophicRegime(), DataMapperUtils.getBaseType(),
 					DataMapperUtils.getObjectFactoryContext(trophicRegimeESService)));
-		
+
 		if (b.getPopularNames() != null) {
 			String[] popularNamesSplit = b.getPopularNames().split(",");
 			HashSet<String> sourcePopularNames = new HashSet<String>(Arrays.asList(popularNamesSplit));
 			peculiarity.setPopularNames(sourcePopularNames);
 		}
-			
+
 		a.setPeculiarity(peculiarity);
 	}
 }

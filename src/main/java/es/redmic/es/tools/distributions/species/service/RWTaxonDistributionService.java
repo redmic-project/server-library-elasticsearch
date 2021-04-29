@@ -9,9 +9,9 @@ package es.redmic.es.tools.distributions.species.service;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,11 +23,10 @@ package es.redmic.es.tools.distributions.species.service;
 import java.util.Arrays;
 import java.util.List;
 
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Point;
 
 import es.redmic.es.geodata.common.service.GridServiceItfc;
 import es.redmic.es.tools.distributions.species.repository.RWTaxonDistributionRepository;
@@ -87,7 +86,7 @@ public class RWTaxonDistributionService extends RTaxonDistributionService {
 	/**
 	 * Función para modificar las referencias de citation en su repositorio en
 	 * caso de ser necesario.
-	 * 
+	 *
 	 * @param reference
 	 *            clase que encapsula el modelo de citation antes y después de
 	 *            ser modificado.
@@ -117,7 +116,7 @@ public class RWTaxonDistributionService extends RTaxonDistributionService {
 	/**
 	 * Función para añadir una referencia de citation en su repositorio en caso
 	 * de ser necesario.
-	 * 
+	 *
 	 * @param register
 	 *            modelo de citation para ser añadido.
 	 */
@@ -135,7 +134,7 @@ public class RWTaxonDistributionService extends RTaxonDistributionService {
 	/**
 	 * Función para eliminar una referencia de citation en su repositorio en
 	 * caso de ser necesario.
-	 * 
+	 *
 	 * @param id
 	 *            identificador de citation para ser eliminado.
 	 */
@@ -149,7 +148,7 @@ public class RWTaxonDistributionService extends RTaxonDistributionService {
 	/**
 	 * Función para modificar las referencias de animalTracking en su
 	 * repositorio en caso de ser necesario.
-	 * 
+	 *
 	 * @param reference
 	 *            clase que encapsula el modelo de animalTracking antes y
 	 *            después de ser modificado.
@@ -202,7 +201,7 @@ public class RWTaxonDistributionService extends RTaxonDistributionService {
 	/**
 	 * Función para añadir una referencia de animalTracking en su repositorio en
 	 * caso de ser necesario.
-	 * 
+	 *
 	 * @param register
 	 *            modelo de animalTracking para ser añadido.
 	 */
@@ -220,7 +219,7 @@ public class RWTaxonDistributionService extends RTaxonDistributionService {
 	/**
 	 * Función para eliminar una referencia de animalTracking en su repositorio
 	 * en caso de ser necesario.
-	 * 
+	 *
 	 * @param id
 	 *            identificador de animalTracking para ser eliminado.
 	 */
@@ -235,7 +234,7 @@ public class RWTaxonDistributionService extends RTaxonDistributionService {
 	 * Función genérica para modificar las referencias de animalTracking |
 	 * citation... en su repositorio en caso de solo cambie campos que no
 	 * afecten al cálculo de las rejillas.
-	 * 
+	 *
 	 * @param id
 	 *            identificador de la referencia.
 	 * @param radius
@@ -276,7 +275,7 @@ public class RWTaxonDistributionService extends RTaxonDistributionService {
 	 * Función genérica para modificar las referencias de animalTracking |
 	 * citation... en su repositorio en caso de que cambie las coordenadas y/o
 	 * el radio.
-	 * 
+	 *
 	 * @param id
 	 *            identificador de la referencia.
 	 * @param radius
@@ -340,7 +339,7 @@ public class RWTaxonDistributionService extends RTaxonDistributionService {
 	/**
 	 * Función para añadir un registro en los repositorios de taxonDistribution
 	 * pasados.
-	 * 
+	 *
 	 * @param distributionModel
 	 *            modelo de distribution para añadir.
 	 * @param repos
@@ -361,7 +360,7 @@ public class RWTaxonDistributionService extends RTaxonDistributionService {
 
 	/**
 	 * Función para añadir un registro en el repositorio de taxonDistribution.
-	 * 
+	 *
 	 * @param distributionModel
 	 *            modelo de distribution para añadir.
 	 * @param repository
@@ -385,7 +384,7 @@ public class RWTaxonDistributionService extends RTaxonDistributionService {
 	/**
 	 * Función para modificar un registro en el repositorio de taxonDistribution
 	 * pasado.
-	 * 
+	 *
 	 * @param id
 	 *            identificador del registro
 	 * @param distributionModel
@@ -403,7 +402,7 @@ public class RWTaxonDistributionService extends RTaxonDistributionService {
 	/**
 	 * Función para eliminar un registro en los repositorios de
 	 * taxonDistribution pasados.
-	 * 
+	 *
 	 * @param id
 	 *            identificador del registro (url base del registro + id)
 	 * @param repos
@@ -419,7 +418,7 @@ public class RWTaxonDistributionService extends RTaxonDistributionService {
 	/**
 	 * Función para eliminar un registro en el repositorio de taxonDistribution
 	 * pasado.
-	 * 
+	 *
 	 * @param id
 	 *            identificador del registro (url base del registro + id)
 	 * @param repos
@@ -434,7 +433,7 @@ public class RWTaxonDistributionService extends RTaxonDistributionService {
 	/**
 	 * Función para comprobar si la referencia a citation | animalTracking es
 	 * necesaria actualizarla (especial para distribution).
-	 * 
+	 *
 	 * @param reference
 	 *            clase que encapsula el modelo de citation antes y después de
 	 *            ser modificado.

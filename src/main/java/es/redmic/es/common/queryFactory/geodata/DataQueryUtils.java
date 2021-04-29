@@ -9,9 +9,9 @@ package es.redmic.es.common.queryFactory.geodata;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.lucene.search.join.ScoreMode;
-import org.elasticsearch.common.geo.builders.ShapeBuilders;
+import org.elasticsearch.common.geo.builders.EnvelopeBuilder;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoShapeQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -36,8 +36,7 @@ import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.join.query.JoinQueryBuilders;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptType;
-
-import com.vividsolutions.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Coordinate;
 
 import es.redmic.es.common.queryFactory.common.BaseQueryUtils;
 import es.redmic.exception.elasticsearch.ESBBoxQueryException;
@@ -50,16 +49,18 @@ import es.redmic.models.es.common.query.dto.ZRangeDTO;
 
 public abstract class DataQueryUtils extends BaseQueryUtils {
 
-	// @formatter:off
-
-	public static final String ID_PROPERTY = "uuid", Z_PROPERTY = "z", VALUE_PROPERTY = "value",
-			SCRIPT_ENGINE = "groovy", SEARCH_BY_Z_RANGE_SCRIPT = "search-by-z-range",
-			SEARCH_NESTED_BY_Z_RANGE_SCRIPT = "search-nested-by-z-range", PARENT = "activity",
-
-			QFLAG_QUERY_FIELD = "qFlags", VFLAG_QUERY_FIELD = "vFlags", ZRANGE_QUERY_FIELD = "z",
-			VALUE_QUERY_FIELD = "value", DATELIMIT_QUERY_FIELD = "dateLimits", PRECISION_QUERY_FIELD = "precision";
-
-	// @formatter:on
+	public static final String ID_PROPERTY = "uuid";
+	public static final String Z_PROPERTY = "z";
+	public static final String VALUE_PROPERTY = "value";
+	public static final String SEARCH_BY_Z_RANGE_SCRIPT = "search-by-z-range";
+	public static final String SEARCH_NESTED_BY_Z_RANGE_SCRIPT = "search-nested-by-z-range";
+	public static final String PARENT = "activity";
+	public static final String QFLAG_QUERY_FIELD = "qFlags";
+	public static final String VFLAG_QUERY_FIELD = "vFlags";
+	public static final String ZRANGE_QUERY_FIELD = "z";
+	public static final String VALUE_QUERY_FIELD = "value";
+	public static final String DATELIMIT_QUERY_FIELD = "dateLimits";
+	public static final String PRECISION_QUERY_FIELD = "precision";
 
 	public static BoolQueryBuilder getQuery(DataQueryDTO queryDTO, QueryBuilder internalQuery,
 			QueryBuilder partialQuery) {
@@ -85,7 +86,7 @@ public abstract class DataQueryUtils extends BaseQueryUtils {
 			Coordinate bottomRight = new Coordinate(bbox.getBottomRightLon(), bbox.getBottomRightLat());
 
 			try {
-				return QueryBuilders.geoShapeQuery("geometry", ShapeBuilders.newEnvelope(topLeft, bottomRight));
+				return QueryBuilders.geoShapeQuery("geometry", new EnvelopeBuilder(topLeft, bottomRight));
 			} catch (IOException e) {
 				throw new ESBBoxQueryException(e);
 			}
@@ -118,7 +119,7 @@ public abstract class DataQueryUtils extends BaseQueryUtils {
 
 		BoolQueryBuilder query = new BoolQueryBuilder();
 		query.must(QueryBuilders.existsQuery((basePath != null) ? (basePath + "." + property) : property));
-		query.must(QueryBuilders.scriptQuery(new Script(ScriptType.FILE, SCRIPT_ENGINE, scriptName, scriptParams)));
+		query.must(QueryBuilders.scriptQuery(new Script(ScriptType.STORED, null, scriptName, scriptParams)));
 
 		return query;
 	}
@@ -129,7 +130,7 @@ public abstract class DataQueryUtils extends BaseQueryUtils {
 		if (zRange == null)
 			return null;
 
-		Map<String, Object> scriptParams = new HashMap<String, Object>();
+		Map<String, Object> scriptParams = new HashMap<>();
 		scriptParams.put("zMin", zRange.getMin());
 		scriptParams.put("zMax", zRange.getMax());
 		scriptParams.put("basePath", basePath);
@@ -138,7 +139,7 @@ public abstract class DataQueryUtils extends BaseQueryUtils {
 		BoolQueryBuilder query = new BoolQueryBuilder();
 		query.must(QueryBuilders.nestedQuery(nestedPath,
 				QueryBuilders.existsQuery(nestedPath + "." + basePath + "." + property), ScoreMode.Avg));
-		query.must(QueryBuilders.scriptQuery(new Script(ScriptType.FILE, SCRIPT_ENGINE, scriptName, scriptParams)));
+		query.must(QueryBuilders.scriptQuery(new Script(ScriptType.STORED, null, scriptName, scriptParams)));
 
 		return query;
 	}
@@ -186,14 +187,10 @@ public abstract class DataQueryUtils extends BaseQueryUtils {
 		return query;
 	}
 
-	@SuppressWarnings("serial")
 	public static BoolQueryBuilder getItemsQuery(String id, String parentId, List<Long> accessibilityIds) {
 
-		ArrayList<String> ids = new ArrayList<String>() {
-			{
-				add(id);
-			}
-		};
+		ArrayList<String> ids = new ArrayList<>();
+		ids.add(id);
 		return getItemsQuery(ids, parentId, accessibilityIds);
 	}
 

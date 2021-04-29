@@ -9,9 +9,9 @@ package es.redmic.es.series.common.repository;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.elasticsearch.action.search.MultiSearchResponse;
-import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -33,6 +32,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInterval;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
@@ -64,10 +64,10 @@ public abstract class RSeriesESRepository<TModel extends SeriesCommon> extends R
 
 	protected int minDocCount = 0;
 
-	public RSeriesESRepository() {
+	protected RSeriesESRepository() {
 	}
 
-	public RSeriesESRepository(String[] index, String[] type) {
+	protected RSeriesESRepository(String[] index, String type) {
 		super(index, type);
 	}
 
@@ -164,11 +164,11 @@ public abstract class RSeriesESRepository<TModel extends SeriesCommon> extends R
 	}
 
 	@Override
-	public List<SeriesSearchWrapper<?>> multiFind(List<SearchRequestBuilder> searchs) {
+	public List<SeriesSearchWrapper<?>> multiFind(List<SearchSourceBuilder> searchs) {
 
-		List<SeriesSearchWrapper<?>> results = new ArrayList<SeriesSearchWrapper<?>>();
+		List<SeriesSearchWrapper<?>> results = new ArrayList<>();
 
-		MultiSearchResponse resultRequest = getMultiFindResponses(searchs);
+		MultiSearchResponse resultRequest = super.getMultiFindResponses(searchs);
 
 		for (MultiSearchResponse.Item item : resultRequest.getResponses()) {
 			SearchResponse response = item.getResponse();
@@ -180,12 +180,12 @@ public abstract class RSeriesESRepository<TModel extends SeriesCommon> extends R
 	/**
 	 * Función que nos devuelve el size de la query El size del exterior tiene
 	 * preferencia, en caso de no exista, se devuelve todo lo almacenado.
-	 * 
+	 *
 	 * @param size.
 	 *            Size enviado desde queryDto
 	 * @param queryDTO.
 	 *            queryDto para obtener parámetros de query enviados por el cliente
-	 * 
+	 *
 	 * @return numero de elementos que devolverá la query
 	 */
 	@Override
@@ -200,7 +200,7 @@ public abstract class RSeriesESRepository<TModel extends SeriesCommon> extends R
 	/**
 	 * Función que nos devuelve una lista de ordenaciones específica para
 	 * timeseries. Por defecto, ordena por id.
-	 * 
+	 *
 	 * @return lista de ordenaciones de elasticsearch
 	 */
 	@Override

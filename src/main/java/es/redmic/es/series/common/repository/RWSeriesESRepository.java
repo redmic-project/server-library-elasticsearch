@@ -9,9 +9,9 @@ package es.redmic.es.series.common.repository;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
@@ -50,21 +50,23 @@ public abstract class RWSeriesESRepository<TModel extends SeriesCommon> extends 
 	@Autowired
 	protected ElasticPersistenceUtils<TModel> elasticPersistenceUtils;
 
-	public RWSeriesESRepository() {
+	protected RWSeriesESRepository() {
 	}
 
-	public RWSeriesESRepository(String[] index, String[] type) {
+	protected RWSeriesESRepository(String[] index, String type) {
 		super(index, type);
 
 	}
 
 	public TModel save(TModel modelToIndex) {
 
-		String parentId = modelToIndex.get_parentId(), grandparentId = modelToIndex.get_grandparentId();
+		/*-String parentId = modelToIndex.get_parentId();
+		String grandparentId = modelToIndex.get_grandparentId();
 
 		// @formatter:off
 
-		IndexResponse result = ESProvider.getClient().prepareIndex(getIndex()[0], getType()[0])
+
+		IndexResponse result = ESProvider.getClient().prepareIndex(getIndex()[0], getType())
 				.setSource(convertTModelToSource(modelToIndex)).setId(modelToIndex.getId().toString())
 				.setParent(parentId).setRouting(grandparentId).setRefreshPolicy(RefreshPolicy.IMMEDIATE).execute()
 				.actionGet();
@@ -75,12 +77,13 @@ public abstract class RWSeriesESRepository<TModel extends SeriesCommon> extends 
 			LOGGER.debug("Error indexando en " + getIndex()[0] + " " + getType()[0]);
 			throw new ESIndexException();
 		}
-		return modelToIndex;
+		return modelToIndex;-*/
+		return null;
 	}
 
 	public List<TModel> save(List<TModel> modelToIndexList) {
 
-		List<IndexRequest> indexRequestList = new ArrayList<IndexRequest>();
+		/*-List<IndexRequest> indexRequestList = new ArrayList<IndexRequest>();
 
 		for (TModel modelToIndex : modelToIndexList) {
 
@@ -101,12 +104,13 @@ public abstract class RWSeriesESRepository<TModel extends SeriesCommon> extends 
 
 		elasticPersistenceUtils.indexByBulk(indexRequestList);
 
-		return modelToIndexList;
+		return modelToIndexList;-*/
+		return null;
 	}
 
 	public TModel update(TModel modelToIndex) {
 
-		String parentId = modelToIndex.get_parentId(), grandparentId = modelToIndex.get_grandparentId();
+		/*-String parentId = modelToIndex.get_parentId(), grandparentId = modelToIndex.get_grandparentId();
 
 		UpdateRequest updateRequest = new UpdateRequest();
 		updateRequest.setRefreshPolicy(RefreshPolicy.IMMEDIATE);
@@ -124,12 +128,13 @@ public abstract class RWSeriesESRepository<TModel extends SeriesCommon> extends 
 		} catch (InterruptedException | ExecutionException e) {
 			throw new ESUpdateException(e);
 		}
-		return objectMapper.convertValue(result.getGetResult().getSource(), typeOfTModel);
+		return objectMapper.convertValue(result.getGetResult().getSource(), typeOfTModel);-*/
+		return null;
 	}
 
 	public Boolean delete(String id, String parentId, String grandparentId) {
 
-		// @formatter:off
+		/*-// @formatter:off
 
 		DeleteResponse result = ESProvider.getClient().prepareDelete(getIndex()[0], getType()[0], id)
 				.setParent(parentId).setRouting(grandparentId).setRefreshPolicy(RefreshPolicy.IMMEDIATE).execute()
@@ -137,13 +142,14 @@ public abstract class RWSeriesESRepository<TModel extends SeriesCommon> extends 
 
 		// @formatter:on
 
-		return result.status().equals(RestStatus.OK);
+		return result.status().equals(RestStatus.OK);-*/
+		return false;
 	}
 
 	/**
 	 * Función para modificar todas las referencias que tengan id igual al del
 	 * model pasado, vía request simple.
-	 * 
+	 *
 	 * @param model
 	 *            Modelo de la referencia a modificar de tipo map
 	 *            <string,object>.
@@ -182,7 +188,7 @@ public abstract class RWSeriesESRepository<TModel extends SeriesCommon> extends 
 	/**
 	 * Función para modificar todas las referencias que tengan id igual al del
 	 * model pasado, vía script.
-	 * 
+	 *
 	 * @param model
 	 *            Modelo de la referencia a modificar de tipo map
 	 *            <string,object>.
@@ -201,7 +207,7 @@ public abstract class RWSeriesESRepository<TModel extends SeriesCommon> extends 
 	/**
 	 * Función para modificar todas las referencias que tengan id igual al del
 	 * model pasado, vía script.
-	 * 
+	 *
 	 * @param model
 	 *            Modelo de la referencia a modificar de tipo map
 	 *            <string,object>.
@@ -212,7 +218,7 @@ public abstract class RWSeriesESRepository<TModel extends SeriesCommon> extends 
 	 *            indica el número de elementos a eliminar del path del term
 	 *            para obtener el path del objecto nested para hacer la
 	 *            consulta.
-	 * 
+	 *
 	 * @param script
 	 *            Nombre del script específico
 	 */
@@ -243,7 +249,7 @@ public abstract class RWSeriesESRepository<TModel extends SeriesCommon> extends 
 	/**
 	 * Función para modificar todas las referencias que tengan id igual al del
 	 * model pasado, vía script.
-	 * 
+	 *
 	 * @param model
 	 *            Modelo de la referencia a modificar de tipo map
 	 *            <string,object>.
@@ -296,7 +302,7 @@ public abstract class RWSeriesESRepository<TModel extends SeriesCommon> extends 
 	/**
 	 * Función para eliminar todas las referencias que tengan id igual al
 	 * pasado, vía script.
-	 * 
+	 *
 	 * @param id
 	 *            identificador de la referencia.
 	 * @param path
@@ -339,7 +345,7 @@ public abstract class RWSeriesESRepository<TModel extends SeriesCommon> extends 
 	 * Función que dado una lista de request y una lista de items originales,
 	 * ejecuta los request vía bulk y retorna una lista de referencias, es
 	 * decir, lista de items antes y despues de ser modificados.
-	 * 
+	 *
 	 * @param requestBuilder
 	 *            Lista de request a ejecutar.
 	 * @param oldItems

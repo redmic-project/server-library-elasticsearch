@@ -9,9 +9,9 @@ package es.redmic.es.common.repository;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,6 +20,8 @@ package es.redmic.es.common.repository;
  * #L%
  */
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,23 +29,32 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.lucene.search.join.ScoreMode;
-import org.elasticsearch.action.admin.cluster.state.ClusterStateResponse;
-import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsRequest;
-import org.elasticsearch.action.get.GetRequestBuilder;
+import org.elasticsearch.action.admin.cluster.health.ClusterHealthRequest;
+import org.elasticsearch.action.admin.cluster.health.ClusterHealthResponse;
+import org.elasticsearch.action.admin.indices.alias.get.GetAliasesRequest;
+import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
+import org.elasticsearch.action.admin.indices.mapping.get.GetMappingsRequest;
+import org.elasticsearch.action.admin.indices.mapping.get.GetMappingsResponse;
+import org.elasticsearch.action.admin.indices.template.put.PutIndexTemplateRequest;
+import org.elasticsearch.action.get.GetRequest;
+
 import org.elasticsearch.action.get.GetResponse;
+import org.elasticsearch.action.get.MultiGetRequest;
 import org.elasticsearch.action.get.MultiGetRequest.Item;
-import org.elasticsearch.action.get.MultiGetRequestBuilder;
 import org.elasticsearch.action.get.MultiGetResponse;
-import org.elasticsearch.action.search.MultiSearchRequestBuilder;
+import org.elasticsearch.action.search.MultiSearchRequest;
 import org.elasticsearch.action.search.MultiSearchResponse;
-import org.elasticsearch.action.search.SearchRequestBuilder;
+import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.cluster.metadata.AliasOrIndex;
-import org.elasticsearch.cluster.metadata.IndexMetaData;
+import org.elasticsearch.action.search.SearchScrollRequest;
+import org.elasticsearch.client.GetAliasesResponse;
+import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.cluster.metadata.MappingMetaData;
 import org.elasticsearch.common.collect.ImmutableOpenMap;
 import org.elasticsearch.common.unit.TimeValue;
+import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MultiMatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -51,6 +62,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.BaseAggregationBuilder;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.FetchSourceContext;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
@@ -60,6 +72,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -68,10 +81,15 @@ import es.redmic.es.common.queryFactory.QueryFactory;
 import es.redmic.es.common.utils.ElasticSearchUtils;
 import es.redmic.es.config.EsClientProvider;
 import es.redmic.es.config.OrikaScanBeanESItfc;
+import es.redmic.exception.common.ExceptionType;
+import es.redmic.exception.common.InternalException;
+import es.redmic.exception.custom.ResourceNotFoundException;
 import es.redmic.exception.data.ItemNotFoundException;
 import es.redmic.exception.databinding.RequestNotValidException;
+import es.redmic.exception.elasticsearch.ESCreateMappingException;
 import es.redmic.exception.elasticsearch.ESNotExistsIndexException;
 import es.redmic.exception.elasticsearch.ESNotExistsTypeException;
+import es.redmic.exception.elasticsearch.ESQueryException;
 import es.redmic.models.es.common.model.BaseES;
 import es.redmic.models.es.common.query.dto.DataQueryDTO;
 import es.redmic.models.es.common.query.dto.MgetDTO;
@@ -83,10 +101,11 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 
 	protected final static Logger LOGGER = LoggerFactory.getLogger(RBaseESRepository.class);
 
-	protected static String SCRIPT_ENGINE = "groovy";
-
 	@Value("${redmic.elasticsearch.check.mappings}")
 	private boolean checkMappings;
+
+	@Value("${redmic.elasticsearch.create.mappings}")
+	private boolean createMappings;
 
 	@Autowired
 	protected EsClientProvider ESProvider;
@@ -94,7 +113,9 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 	private QueryBuilder INTERNAL_QUERY = null;
 
 	private String[] INDEX;
-	private String[] TYPE;
+	private String TYPE;
+
+	protected Boolean ROLLOVER_INDEX = false;
 
 	protected Integer SUGGESTSIZE = 10;
 	protected String PRETAGS = "<b>";
@@ -110,11 +131,11 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 
 	protected Class<TModel> typeOfTModel;
 
-	public RBaseESRepository() {
+	protected RBaseESRepository() {
 	}
 
 	@SuppressWarnings("unchecked")
-	public RBaseESRepository(String[] index, String[] type) {
+	protected RBaseESRepository(String[] index, String type) {
 		this.INDEX = index;
 		this.TYPE = type;
 
@@ -125,58 +146,155 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 	}
 
 	@PostConstruct
-	private void checkIndicesAndTypes() {
+	private void checkMappings() {
 		if (checkMappings && (INDEX != null && TYPE != null)) {
-			checkExistsIndices();
-			checkExistsTypes();
+			checkIndicesAndTypes();
 		}
 	}
 
 	/**
-	 * Chequea que los índices existen
+	 * Chequea que los índices y tipos existan. En casos de no existir, si así es
+	 * configurado, los manda a crear.
 	 */
-	private void checkExistsIndices() {
+	private void checkIndicesAndTypes() {
 
-		for (int i = 0; i < INDEX.length; i++) {
-			String index = INDEX[i];
+		ClusterHealthResponse response;
+		try {
+			response = ESProvider.getClient().cluster().health(new ClusterHealthRequest(), RequestOptions.DEFAULT);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new InternalException(ExceptionType.INTERNAL_EXCEPTION);
+		}
 
-			Boolean exists = ESProvider.getClient().admin().indices().exists(new IndicesExistsRequest(index))
-					.actionGet().isExists();
+		String[] indexes = getIndex();
 
-			if (!exists) {
-				throw new ESNotExistsIndexException(index);
+		for (int i = 0; i < indexes.length; i++) {
+
+			String index = indexes[i];
+
+			if (response.getIndices() == null || response.getIndices().size() == 0
+					|| response.getIndices().get(index) == null) {
+
+				GetAliasesResponse aliasesResponse;
+				try {
+					aliasesResponse = ESProvider.getClient().indices().getAlias(new GetAliasesRequest(index),
+							RequestOptions.DEFAULT);
+				} catch (IOException e) {
+					e.printStackTrace();
+					throw new ESNotExistsIndexException(index);
+				}
+
+				boolean noExist = (aliasesResponse == null || aliasesResponse.getAliases() == null
+						|| aliasesResponse.getAliases().size() == 0);
+
+				if (noExist && createMappings) {
+					prepareIndex(index);
+				} else if (noExist && !checkMappings) {
+					throw new ESNotExistsIndexException(index);
+				} else {
+					checkType(index);
+				}
+			} else {
+				checkType(index);
 			}
+
 		}
 	}
 
 	/**
-	 * Chequea que los tipos existen
+	 * Comprueba que existe el type para un index en concreto
 	 */
-	private void checkExistsTypes() {
+	private void checkType(String index) {
 
-		ClusterStateResponse resp = ESProvider.getClient().admin().cluster().prepareState().execute().actionGet();
-		ImmutableOpenMap<String, IndexMetaData> indices = resp.getState().metaData().getIndices();
+		GetMappingsRequest request = new GetMappingsRequest();
+		request.indices(index);
 
-		for (int i = 0; i < INDEX.length; i++) {
-			IndexMetaData index = indices.get(INDEX[i]);
-
-			if (index == null) {
-				AliasOrIndex aliases = resp.getState().getMetaData().getAliasAndIndexLookup().get(INDEX[i]);
-
-				if (aliases == null || aliases.getIndices() == null || aliases.getIndices().size() == 0) {
-					throw new ESNotExistsIndexException(INDEX[i]);
-				}
-				index = aliases.getIndices().get(0);
-			}
-
-			ImmutableOpenMap<String, MappingMetaData> mappings = index.getMappings();
-			for (int j = 0; j < TYPE.length; j++) {
-				String type = TYPE[j];
-				if (!mappings.containsKey(type)) {
-					throw new ESNotExistsTypeException(index.getIndex().getName(), type);
-				}
-			}
+		GetMappingsResponse getMappingResponse;
+		try {
+			getMappingResponse = ESProvider.getClient().indices().getMapping(request, RequestOptions.DEFAULT);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new ESNotExistsIndexException(index);
 		}
+
+		ImmutableOpenMap<String, ImmutableOpenMap<String, MappingMetaData>> allMappings = getMappingResponse.mappings();
+
+		if (allMappings.get(index) != null && allMappings.get(index).get(getType()) == null) {
+			throw new ESNotExistsTypeException(index, getType());
+
+		} else if (allMappings.get(index) == null) {
+			allMappings.forEach((entry) -> {
+				String key = entry.key;
+				if (key.contains(index) && allMappings.get(key).get(getType()) == null) {
+					throw new ESNotExistsTypeException(index, getType());
+				} else if (key.contains(index)) {
+					return;
+				}
+			});
+		}
+	}
+
+	/**
+	 * En caso de no existir el index, se debe crear index y type con mapping. Si se
+	 * trata de timeseries se debe crear en su lugar un template para aplicar a
+	 * todos los futuros índices
+	 */
+	private void prepareIndex(String index) {
+
+		if (Boolean.TRUE.equals(ROLLOVER_INDEX)) {
+			createTemplate(index);
+		} else {
+			createIndex(index);
+		}
+	}
+
+	private void createIndex(String index) {
+
+		CreateIndexRequest request = new CreateIndexRequest(index);
+
+		request.source(getSettings(index, getType()), XContentType.JSON);
+
+		try {
+			ESProvider.getClient().indices().create(request, RequestOptions.DEFAULT);
+		} catch (IOException e) {
+			throw new ESCreateMappingException(index);
+		}
+	}
+
+	private void createTemplate(String index) {
+
+		PutIndexTemplateRequest request = new PutIndexTemplateRequest(index + "-template");
+
+		request.source(getSettings(index, TYPE), XContentType.JSON);
+
+		try {
+			ESProvider.getClient().indices().putTemplate(request, RequestOptions.DEFAULT);
+		} catch (IOException e) {
+			throw new ESCreateMappingException(index);
+		}
+	}
+
+	/**
+	 * Retorna las settings para cada uno de los type
+	 */
+	private String getSettings(String index, String type) {
+
+		try {
+			InputStream resource = new ClassPathResource("/mappings/" + index + "/" + type + ".json").getInputStream();
+
+			return IOUtils.toString(resource);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new ResourceNotFoundException(e);
+		}
+	}
+
+	/**
+	 * Función que comprueba si el resultado de una búsqueda es que el índice no
+	 * existe
+	 */
+	protected boolean indexNoExistResponse(org.elasticsearch.action.search.MultiSearchResponse.Item[] responses) {
+		return responses[0].isFailure() && responses[0].getFailure().getMessage().contains("no such index");
 	}
 
 	protected abstract JavaType getSourceType(Class<?> wrapperClass);
@@ -191,30 +309,33 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 
 	protected GetResponse getRequest(String id, String parentId, String grandparentId) {
 
-		LOGGER.debug("FindById en " + getIndex() + " " + getType() + " con id " + id);
-
-		GetResponse response = null;
+		LOGGER.debug("FindById en {} {} con id {}", getIndex(), getType(), id);
 
 		for (int i = 0; i < getIndex().length; i++) {
-			for (int j = 0; j < getType().length; j++) {
-				GetRequestBuilder prepareGet = ESProvider.getClient().prepareGet(getIndex()[i], getType()[j],
-						id.toString());
 
-				if (parentId != null) {
-					prepareGet.setParent(parentId);
-				}
-				if (grandparentId != null) {
-					prepareGet.setRouting(grandparentId);
-				}
-				response = prepareGet.execute().actionGet();
+			GetRequest getRequest = new GetRequest(getIndex()[i], getType(), id.toString());
 
-				if (response != null && response.isExists()) {
-					return response;
-				}
+			if (parentId != null) {
+				getRequest.parent(parentId);
+			}
+			if (grandparentId != null) {
+				getRequest.routing(grandparentId);
+			}
+
+			GetResponse response;
+			try {
+				response = ESProvider.getClient().get(getRequest, RequestOptions.DEFAULT);
+			} catch (IOException e) {
+				e.printStackTrace();
+				throw new ItemNotFoundException("id", id + " en el servicio " + getIndex()[i] + " - " + getType());
+			}
+
+			if (response != null && response.isExists()) {
+				return response;
 			}
 		}
 
-		throw new ItemNotFoundException("id", id + " en el servicio " + getType()[0]);
+		throw new ItemNotFoundException("id", id + " en el servicio " + getType());
 	}
 
 	@Override
@@ -247,10 +368,10 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 			partialQuery = QueryBuilders.boolQuery().must(termQuery);
 		}
 
-		LOGGER.debug("Suggest en " + getIndex() + " " + getType() + " con fields " + fields + " y texto " + text
-				+ " y query interna " + partialQuery);
+		LOGGER.debug("Suggest en {} {} con fields {} y texto {} y query interna {}",
+			getIndex(), getType(), fields, text, partialQuery);
 
-		SearchRequestBuilder requestBuilder = ESProvider.getClient().prepareSearch(getIndex()).setTypes(getType());
+		SearchRequest searchRequest = new SearchRequest(INDEX);
 
 		String[] suggestFields = ElasticSearchUtils.getSuggestFields(fields);
 
@@ -263,10 +384,22 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 			query = QueryBuilders.boolQuery().must(query).must(queryBuilder);
 		}
 
-		requestBuilder.setQuery(query).setSize((size == null) ? SUGGESTSIZE : size)
-				.highlighter(getHighlightBuilder(queryDTO.getSuggest().getSearchFields()));
+		SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+		searchSourceBuilder.query(query).size((size == null) ? SUGGESTSIZE : size)
+			.highlighter(getHighlightBuilder(queryDTO.getSuggest().getSearchFields()));
 
-		return ElasticSearchUtils.createHighlightResponse(requestBuilder.execute().actionGet());
+		searchRequest.source(searchSourceBuilder);
+
+		SearchResponse searchResponse;
+
+		try {
+			searchResponse = ESProvider.getClient().search(searchRequest, RequestOptions.DEFAULT);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new ESQueryException();
+		}
+
+		return ElasticSearchUtils.createHighlightResponse(searchResponse);
 	}
 
 	protected MultiGetResponse multigetRequest(MgetDTO dto) {
@@ -281,10 +414,9 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 
 	protected MultiGetResponse multigetRequest(MgetDTO dto, String parentId, String grandParentId) {
 
-		LOGGER.debug("Mget en " + getIndex() + " " + getType() + " con fields " + dto.getFields() + " e ids "
-				+ dto.getIds());
+		LOGGER.debug("Mget en {} {} con fields {} e ids {}", getIndex(), getType(), dto.getFields(), dto.getIds());
 
-		MultiGetRequestBuilder builder = ESProvider.getClient().prepareMultiGet();
+		MultiGetRequest request = new MultiGetRequest();
 
 		FetchSourceContext fetchSourceContext;
 
@@ -297,23 +429,25 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 
 		int sizeIds = dto.getIds().size();
 		for (int i = 0; i < getIndex().length; i++) {
-			for (int j = 0; j < getType().length; j++) {
-				for (int k = 0; k < sizeIds; k++) {
+			for (int k = 0; k < sizeIds; k++) {
 
-					Item item = new Item(getIndex()[i], getType()[j], dto.getIds().get(k));
+				Item item = new Item(getIndex()[i], getType(), dto.getIds().get(k));
 
-					if (parentId != null) {
-						item.parent(parentId);
-					}
-					if (grandParentId != null) {
-						item.routing(grandParentId);
-					}
-					item.fetchSourceContext(fetchSourceContext);
-					builder.add(item);
+				if (parentId != null) {
+					item.parent(parentId);
 				}
+				if (grandParentId != null) {
+					item.routing(grandParentId);
+				}
+				item.fetchSourceContext(fetchSourceContext);
+				request.add(item);
 			}
 		}
-		return builder.execute().actionGet();
+		try {
+			return ESProvider.getClient().mget(request, RequestOptions.DEFAULT);
+		} catch (IOException e) {
+			throw new ESQueryException();
+		}
 	}
 
 	protected SearchResponse searchRequest(QueryBuilder query) {
@@ -333,18 +467,31 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 
 	protected SearchResponse searchRequest(QueryBuilder query, SortBuilder<?> sort, List<String> returnFields) {
 
-		LOGGER.debug("FindBy query en " + getIndex() + " " + getType() + " con query " + query.toString()
-				+ " y ordenación " /* + sort.toString() */);
+		LOGGER.debug("FindBy query en {} {} con query {} y ordenación.", getIndex(), getType(), query/* + sort.toString() */);
 
 		Integer size = getCount(QueryBuilders.boolQuery().filter(query));
 
-		SearchRequestBuilder requestBuilder = ESProvider.getClient().prepareSearch(getIndex()).setTypes(getType())
-				.setQuery(query).setSize(size).addSort(sort);
+		SearchRequest searchRequest = new SearchRequest(getIndex());
 
-		if (returnFields != null && returnFields.size() > 0) {
-			requestBuilder.setFetchSource(ElasticSearchUtils.getReturnFields(returnFields), null);
+		SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+		searchSourceBuilder.query(query).size(size).sort(sort);
+
+		if (returnFields != null && !returnFields.isEmpty()) {
+			searchSourceBuilder.fetchSource(ElasticSearchUtils.getReturnFields(returnFields), null);
 		}
-		return requestBuilder.execute().actionGet();
+
+		searchRequest.source(searchSourceBuilder);
+
+		SearchResponse searchResponse;
+
+		try {
+			searchResponse = ESProvider.getClient().search(searchRequest, RequestOptions.DEFAULT);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new ESQueryException();
+		}
+
+		return searchResponse;
 	}
 
 	protected SearchResponse searchRequest(DataQueryDTO queryDTO) {
@@ -354,23 +501,81 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 
 	protected SearchResponse searchRequest(DataQueryDTO queryDTO, QueryBuilder serviceQuery) {
 
-		LOGGER.debug("Find en " + getIndex() + " " + getType() + " con queryDTO " + queryDTO + " y query interna ");
+		SearchRequest searchRequest = new SearchRequest(getIndex());
 
-		SearchRequestBuilder requestBuilder = searchRequestBuilder(queryDTO, serviceQuery);
+		SearchSourceBuilder requestBuilder = searchRequestBuilder(queryDTO, serviceQuery);
 
-		return requestBuilder.execute().actionGet();
+		searchRequest.source(requestBuilder);
+
+		SearchResponse searchResponse;
+
+		try {
+			searchResponse = ESProvider.getClient().search(searchRequest, RequestOptions.DEFAULT);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new ESQueryException();
+		}
+
+		return searchResponse;
 	}
 
-	protected SearchRequestBuilder searchRequestBuilder(DataQueryDTO queryDTO) {
+	protected SearchSourceBuilder searchRequestBuilder(DataQueryDTO queryDTO) {
 
 		return searchRequestBuilder(queryDTO, null);
 	}
 
-	protected SearchRequestBuilder searchRequestBuilder(DataQueryDTO queryDTO, QueryBuilder serviceQuery) {
+	protected SearchSourceBuilder searchRequestBuilder(DataQueryDTO queryDTO, QueryBuilder serviceQuery) {
 
-		LOGGER.debug("Find en " + getIndex() + " " + getType() + " con queryDTO " + queryDTO + " y query interna ");
+		LOGGER.debug("Find en {} {} con queryDTO {} y query interna.", getIndex(), getType(), queryDTO);
 
-		SearchRequestBuilder requestBuilder = ESProvider.getClient().prepareSearch(getIndex()).setTypes(getType());
+		SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+
+		if (queryDTO.getText() != null
+				&& (queryDTO.getText().getSearchFields() == null || queryDTO.getText().getSearchFields().length == 0)) {
+			queryDTO.getText().setSearchFields(getDefaultSearchFields());
+		}
+
+		BoolQueryBuilder queryBuilder = getQueryBuilder(queryDTO, serviceQuery);
+		searchSourceBuilder.query(queryBuilder);
+
+		QueryBuilder postFilter = getPostFilter(queryDTO.getPostFilter());
+
+		if (postFilter != null) {
+			searchSourceBuilder.postFilter(postFilter);
+		}
+
+		List<BaseAggregationBuilder> aggs = getAggs(queryDTO);
+
+		if (aggs != null) {
+			for (BaseAggregationBuilder term : aggs) {
+				searchSourceBuilder.aggregation((AggregationBuilder) term);
+			}
+		}
+
+		if (queryDTO.getText() != null && (queryDTO.getText().getHighlightFields() == null
+				|| queryDTO.getText().getHighlightFields().length == 0)) {
+
+					searchSourceBuilder.highlighter(getHighlightBuilder(queryDTO.getText().getHighlightFields()));
+		}
+		searchSourceBuilder.from(queryDTO.getFrom());
+		searchSourceBuilder.size(getSize(queryDTO, queryBuilder));
+
+		List<SortBuilder<?>> sorts = getSorts(queryDTO.getSorts());
+		// Finalmente solo en caso de tener una ordenación se añade a la request
+		if (sorts != null && !sorts.isEmpty()) {
+			for (int i = 0; i < sorts.size(); i++)
+				searchSourceBuilder.sort(sorts.get(i));
+		}
+
+		List<String> returnFields = queryDTO.getReturnFields();
+		if (returnFields != null && !returnFields.isEmpty()) {
+			searchSourceBuilder.fetchSource(ElasticSearchUtils.getReturnFields(returnFields), null);
+		}
+
+		return searchSourceBuilder;
+	}
+
+	protected BoolQueryBuilder getQueryBuilder(DataQueryDTO queryDTO, QueryBuilder serviceQuery) {
 
 		QueryBuilder termQuery = getTermQuery(queryDTO.getTerms());
 
@@ -385,50 +590,7 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 			partialQuery = QueryBuilders.boolQuery().must(termQuery);
 		}
 
-		if (queryDTO.getText() != null
-				&& (queryDTO.getText().getSearchFields() == null || queryDTO.getText().getSearchFields().length == 0)) {
-			queryDTO.getText().setSearchFields(getDefaultSearchFields());
-		}
-
-		BoolQueryBuilder queryBuilder = getQuery(queryDTO, getInternalQuery(), partialQuery);
-
-		requestBuilder.setQuery(queryBuilder);
-
-		QueryBuilder postFilter = getPostFilter(queryDTO.getPostFilter());
-
-		if (postFilter != null) {
-			requestBuilder.setPostFilter(postFilter);
-		}
-
-		List<BaseAggregationBuilder> aggs = getAggs(queryDTO);
-
-		if (aggs != null) {
-			for (BaseAggregationBuilder term : aggs) {
-				requestBuilder.addAggregation((AggregationBuilder) term);
-			}
-		}
-
-		if (queryDTO.getText() != null && (queryDTO.getText().getHighlightFields() == null
-				|| queryDTO.getText().getHighlightFields().length == 0)) {
-
-			requestBuilder.highlighter(getHighlightBuilder(queryDTO.getText().getHighlightFields()));
-		}
-		requestBuilder.setFrom(queryDTO.getFrom());
-		requestBuilder.setSize(getSize(queryDTO, queryBuilder));
-
-		List<SortBuilder<?>> sorts = getSorts(queryDTO.getSorts());
-		// Finalmente solo en caso de tener una ordenación se añade a la request
-		if (sorts != null && sorts.size() > 0) {
-			for (int i = 0; i < sorts.size(); i++)
-				requestBuilder.addSort(sorts.get(i));
-		}
-
-		List<String> returnFields = queryDTO.getReturnFields();
-		if (returnFields != null && returnFields.size() > 0) {
-			requestBuilder.setFetchSource(ElasticSearchUtils.getReturnFields(returnFields), null);
-		}
-
-		return requestBuilder;
+		return getQuery(queryDTO, getInternalQuery(), partialQuery);
 	}
 
 	private List<SortBuilder<?>> getSorts(List<SortDTO> sortDTOList) {
@@ -461,35 +623,64 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 		return highlightBuilder;
 	}
 
-	protected MultiSearchResponse getMultiFindResponses(List<SearchRequestBuilder> searchs) {
+	protected MultiSearchResponse getMultiFindResponses(List<SearchSourceBuilder> searchs) {
 
-		MultiSearchRequestBuilder sr = ESProvider.getClient().prepareMultiSearch();
+		MultiSearchRequest request = new MultiSearchRequest();
 
 		for (int i = 0; i < searchs.size(); i++) {
-			sr.add(searchs.get(i));
+			request.add(new SearchRequest().indices(getIndex()).source(searchs.get(i)));
 		}
-		return sr.get();
+		try {
+			return ESProvider.getClient().msearch(request, RequestOptions.DEFAULT);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new ESQueryException();
+		}
 	}
 
 	protected List<?> scrollQueryReturnItems(QueryBuilder builder, IProcessItemFunction<?> func) {
+
 		List<SortBuilder<?>> sortBuilders = getSort();
-		SearchRequestBuilder query = ESProvider.getClient().prepareSearch(getIndex()).setTypes(getType())
-				.setScroll(new TimeValue(60000)).setQuery(builder);
+
+		SearchRequest searchRequest = new SearchRequest(getIndex());
+
+		SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+		searchSourceBuilder.query(builder);
 
 		for (SortBuilder<?> sort : sortBuilders) {
-			query.addSort(sort);
+			searchSourceBuilder.sort(sort);
 		}
 
-		SearchResponse scrollResp = query.setSize(100).execute().actionGet();
+		searchSourceBuilder.size(100);
+
+		searchRequest.source(searchSourceBuilder);
+		searchRequest.scroll(new TimeValue(60000));
+
+		SearchResponse searchResponse;
+		try {
+			searchResponse = ESProvider.getClient().search(searchRequest, RequestOptions.DEFAULT);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new ESQueryException();
+		}
+
 		while (true) {
 
-			for (SearchHit hit : scrollResp.getHits().getHits()) {
+			for (SearchHit hit : searchResponse.getHits().getHits()) {
 				func.process(hit);
 			}
-			scrollResp = ESProvider.getClient().prepareSearchScroll(scrollResp.getScrollId())
-					.setScroll(new TimeValue(600000)).execute().actionGet();
 
-			if (scrollResp.getHits().getHits().length == 0) {
+			SearchScrollRequest scrollRequest = new SearchScrollRequest(searchResponse.getScrollId());
+			scrollRequest.scroll(new TimeValue(600000));
+
+			try {
+				searchResponse = ESProvider.getClient().scroll(scrollRequest, RequestOptions.DEFAULT);
+			} catch (IOException e) {
+				e.printStackTrace();
+				throw new ESQueryException();
+			}
+
+			if (searchResponse.getHits().getHits().length == 0) {
 				break;
 			}
 		}
@@ -500,7 +691,7 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 	/**
 	 * Función que sirve de wrapper a la llamada de la util para crear la query de
 	 * elastic.
-	 * 
+	 *
 	 * @param queryDTO
 	 *            Dto de la query enviada por el cliente.
 	 * @param internalQuery
@@ -517,7 +708,7 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 	/**
 	 * Función que sirve de wrapper a la llamada de la util para crear el postfilter
 	 * de elastic
-	 * 
+	 *
 	 * @param postFilter
 	 *            información para crear el postfilter. Es enviada desde el cliente.
 	 * @return postFilter de elastic.
@@ -529,7 +720,7 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 	/**
 	 * Función que sirve de wrapper a la llamada de la util para crear las
 	 * agregaciones.
-	 * 
+	 *
 	 * @param queryDTO
 	 *            Clase enviada desde el cliente con los datos necesarios para crear
 	 *            la query.
@@ -543,7 +734,7 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 	/**
 	 * Función que devuelve el número total de elementos que se dan como resultado
 	 * de aplicar todas las queries activas en el repo.
-	 * 
+	 *
 	 * @param queryBuilder
 	 *            Query completamente construida
 	 * @return total de hits.
@@ -551,11 +742,24 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 	@Override
 	public Integer getCount(BoolQueryBuilder queryBuilder) {
 
-		SearchRequestBuilder queryCount = ESProvider.getClient().prepareSearch(INDEX).setTypes(TYPE).setSize(0);
-		if (queryBuilder != null)
-			queryCount.setQuery(queryBuilder);
+		SearchRequest searchRequest = new SearchRequest(INDEX);
+		SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+		if (queryBuilder == null)
+			queryBuilder = QueryBuilders.boolQuery().filter(QueryBuilders.matchAllQuery());
 
-		long result = queryCount.execute().actionGet().getHits().getTotalHits();
+		searchSourceBuilder.query(queryBuilder);
+		searchSourceBuilder.size(0);
+		searchRequest.source(searchSourceBuilder);
+
+		SearchResponse queryCount;
+		try {
+			queryCount = ESProvider.getClient().search(searchRequest, RequestOptions.DEFAULT);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new ESQueryException();
+		}
+
+		long result = queryCount.getHits().getTotalHits();
 
 		return (int) result;
 	}
@@ -563,13 +767,13 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 	/**
 	 * Función que nos devuelve el size de la query. El size del exterior tiene
 	 * preferencia, en caso de no exista, se devuelve todo lo almacenado.
-	 * 
+	 *
 	 * @param queryDTO.
 	 *            queryDto para obtener parámetros de query enviados por el cliente
 	 * @param query.
 	 *            Query generada para en caso de que no se establezca size, calcular
 	 *            el máximo
-	 * 
+	 *
 	 * @return numero de elementos que devolverá la query
 	 */
 
@@ -587,13 +791,13 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 	/**
 	 * Función que nos devuelve una lista de ordenaciones específica para
 	 * timeseries. Por defecto, ordena por id.
-	 * 
+	 *
 	 * @return lista de ordenaciones de elasticsearch
 	 */
 
 	protected List<SortBuilder<?>> getSort() {
 
-		List<SortBuilder<?>> sorts = new ArrayList<SortBuilder<?>>();
+		List<SortBuilder<?>> sorts = new ArrayList<>();
 		sorts.add(SortBuilders.scoreSort().order(SortOrder.DESC));
 		return sorts;
 	}
@@ -603,7 +807,7 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 	 * elasticsearch. Debe estar implementado en cada repositorio para darle una
 	 * funcionalidad específica y aquí estarán las funcionalidades que comparten
 	 * todos los repositorios.
-	 * 
+	 *
 	 * @param terms
 	 *            Map de términos pasados por la query.
 	 * @return query de tipo terms de elasticsearch.
@@ -618,7 +822,7 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 	 * elasticsearch. Debe estar implementado en cada repositorio para darle una
 	 * funcionalidad específica y aquí estarán las funcionalidades que comparten
 	 * todos los repositorios.
-	 * 
+	 *
 	 * @param terms
 	 *            Map de términos pasados por la query.
 	 * @param query
@@ -645,26 +849,32 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 
 	/**
 	 * Función que dado un id de selección devuelve todos los items seleccionados.
-	 * 
+	 *
 	 * @param selectionId
 	 *            identificador de la selección con la que se está trabajando.
 	 * @return Map de identificadores de items seleccionados.
 	 */
 	protected Map<String, Object> findSelectedItems(String selectionId) {
 
-		String selectionIndex = SelectionWorkRepository.INDEX[0];
-		String selectionType = SelectionWorkRepository.TYPE[0];
+		GetRequest getRequest = new GetRequest(getIndex()[0], getType(), selectionId.toString());
 
-		GetResponse result = ESProvider.getClient().prepareGet(selectionIndex, selectionType, selectionId.toString())
-				.execute().actionGet();
-		if (result.isExists())
-			return result.getSource();
+		GetResponse response;
+		try {
+			response = ESProvider.getClient().get(getRequest, RequestOptions.DEFAULT);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new ItemNotFoundException("id", selectionId + " en el servicio " + getIndex()[0] + " - " + getType());
+		}
+
+		if (response != null && response.isExists()) {
+			return response.getSource();
+		}
 		return null;
 	}
 
 	/**
 	 * Función para setear una query que siempre se aplicará para el repositorio.
-	 * 
+	 *
 	 * @param internalQuery
 	 *            Query de tipo elasticSearch.
 	 */
@@ -676,7 +886,7 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 	/**
 	 * Función para obtener la query de tipo elasticSearch que se debe aplicar
 	 * siempre.
-	 * 
+	 *
 	 * @return Query de tipo elasticSearch.
 	 */
 	protected QueryBuilder getInternalQuery() {
@@ -749,13 +959,22 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 
 	protected abstract String[] getDefaultSuggestFields();
 
+	/*
+	 * Función para obtener el índice a partir del indice original + un campo de los
+	 * datos Solo en series temporales, en otros casos, devolver directamente el
+	 * índice.
+	 */
+	protected String getIndex(TModel modelToIndex) {
+		return getIndex()[0];
+	}
+
 	@Override
 	public String[] getIndex() {
 		return INDEX;
 	}
 
 	@Override
-	public String[] getType() {
+	public String getType() {
 		return TYPE;
 	}
 }

@@ -9,9 +9,9 @@ package es.redmic.es.geodata.geofixedstation.service;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,8 +23,8 @@ package es.redmic.es.geodata.geofixedstation.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Point;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Point;
 
 import es.redmic.es.geodata.common.service.GeoDataESService;
 import es.redmic.es.geodata.geofixedstation.repository.GeoFixedBaseESRepository;
@@ -50,7 +50,7 @@ public abstract class GeoFixedBaseESService<TDTO extends MetaFeatureDTO<FixedSur
 	public <T extends Geometry> GeoSearchWrapper<GeoDataProperties, T> findByDataDefinition(Long dataDefinitionId) {
 		return repository.findByDataDefinition(dataDefinitionId);
 	}
-	
+
 	/*
 	 * Función que debe estar definida en los servicios específicos.
 	 * Se usa para realizar acciones en otros servicios después de modificar.
@@ -60,7 +60,7 @@ public abstract class GeoFixedBaseESService<TDTO extends MetaFeatureDTO<FixedSur
 	}
 
 	/*
-	 *  Función que debe estar definida en los servicios específicos. 
+	 *  Función que debe estar definida en los servicios específicos.
 	 *  Se usa para realizar acciones en otros servicios después de añadir.
 	 */
 	@Override
@@ -72,18 +72,18 @@ public abstract class GeoFixedBaseESService<TDTO extends MetaFeatureDTO<FixedSur
 	@Override
 	protected void preDelete(Object object) {}
 
-	
+
 	/*
 	 * Función que debe estar definida en los servicios específicos.
 	 * Se usa para realizar acciones en otros servicios después de borrar.
 	 */
 	@Override
 	protected void postDelete(String id) {}
-	
-	
+
+
 	@SuppressWarnings({ "unchecked", "serial" })
 	public List<String> getDescendantsIds(List<String> parentsPath) {
-		
+
 		List<String> ids = new ArrayList<String>();
 
 		int size = parentsPath.size();
@@ -95,9 +95,9 @@ public abstract class GeoFixedBaseESService<TDTO extends MetaFeatureDTO<FixedSur
 			else
 				ids.add(idProperty);
 		}
-		
+
 		if (paths.size() > 0) {
-			
+
 			DataQueryDTO query = new DataQueryDTO();
 			query.setReturnFields(new ArrayList<String>() {{
 				add("id");
@@ -105,21 +105,21 @@ public abstract class GeoFixedBaseESService<TDTO extends MetaFeatureDTO<FixedSur
 				add("properties");
 			}});
 			query.addTerm("ids", paths);
-	
+
 			GeoSearchWrapper<GeoDataProperties, Point> response = (GeoSearchWrapper<GeoDataProperties, Point>) repository.find(query);
-	
+
 			if (response != null) {
 				List<Feature<GeoDataProperties, Point>> features = response.getSourceList();
-				
+
 				if (features.size() == 0)
 					return parentsPath;
-				
+
 				for (int i = 0; i < features.size(); i++) {
 					List<Measurement> measurements = features.get(i).getProperties().getMeasurements();
 					for (int j=0; j<measurements.size(); j++)
 						ids.add(measurements.get(j).getParameter().getPath());
 				}
-				
+
 			}
 		}
 		return ids;

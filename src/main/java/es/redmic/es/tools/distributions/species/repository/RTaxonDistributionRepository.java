@@ -1,5 +1,7 @@
 package es.redmic.es.tools.distributions.species.repository;
 
+import java.io.IOException;
+
 /*-
  * #%L
  * ElasticSearch
@@ -9,9 +11,9 @@ package es.redmic.es.tools.distributions.species.repository;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,7 +22,6 @@ package es.redmic.es.tools.distributions.species.repository;
  * #L%
  */
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,8 +29,12 @@ import java.util.Map;
 
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.get.GetResponse;
+import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.search.SearchScrollRequest;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.common.geo.builders.EnvelopeBuilder;
 import org.elasticsearch.common.geo.builders.ShapeBuilders;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -39,17 +44,20 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptType;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.JavaType;
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Point;
+
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Point;
 
 import es.redmic.es.common.repository.RBaseESRepository;
 import es.redmic.es.geodata.citation.repository.CitationESRepository;
 import es.redmic.es.geodata.tracking.animal.repository.AnimalTrackingESRepository;
 import es.redmic.exception.elasticsearch.ESBBoxQueryException;
+import es.redmic.exception.elasticsearch.ESQueryException;
 import es.redmic.models.es.common.query.dto.BboxQueryDTO;
 import es.redmic.models.es.common.query.dto.DataQueryDTO;
 import es.redmic.models.es.geojson.citation.dto.CitationDTO;
@@ -67,9 +75,7 @@ import es.redmic.models.es.tools.distribution.species.model.TaxonDistribution;
 public class RTaxonDistributionRepository extends RBaseESRepository<Distribution> {
 
 	protected String[] INDEX;
-	protected String[] TYPE;
-
-	protected static String SCRIPT_ENGINE = "groovy";
+	protected String TYPE;
 
 	private static String COORDINATES_FIELD = "geometry";
 	private static String TAXON_ID_FIELD = "properties.taxons.path";
@@ -93,9 +99,9 @@ public class RTaxonDistributionRepository extends RBaseESRepository<Distribution
 	public RTaxonDistributionRepository() {
 	}
 
-	public RTaxonDistributionRepository(String[] INDEX, String[] TYPE) {
-		this.INDEX = INDEX;
-		this.TYPE = TYPE;
+	public RTaxonDistributionRepository(String[] index, String type) {
+		this.INDEX = index;
+		this.TYPE = type;
 	}
 
 	public Integer getGridSize() {
@@ -107,10 +113,10 @@ public class RTaxonDistributionRepository extends RBaseESRepository<Distribution
 		GeoJSONFeatureCollectionDTO res = new GeoJSONFeatureCollectionDTO();
 
 		List<Integer> confidence = getConfidenceValues(dto);
-		if (confidence == null || confidence.size() == 0 || confidence.size() > 4)
+		if (confidence == null || confidence.isEmpty() || confidence.size() > 4)
 			return res;
 
-		Map<String, Object> scriptParams = new HashMap<String, Object>();
+		Map<String, Object> scriptParams = new HashMap<>();
 		scriptParams.put("taxons", ids);
 		scriptParams.put("confidences", confidence);
 		SearchResponse response = findAll(createQuery(dto, ids, confidence), INCLUDE_DEFAULT, EXCLUDE_DEFAULT,
@@ -127,7 +133,7 @@ public class RTaxonDistributionRepository extends RBaseESRepository<Distribution
 	/**
 	 * Función para extraer los features del geojson, en este caso sin añadir
 	 * las properties ya que no son necesarias.
-	 * 
+	 *
 	 * @param result
 	 *            lista de resultados obtenidos en la consulta.
 	 * @return lista de features para distribution, las cuales contienen la
@@ -136,13 +142,13 @@ public class RTaxonDistributionRepository extends RBaseESRepository<Distribution
 	@SuppressWarnings("unchecked")
 	private List<Object> mapperHitsArrayToClass(SearchHit[] result) {
 
-		List<Object> ret = new ArrayList<Object>();
+		List<Object> ret = new ArrayList<>();
 
 		for (SearchHit obj : result) {
-			Map<String, Object> properties = (Map<String, Object>) obj.getSource().get("properties");
+			Map<String, Object> properties = (Map<String, Object>) obj.getSourceAsMap().get("properties");
 			Integer registerCount = (Integer) properties.get("registerCount");
 			if (registerCount != null && registerCount > 0)
-				ret.add(obj.getSource());
+				ret.add(obj.getSourceAsMap());
 		}
 		return ret;
 	}
@@ -150,16 +156,32 @@ public class RTaxonDistributionRepository extends RBaseESRepository<Distribution
 	public SearchResponse findAll(QueryBuilder query, String[] include, String[] exclude,
 			Map<String, Object> scriptParams) {
 
-		SearchRequestBuilder requestBuilder = ESProvider.getClient().prepareSearch(INDEX)
-				.setFetchSource(include, exclude).setTypes(TYPE).setQuery(query).setSize(10000)
-				.addScriptField("taxons", new Script(ScriptType.FILE, SCRIPT_ENGINE, FILTER_SCRIPT, scriptParams));
-		return requestBuilder.execute().actionGet();
+		SearchRequest searchRequest = new SearchRequest(getIndex());
+		SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+
+		searchSourceBuilder.query(query);
+		searchSourceBuilder.size(10000);
+		searchSourceBuilder.fetchSource(include, exclude);
+		searchSourceBuilder.scriptField("taxons", new Script(ScriptType.STORED, null, FILTER_SCRIPT, scriptParams));
+
+		searchRequest.source(searchSourceBuilder);
+
+		SearchResponse searchResponse;
+
+		try {
+			searchResponse = ESProvider.getClient().search(searchRequest, RequestOptions.DEFAULT);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new ESQueryException();
+		}
+
+		return searchResponse;
 	}
 
 	private QueryBuilder createQuery(DataQueryDTO queryDTO, List<String> ids, List<Integer> confidence) {
 
 		NestedQueryBuilder idsFilter;
-		if (ids != null && ids.size() > 0) // TODO: quitar, siempre debe ids
+		if (ids != null && !ids.isEmpty()) // TODO: quitar, siempre debe ids
 			idsFilter = QueryBuilders.nestedQuery(TAXON_PATH_FIELD, QueryBuilders.boolQuery()
 					.should(QueryBuilders.termsQuery(TAXON_ID_FIELD, ids))
 					.should(QueryBuilders.termsQuery(TAXON_EQUIVALENT_ID_FIELD, ids))
@@ -187,7 +209,7 @@ public class RTaxonDistributionRepository extends RBaseESRepository<Distribution
 		try {
 			query = QueryBuilders.boolQuery()
 					.filter(QueryBuilders.boolQuery().must(idsFilter).must(confidenceFilter).must(QueryBuilders
-							.geoShapeQuery(COORDINATES_FIELD, ShapeBuilders.newEnvelope(topLeft, bottomRight))));
+							.geoShapeQuery(COORDINATES_FIELD, new EnvelopeBuilder(topLeft, bottomRight))));
 		} catch (IOException e) {
 			throw new ESBBoxQueryException(e);
 		}
@@ -199,16 +221,15 @@ public class RTaxonDistributionRepository extends RBaseESRepository<Distribution
 
 		id = id.replaceFirst("^/activity/\\d+", "");
 
-		QueryBuilder builder = QueryBuilders.boolQuery()
+		QueryBuilder query = QueryBuilders.boolQuery()
 				.filter(QueryBuilders.nestedQuery(REGISTERS_PATH_FIELD,
 						QueryBuilders.boolQuery().must(QueryBuilders.prefixQuery(REGISTERS_PATH_FIELD + ".id", id)),
 						ScoreMode.Avg));
 
-		SearchRequestBuilder requestBuilder = ESProvider.getClient().prepareSearch(INDEX).setTypes(TYPE)
-				.setQuery(builder);
-		SearchResponse response = requestBuilder.execute().actionGet();
+		SearchResponse response = super.searchRequest(query);
+
 		if (response.getHits().getHits().length > 0)
-			return objectMapper.convertValue(response.getHits().getHits()[0].getSource(), TaxonDistribution.class);
+			return objectMapper.convertValue(response.getHits().getHits()[0].getSourceAsMap(), TaxonDistribution.class);
 		return null;
 
 	}
@@ -218,25 +239,23 @@ public class RTaxonDistributionRepository extends RBaseESRepository<Distribution
 			List<String> taxonIds) {
 
 		List<Integer> confidence = getConfidenceValues(queryDTO);
-		if (confidence == null || confidence.size() == 0 || confidence.size() > 4)
+		if (confidence == null || confidence.isEmpty() || confidence.size() > 4)
 			return new ArrayList<>();
 
 		NestedQueryBuilder confidencesFilter = QueryBuilders.nestedQuery(REGISTERS_PATH_FIELD, QueryBuilders.boolQuery()
 				.must(QueryBuilders.termsQuery(REGISTERS_PATH_FIELD + ".confidence", confidence)), ScoreMode.Avg);
 
-		QueryBuilder builder = QueryBuilders.boolQuery().filter(confidencesFilter)
+		QueryBuilder query = QueryBuilders.boolQuery().filter(confidencesFilter)
 				.must(QueryBuilders.termQuery("id", gridId));
 
-		SearchRequestBuilder requestBuilder = ESProvider.getClient().prepareSearch(INDEX).setTypes(TYPE)
-				.setQuery(builder);
-		SearchResponse response = requestBuilder.execute().actionGet();
+		SearchResponse response = super.searchRequest(query);
 
 		if (response.getHits().getTotalHits() == 0)
 			return new ArrayList<>();
 
-		List<TaxonDistributionRegistersDTO> registers = new ArrayList<TaxonDistributionRegistersDTO>();
+		List<TaxonDistributionRegistersDTO> registers = new ArrayList<>();
 
-		Distribution result = objectMapper.convertValue(response.getHits().getHits()[0].getSource(),
+		Distribution result = objectMapper.convertValue(response.getHits().getHits()[0].getSourceAsMap(),
 				Distribution.class);
 
 		for (int i = 0; i < result.getProperties().getTaxons().size(); i++) {
@@ -295,11 +314,11 @@ public class RTaxonDistributionRepository extends RBaseESRepository<Distribution
 	private List<Integer> getConfidenceValues(DataQueryDTO dto) {
 
 		if (dto.getTerms() == null || dto.getTerms().get("confidences") == null)
-			return null;
+			return new ArrayList<>();
 
 		List<Integer> confidence = (List<Integer>) dto.getTerms().get("confidences");
-		if (confidence.size() == 0 || confidence.size() > 4)
-			return null;
+		if (confidence.isEmpty() || confidence.size() > 4)
+			return new ArrayList<>();
 		return confidence;
 	}
 
@@ -320,41 +339,48 @@ public class RTaxonDistributionRepository extends RBaseESRepository<Distribution
 
 	protected GetResponse findById(String id) {
 
-		int sizeIndex = INDEX.length;
-		int sizeType = TYPE.length;
-		for (int i = 0; i < sizeType; i++) {
-			GetResponse result = ESProvider.getClient().prepareGet(INDEX[0], TYPE[i], id.toString()).execute()
-					.actionGet();
-			if (result.isExists())
-				return result;
-		}
-		for (int j = 0; j < sizeIndex; j++) {
-			GetResponse result = ESProvider.getClient().prepareGet(INDEX[j], TYPE[0], id.toString()).execute()
-					.actionGet();
-			if (result.isExists())
-				return result;
-		}
-		return null;
+		return super.getRequest(id);
 	}
 
+	// TODO: crear IProcessItemFunction y ejecutar el de la base
 	@Override
 	protected List<Distribution> scrollQueryReturnItems(QueryBuilder builder) {
 
-		List<Distribution> result = new ArrayList<Distribution>();
+		List<Distribution> result = new ArrayList<>();
 
-		SearchResponse scrollResp = ESProvider.getClient().prepareSearch(getIndex()).setTypes(getType())
-				.setScroll(new TimeValue(60000)).setQuery(builder).setSize(100).execute().actionGet();
+		SearchRequest searchRequest = new SearchRequest(getIndex());
+
+		SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+		searchSourceBuilder.query(builder);
+		searchSourceBuilder.size(100);
+
+		searchRequest.source(searchSourceBuilder);
+		searchRequest.scroll(new TimeValue(60000));
+
+		SearchResponse searchResponse;
+		try {
+			searchResponse = ESProvider.getClient().search(searchRequest, RequestOptions.DEFAULT);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new ESQueryException();
+		}
 
 		while (true) {
 
-			for (SearchHit hit : scrollResp.getHits().getHits()) {
-				Distribution item = objectMapper.convertValue(hit.getSourceAsMap(), typeOfTModel);
-				result.add(item);
+			for (SearchHit hit : searchResponse.getHits().getHits()) {
+				result.add(objectMapper.convertValue(hit.getSourceAsMap(), typeOfTModel));
 			}
-			scrollResp = ESProvider.getClient().prepareSearchScroll(scrollResp.getScrollId())
-					.setScroll(new TimeValue(600000)).execute().actionGet();
+			SearchScrollRequest scrollRequest = new SearchScrollRequest(searchResponse.getScrollId());
+			scrollRequest.scroll(new TimeValue(600000));
 
-			if (scrollResp.getHits().getHits().length == 0)
+			try {
+				searchResponse = ESProvider.getClient().scroll(scrollRequest, RequestOptions.DEFAULT);
+			} catch (IOException e) {
+				e.printStackTrace();
+				throw new ESQueryException();
+			}
+
+			if (searchResponse.getHits().getHits().length == 0)
 				break;
 		}
 		return result;

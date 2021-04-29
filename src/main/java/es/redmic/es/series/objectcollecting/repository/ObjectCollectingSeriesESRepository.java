@@ -9,9 +9,9 @@ package es.redmic.es.series.objectcollecting.repository;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,7 +28,7 @@ import org.elasticsearch.search.aggregations.BaseAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInterval;
 import org.elasticsearch.search.aggregations.bucket.nested.NestedAggregationBuilder;
-import org.elasticsearch.search.aggregations.bucket.terms.support.IncludeExclude;
+import org.elasticsearch.search.aggregations.bucket.terms.IncludeExclude;
 import org.springframework.stereotype.Repository;
 
 import es.redmic.es.common.queryFactory.series.SeriesQueryUtils;
@@ -40,8 +40,8 @@ import es.redmic.models.es.series.objectcollecting.model.ObjectCollectingSeries;
 @Repository
 public class ObjectCollectingSeriesESRepository extends RWSeriesESRepository<ObjectCollectingSeries> {
 
-	private static String[] INDEX = { "activity" };
-	private static String[] TYPE = { "collecting" };
+	private static String[] INDEX = { "timeseries" };
+	private static String TYPE = "_doc";
 
 	private static int aggsSize = 200;
 
@@ -51,7 +51,7 @@ public class ObjectCollectingSeriesESRepository extends RWSeriesESRepository<Obj
 
 	/*
 	 * Sobrescribe getAggs para hacer las agregaciones mediante histogramas
-	 * 
+	 *
 	 */
 
 	@Override
@@ -60,9 +60,9 @@ public class ObjectCollectingSeriesESRepository extends RWSeriesESRepository<Obj
 		List<AggsPropertiesDTO> aggs = elasticQueryDTO.getAggs();
 
 		if (elasticQueryDTO.getInterval() == null && (aggs == null || aggs.size() == 0))
-			return null;
+			return new ArrayList<>();
 
-		List<BaseAggregationBuilder> histogramAggs = new ArrayList<BaseAggregationBuilder>();
+		List<BaseAggregationBuilder> histogramAggs = new ArrayList<>();
 
 		if (aggs.get(0).getField().equals("temporaldata")) {
 
@@ -111,7 +111,7 @@ public class ObjectCollectingSeriesESRepository extends RWSeriesESRepository<Obj
 	}
 
 	private DateHistogramAggregationBuilder getClassification(DataQueryDTO elasticQueryDTO) {
-		
+
 		return getDateHistogramAggregation(
 			elasticQueryDTO.getInterval() != null ? SeriesQueryUtils.getInterval(elasticQueryDTO.getInterval())
 				: DateHistogramInterval.QUARTER)

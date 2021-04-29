@@ -9,9 +9,9 @@ package es.redmic.es.geodata.tracking.common.repository;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -30,7 +30,7 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.BaseAggregationBuilder;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms.Order;
+import org.elasticsearch.search.aggregations.BucketOrder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
@@ -44,16 +44,16 @@ import es.redmic.models.es.geojson.common.model.GeoSearchWrapper;
 
 @Repository
 public class TrackingESRepository extends ClusterTrackingESRepository<GeoPointData> {
-	
+
 	@Value("${controller.mapping.TAXONS}")
 	private String TAXONS_TARGET;
-	
+
 	@Value("${controller.mapping.ANIMAL}")
 	private String ANIMAL_TARGET;
-	
+
 	@Value("${controller.mapping.DEVICE}")
 	private String DEVICE_TARGET;
-	
+
 	@Value("${controller.mapping.PLATFORM}")
 	private String PLATFORM_TARGET;
 
@@ -68,12 +68,12 @@ public class TrackingESRepository extends ClusterTrackingESRepository<GeoPointDa
 		List<AggsPropertiesDTO> aggs = elasticQueryDTO.getAggs();
 
 		if (aggs != null && aggs.size() > 0 && aggs.get(0).getField().equals("elements")) {
-			List<BaseAggregationBuilder> aggsBuilder = new ArrayList<BaseAggregationBuilder>();
+			List<BaseAggregationBuilder> aggsBuilder = new ArrayList<>();
 
 			aggsBuilder.add(AggregationBuilders.terms("animal").field("properties.collect.animal.id")
-					.order(Order.term(true)).size(MAX_SIZE));
+					.order(BucketOrder.key(true)).size(MAX_SIZE));
 			aggsBuilder.add(AggregationBuilders.terms("platform").field("properties.inTrack.platform.id")
-					.order(Order.term(true)).size(MAX_SIZE));
+					.order(BucketOrder.key(true)).size(MAX_SIZE));
 
 			return aggsBuilder;
 		} else
@@ -99,7 +99,7 @@ public class TrackingESRepository extends ClusterTrackingESRepository<GeoPointDa
 
 	@Override
 	public HashMap<String, CategoryPathInfo> getCategoriesPaths() {
-		
+
 		// TODO: usar el diccionario de dto a model cuando esté implementado
 		HashMap<String, CategoryPathInfo> categoriesPaths = new HashMap<>();
 		categoriesPaths.put("properties.taxon.id", new CategoryPathInfo("properties.collect.taxon.path", TAXONS_TARGET));

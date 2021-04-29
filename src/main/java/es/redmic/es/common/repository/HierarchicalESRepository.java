@@ -9,9 +9,9 @@ package es.redmic.es.common.repository;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -35,11 +35,11 @@ import es.redmic.models.es.data.common.model.DataSearchWrapper;
 public abstract class HierarchicalESRepository<TModel extends BaseES<?>, TDTO extends BaseDTO<?>>
 		extends RWDataESRepository<TModel> {
 
-	public HierarchicalESRepository() {
+	protected HierarchicalESRepository() {
 		super();
 	}
 
-	public HierarchicalESRepository(String[] index, String[] type) {
+	protected HierarchicalESRepository(String[] index, String type) {
 		super(index, type);
 	}
 
@@ -78,7 +78,7 @@ public abstract class HierarchicalESRepository<TModel extends BaseES<?>, TDTO ex
 	 * Debe estar implementado en cada repositorio para darle una funcionalidad
 	 * específica y aquí estarán las funcionalidades que comparten todos los
 	 * repositorios.
-	 * 
+	 *
 	 * @param terms
 	 *            Map de términos pasados por la query.
 	 * @param query
@@ -96,7 +96,7 @@ public abstract class HierarchicalESRepository<TModel extends BaseES<?>, TDTO ex
 
 			if (selected != null) {
 				List<String> ids = (List<String>) (List<?>) selected.get("ids");
-				if (ids != null && ids.size() > 0) {
+				if (ids != null && !ids.isEmpty()) {
 					String term = "path.split";
 					if (ids.get(0).contains("."))
 						term = "path";

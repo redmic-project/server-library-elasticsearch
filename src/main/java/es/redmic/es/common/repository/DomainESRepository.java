@@ -9,9 +9,9 @@ package es.redmic.es.common.repository;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,7 +28,7 @@ import es.redmic.models.es.data.common.model.DataSearchWrapper;
 
 public class DomainESRepository<TModel extends BaseES<Long>> extends RWDataESRepository<TModel> {
 
-	public DomainESRepository(String[] index, String[] type) {
+	public DomainESRepository(String[] index, String type) {
 		super(index, type);
 	}
 
