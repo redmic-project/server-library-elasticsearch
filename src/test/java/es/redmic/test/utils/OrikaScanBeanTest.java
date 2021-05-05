@@ -58,7 +58,7 @@ import ma.glasnost.orika.metadata.TypeFactory;
  *
  * @author Ken Blair
  */
-@Component
+//@Component
 public class OrikaScanBeanTest extends ConfigurableMapper implements OrikaScanBeanESItfc {
 
 	public OrikaScanBeanTest() {

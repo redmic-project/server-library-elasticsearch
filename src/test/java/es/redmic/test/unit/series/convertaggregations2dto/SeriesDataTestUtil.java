@@ -81,7 +81,7 @@ public abstract class SeriesDataTestUtil extends JsonToBeanTestUtil {
 		SeriesSearchWrapper<ObjectCollectingSeries> result = jacksonMapper
 				.readValue(getJsonString(configTest.getDataIn()), modelWrapperType);
 
-		Object dtoOut = factory.getMapperFacade().convert(result.getAggregations(), configTest.getOutClass(), null);
+		Object dtoOut = factory.getMapperFacade().convert(result.getAggregations(), configTest.getOutClass(), null, null);
 		String dtoStringExpected = getJsonString(configTest.getDataOut());
 
 		JSONAssert.assertEquals(jacksonMapper.writeValueAsString(dtoOut), dtoStringExpected, false);

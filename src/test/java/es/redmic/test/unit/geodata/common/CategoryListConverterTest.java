@@ -61,7 +61,7 @@ public class CategoryListConverterTest extends JsonToBeanTestUtil {
 
 		GeoSearchWrapper result = (GeoSearchWrapper) getBean(modelInPath, type);
 
-		Object dtoOut = factory.getMapperFacade().convert(result.getAggregations(), CategoryListDTO.class, null);
+		Object dtoOut = factory.getMapperFacade().convert(result.getAggregations(), CategoryListDTO.class, null, null);
 		String dtoStringExpected = getJsonString(dtoOutPath);
 
 		JSONAssert.assertEquals(jacksonMapper.writeValueAsString(dtoOut), dtoStringExpected, false);
