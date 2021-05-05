@@ -28,8 +28,8 @@ import es.redmic.models.es.administrative.model.Organisation;
 @Repository
 public class OrganisationESRepository extends RWDataESRepository<Organisation> {
 
-	private static String[] INDEX = { "administrative" };
-	private static String TYPE = "organisation";
+	private static String[] INDEX = { "organisation" };
+	private static String TYPE = "administrative";
 
 	public OrganisationESRepository() {
 		super(INDEX, TYPE);

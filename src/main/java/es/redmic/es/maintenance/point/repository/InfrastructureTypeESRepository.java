@@ -29,8 +29,8 @@ import es.redmic.models.es.maintenance.point.model.InfrastructureType;
 @Repository
 public class InfrastructureTypeESRepository extends ClassificationBaseESRepository<InfrastructureType, InfrastructureTypeDTO> {
 
-	private static String[] INDEX = { "classification-domains" };
-	private static String TYPE = "infrastructuretype";
+	private static String[] INDEX = { "infrastructuretype" };
+	private static String TYPE = "classification";
 
 	public InfrastructureTypeESRepository() {
 		super(INDEX, TYPE);

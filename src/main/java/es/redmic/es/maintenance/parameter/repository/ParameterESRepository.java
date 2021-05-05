@@ -30,8 +30,8 @@ import es.redmic.models.es.maintenance.parameter.model.Parameter;
 @Repository
 public class ParameterESRepository extends RWDataESRepository<Parameter> {
 
-	private static String[] INDEX = { "parameter-domains" };
-	private static String TYPE = "parameter";
+	private static String[] INDEX = { "parameter" };
+	private static String TYPE = "parameters";
 
 	public ParameterESRepository() {
 		super(INDEX, TYPE);

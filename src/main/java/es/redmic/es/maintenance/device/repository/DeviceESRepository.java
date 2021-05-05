@@ -27,8 +27,8 @@ import es.redmic.models.es.maintenance.device.model.Device;
 
 @Repository
 public class DeviceESRepository extends RWDataESRepository<Device> {
-	private static String[] INDEX = { "administrative" };
-	private static String TYPE = "device";
+	private static String[] INDEX = { "device" };
+	private static String TYPE = "administrative";
 
 	public DeviceESRepository() {
 		super(INDEX, TYPE);

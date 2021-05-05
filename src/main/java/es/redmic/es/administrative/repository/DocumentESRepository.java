@@ -22,24 +22,13 @@ package es.redmic.es.administrative.repository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-
-import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexRequest;
-import org.elasticsearch.action.index.IndexResponse;
-import org.elasticsearch.action.support.WriteRequest.RefreshPolicy;
-import org.elasticsearch.action.update.UpdateRequest;
-import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.rest.RestStatus;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import es.redmic.es.data.common.repository.RWDataESRepository;
 import es.redmic.exception.data.ItemNotFoundException;
-import es.redmic.exception.elasticsearch.ESUpdateException;
 import es.redmic.models.es.administrative.model.Document;
 import es.redmic.models.es.common.query.dto.DataQueryDTO;
 import es.redmic.models.es.data.common.model.DataHitWrapper;
@@ -53,8 +42,6 @@ public class DocumentESRepository extends RWDataESRepository<Document> {
 	private static String TYPE = "document";
 
 	private static String BASE_INDEX = "document-";
-
-	private final Logger LOGGER = LoggerFactory.getLogger(DocumentESRepository.class);
 
 	public DocumentESRepository() {
 		super(INDEX, TYPE);

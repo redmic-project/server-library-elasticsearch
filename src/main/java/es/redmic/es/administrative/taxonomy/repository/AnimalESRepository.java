@@ -32,8 +32,8 @@ import es.redmic.models.es.data.common.model.DataSearchWrapper;
 @Repository
 public class AnimalESRepository extends RWDataESRepository<Animal> {
 
-	private static String[] INDEX = { "taxons" };
-	private static String TYPE = "animal";
+	private static String[] INDEX = { "animal" };
+	private static String TYPE = "taxon";
 
 	public AnimalESRepository() {
 		super(INDEX, TYPE);

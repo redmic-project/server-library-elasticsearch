@@ -43,8 +43,8 @@ public class SelectionWorkRepository extends RWDataESRepository<Selection> {
 	@Autowired
 	ElasticPersistenceUtils<Selection> elasticPersistenceUtils;
 
-	public static String[] INDEX = { "user" };
-	public static String TYPE = "selectionWork";
+	public static String[] INDEX = { "selectionwork" };
+	public static String TYPE = "selection";
 
 	public SelectionWorkRepository() {
 		super(INDEX, TYPE);

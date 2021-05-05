@@ -28,8 +28,8 @@ import es.redmic.models.es.maintenance.objects.model.ObjectType;
 
 @Repository
 public class ObjectTypeESRepository extends ClassificationBaseESRepository<ObjectType, ObjectTypeDTO> {
-	private static String[] INDEX = { "parameter-domains" };
-	private static String TYPE = "objecttype";
+	private static String[] INDEX = { "objecttype" };
+	private static String TYPE = "classification";
 
 	public ObjectTypeESRepository() {
 		super(INDEX, TYPE);

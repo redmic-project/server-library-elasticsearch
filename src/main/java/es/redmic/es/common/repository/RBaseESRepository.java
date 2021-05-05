@@ -88,7 +88,6 @@ import es.redmic.exception.data.ItemNotFoundException;
 import es.redmic.exception.databinding.RequestNotValidException;
 import es.redmic.exception.elasticsearch.ESCreateMappingException;
 import es.redmic.exception.elasticsearch.ESNotExistsIndexException;
-import es.redmic.exception.elasticsearch.ESNotExistsTypeException;
 import es.redmic.exception.elasticsearch.ESQueryException;
 import es.redmic.models.es.common.model.BaseES;
 import es.redmic.models.es.common.query.dto.DataQueryDTO;
@@ -122,6 +121,9 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 	protected String POSTTAGS = "</b>";
 
 	protected Integer MAX_SIZE = 100000;
+
+	protected String MAPPING_BASE_PATH = "/mappings/";
+	protected String MAPPING_FILE_EXTENSION = ".json";
 
 	@Autowired
 	protected ObjectMapper objectMapper;
@@ -192,10 +194,10 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 				} else if (noExist && !checkMappings) {
 					throw new ESNotExistsIndexException(index);
 				} else {
-					checkType(index);
+					//checkType(index);
 				}
 			} else {
-				checkType(index);
+				//checkType(index);
 			}
 
 		}
@@ -204,7 +206,7 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 	/**
 	 * Comprueba que existe el type para un index en concreto
 	 */
-	private void checkType(String index) {
+	/*-private void checkType(String index) {
 
 		GetMappingsRequest request = new GetMappingsRequest();
 		request.indices(index);
@@ -232,7 +234,7 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 				}
 			});
 		}
-	}
+	}-*/
 
 	/**
 	 * En caso de no existir el index, se debe crear index y type con mapping. Si se
@@ -279,14 +281,21 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 	 */
 	private String getSettings(String index, String type) {
 
+		String mappingFilePath = getMappingFilePath(index, type);
+
 		try {
-			InputStream resource = new ClassPathResource("/mappings/" + index + "/" + type + ".json").getInputStream();
+			InputStream resource = new ClassPathResource(mappingFilePath).getInputStream();
 
 			return IOUtils.toString(resource);
 		} catch (IOException e) {
 			e.printStackTrace();
+			LOGGER.error("Error obteniendo mapping {}",  mappingFilePath);
 			throw new ResourceNotFoundException(e);
 		}
+	}
+
+	protected String getMappingFilePath(String index, String type) {
+		return MAPPING_BASE_PATH + type + "/" + index + MAPPING_FILE_EXTENSION;
 	}
 
 	/**

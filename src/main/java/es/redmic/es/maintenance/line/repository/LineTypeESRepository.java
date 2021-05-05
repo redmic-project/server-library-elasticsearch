@@ -28,8 +28,8 @@ import es.redmic.models.es.maintenance.line.model.LineType;
 
 @Repository
 public class LineTypeESRepository extends ClassificationBaseESRepository<LineType, LineTypeDTO> {
-	private static String[] INDEX = { "classification-domains" };
-	private static String TYPE = "linetype";
+	private static String[] INDEX = { "linetype" };
+	private static String TYPE = "classification";
 
 	public LineTypeESRepository() {
 		super(INDEX, TYPE);

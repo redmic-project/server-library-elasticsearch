@@ -34,7 +34,7 @@ import es.redmic.models.es.data.common.model.DataSearchWrapper;
 public abstract class HierarchicalTaxonomyESRepository<TModel extends Taxon, TDTO extends TaxonWithOutParentDTO>
 		extends HierarchicalESRepository<TModel, TDTO> {
 
-	private static String[] INDEX = { "taxons" };
+	private static String[] INDEX = { "taxon" };
 	private static String TYPE = "taxon";
 
 	protected HierarchicalTaxonomyESRepository() {

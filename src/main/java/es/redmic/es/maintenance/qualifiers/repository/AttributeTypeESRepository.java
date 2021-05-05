@@ -29,8 +29,8 @@ import es.redmic.models.es.maintenance.qualifiers.model.AttributeType;
 @Repository
 public class AttributeTypeESRepository extends ClassificationBaseESRepository<AttributeType, AttributeTypeDTO> {
 
-	private static String[] INDEX = { "parameter-domains" };
-	private static String TYPE = "attributetype";
+	private static String[] INDEX = { "attributetype" };
+	private static String TYPE = "classification";
 
 	public AttributeTypeESRepository() {
 		super(INDEX, TYPE);

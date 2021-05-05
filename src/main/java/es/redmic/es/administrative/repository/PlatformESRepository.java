@@ -32,8 +32,8 @@ import es.redmic.models.es.data.common.model.DataSearchWrapper;
 @Repository
 public class PlatformESRepository extends RWDataESRepository<Platform> {
 
-	private static String[] INDEX = { "administrative" };
-	private static String TYPE = "platform";
+	private static String[] INDEX = { "platform" };
+	private static String TYPE = "administrative";
 
 	public PlatformESRepository() {
 		super(INDEX, TYPE);

@@ -28,8 +28,8 @@ import es.redmic.models.es.administrative.taxonomy.model.Misidentification;
 @Repository
 public class MisidentificationESRepository extends RWDataESRepository<Misidentification> {
 
-	private static String[] INDEX = { "taxons" };
-	private static String TYPE = "misidentification";
+	private static String[] INDEX = { "misidentification" };
+	private static String TYPE = "taxon";
 
 	public MisidentificationESRepository() {
 		super(INDEX, TYPE);

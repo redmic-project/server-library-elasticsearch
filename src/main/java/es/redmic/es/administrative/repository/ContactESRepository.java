@@ -28,8 +28,8 @@ import es.redmic.models.es.administrative.model.Contact;
 @Repository
 public class ContactESRepository extends RWDataESRepository<Contact> {
 
-	private static String[] INDEX = { "administrative" };
-	private static String TYPE = "contact";
+	private static String[] INDEX = { "contact" };
+	private static String TYPE = "administrative";
 
 	public ContactESRepository() {
 		super(INDEX, TYPE);

@@ -77,6 +77,11 @@ public abstract class RSeriesESRepository<TModel extends SeriesCommon> extends R
 		return findById(id, null, null);
 	}
 
+	@Override
+	protected String getMappingFilePath(String index, String type) {
+		return MAPPING_BASE_PATH + index + "/" + type + MAPPING_FILE_EXTENSION;
+	}
+
 	/*
 	 * Sobrescribe método base para añadir query de control de accesso a datos
 	 */

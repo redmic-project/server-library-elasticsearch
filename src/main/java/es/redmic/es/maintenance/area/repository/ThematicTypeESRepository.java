@@ -28,8 +28,8 @@ import es.redmic.models.es.maintenance.areas.model.ThematicType;
 
 @Repository
 public class ThematicTypeESRepository extends ClassificationBaseESRepository<ThematicType, ThematicTypeDTO> {
-	private static String[] INDEX = { "classification-domains" };
-	private static String TYPE = "thematictype";
+	private static String[] INDEX = { "thematictype" };
+	private static String TYPE = "classification";
 
 	public ThematicTypeESRepository() {
 		super(INDEX, TYPE);

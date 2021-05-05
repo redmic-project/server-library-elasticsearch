@@ -26,8 +26,8 @@ import es.redmic.models.es.maintenance.parameter.model.MetricDefinition;
 //@Repository
 public class MetricDefinitionESRepository extends RWDataESRepository<MetricDefinition> {
 
-	private static String[] INDEX = { "parameter-domains" };
-	private static String TYPE = "metricdefinition";
+	private static String[] INDEX = { "metricdefinition" };
+	private static String TYPE = "parameters";
 
 	public MetricDefinitionESRepository() {
 		super(INDEX, TYPE);

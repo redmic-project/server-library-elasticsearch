@@ -43,6 +43,11 @@ public class DomainESRepository<TModel extends BaseES<Long>> extends RWDataESRep
 	}
 
 	@Override
+	protected String getMappingFilePath(String index, String type) {
+		return MAPPING_BASE_PATH + "domains/domain" + MAPPING_FILE_EXTENSION;
+	}
+
+	@Override
 	protected String[] getDefaultSearchFields() {
 		return new String[] { "name", "name.suggest" };
 	}

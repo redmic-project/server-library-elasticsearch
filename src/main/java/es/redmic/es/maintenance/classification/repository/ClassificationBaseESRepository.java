@@ -41,6 +41,11 @@ public abstract class ClassificationBaseESRepository<TModel extends BaseES<?>, T
 	}
 
 	@Override
+	protected String getMappingFilePath(String index, String type) {
+		return MAPPING_BASE_PATH + "classifications/classification" + MAPPING_FILE_EXTENSION;
+	}
+
+	@Override
 	public QueryBuilder getTermQuery(Map<String, Object> terms, BoolQueryBuilder query) {
 
 
