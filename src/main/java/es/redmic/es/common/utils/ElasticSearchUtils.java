@@ -44,6 +44,7 @@ import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
@@ -157,6 +158,10 @@ public class ElasticSearchUtils {
 	 */
 	@SuppressWarnings("unchecked")
 	public static Map<String, Object> searchResponsetoObject(SearchResponse response) {
+
+		if (response == null || response.status().equals(RestStatus.NO_CONTENT) || !response.status().equals(RestStatus.ACCEPTED) ) {
+			return new HashMap<>();
+		}
 
 		XContentBuilder builder;
 		try {

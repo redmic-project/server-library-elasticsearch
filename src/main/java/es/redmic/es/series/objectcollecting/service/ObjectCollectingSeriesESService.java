@@ -92,7 +92,7 @@ public class ObjectCollectingSeriesESService
 		response = (SeriesSearchWrapper<ObjectCollectingSeries>) repository.find(query, parentId, grandparentId);
 
 		ClassificationsForListDTO dtoOut = orikaMapper.getMapperFacade().convert(response.getAggregations(),
-				ClassificationsForListDTO.class, null);
+				ClassificationsForListDTO.class, null, null);
 
 		return new ElasticSearchDTO(dtoOut.getClassification(), dtoOut.getClassification().size());
 	}
@@ -110,7 +110,7 @@ public class ObjectCollectingSeriesESService
 		response = (SeriesSearchWrapper<ObjectCollectingSeries>) repository.find(query, parentId, grandparentId);
 
 		ClassificationsForPieChartDTO dtoOut = orikaMapper.getMapperFacade().convert(response.getAggregations(),
-				ClassificationsForPieChartDTO.class, null);
+				ClassificationsForPieChartDTO.class, null, null);
 
 		return new ElasticSearchDTO(dtoOut.getClassification(), dtoOut.getClassification().size());
 	}
@@ -127,7 +127,7 @@ public class ObjectCollectingSeriesESService
 		SeriesSearchWrapper<ObjectCollectingSeries> response = (SeriesSearchWrapper<ObjectCollectingSeries>) repository
 				.find(query);
 		DataHistogramDTO dtoOut = orikaMapper.getMapperFacade().convert(response.getAggregations(),
-				DataHistogramDTO.class, null);
+				DataHistogramDTO.class, null, null);
 		dtoOut.setDataDefinitionIds((List<Integer>) query.getTerms().get("dataDefinition"));
 		return new ElasticSearchDTO(dtoOut, dtoOut.getData().size());
 	}

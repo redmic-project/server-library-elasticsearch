@@ -191,7 +191,7 @@ public abstract class RGeoDataESRepository<TModel extends Feature<?, ?>> extends
 		GeoSearchWrapper<?, ?> result = find(queryDTO, parentId);
 
 		CategoryListDTO categories = orikaMapper.getMapperFacade().convert(result.getAggregations(),
-				CategoryListDTO.class, null);
+				CategoryListDTO.class, null, null);
 
 		for (int i = 0; i < categories.size(); i++) {
 			String key = categories.get(i).getField();
