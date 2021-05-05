@@ -21,18 +21,18 @@
 		<!-- REDMIC -->
 		<redmic.models.version>0.12.0-feature-refactoring</redmic.models.version>
 		<redmic.exceptions.version>0.10.0</redmic.exceptions.version>
-		<redmic.utils.version>0.10.0</redmic.utils.version>
+		<redmic.utils.version>0.10.0-feature-changeJtsVersion</redmic.utils.version>
 
 		<!-- OTHERS -->
 		<elasticsearch.version>6.5.1</elasticsearch.version>
 		<jts-core.version>1.16.0</jts-core.version>
 		<spatial4j.version>0.7</spatial4j.version>
-		<ma.glasnost.orika.core.version>1.4.6</ma.glasnost.orika.core.version>
-		<commons-io.version>2.6</commons-io.version>
+		<ma.glasnost.orika.core.version>1.5.4</ma.glasnost.orika.core.version>
+		<commons-io.version>2.8.0</commons-io.version>
 		<jackson-datatype-jts.version>1.0-2.7</jackson-datatype-jts.version>
 
 		<jsonassert.version>1.5.0</jsonassert.version>
-		<powermock.version>1.7.3</powermock.version>
+		<powermock.version>2.0.9</powermock.version>
 	</properties>
 
 	<dependencies>
