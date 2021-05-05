@@ -9,9 +9,9 @@ package es.redmic.es.series.objectcollecting.converter;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,6 +33,7 @@ import es.redmic.models.es.maintenance.objects.dto.ObjectClassificationDTO;
 import es.redmic.models.es.maintenance.objects.dto.ObjectCollectingDTO;
 import es.redmic.models.es.maintenance.objects.dto.ObjectTypeBaseDTO;
 import es.redmic.models.es.maintenance.objects.model.ObjectType;
+import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.converter.BidirectionalConverter;
 import ma.glasnost.orika.metadata.Type;
 
@@ -45,7 +46,8 @@ public class ObjectCollectingClassificationESConverter
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public ObjectClassificationDTO convertTo(ObjectType source, Type<ObjectClassificationDTO> destinationType) {
+	public ObjectClassificationDTO convertTo(ObjectType source, Type<ObjectClassificationDTO> destinationType,
+		MappingContext mappingContext) {
 
 		ObjectClassificationDTO result = new ObjectClassificationDTO();// mapperFacade.map(source.getObjectGroup(),
 																		// ObjectClassificationDTO.class);
@@ -68,7 +70,9 @@ public class ObjectCollectingClassificationESConverter
 	}
 
 	@Override
-	public ObjectType convertFrom(ObjectClassificationDTO source, Type<ObjectType> destinationType) {
+	public ObjectType convertFrom(ObjectClassificationDTO source, Type<ObjectType> destinationType,
+		MappingContext mappingContext) {
+
 		return null;
 	}
 

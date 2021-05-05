@@ -55,7 +55,7 @@ public class InfrastructurePropertiesESMapper extends CustomMapper<GeoDataProper
 
 		if (a.getSite().getClassification() != null)
 			b.setInfrastructureType(mapperFacade.convert(a.getSite().getClassification(), classificationListType,
-					infrastructureTypeBaseDTOType, null));
+					infrastructureTypeBaseDTOType, null, null));
 
 		InnerHits inner_hits = (InnerHits) context.getProperty("inner_hits");
 
@@ -81,7 +81,7 @@ public class InfrastructurePropertiesESMapper extends CustomMapper<GeoDataProper
 		Site site = mapperFacade.map(b, Site.class);
 
 		site.setClassification(mapperFacade.convert(b.getInfrastructureType(), infrastructureTypeBaseDTOType,
-				classificationListType, null));
+				classificationListType, null, null));
 
 		a.setSite(site);
 		a.setUpdated(b.getUpdated());

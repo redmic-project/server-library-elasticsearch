@@ -9,9 +9,9 @@ package es.redmic.es.geodata.infrastructure.converter;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,6 +32,7 @@ import es.redmic.models.es.maintenance.common.model.ClassificationBase;
 import es.redmic.models.es.maintenance.common.model.ClassificationItem;
 import es.redmic.models.es.maintenance.point.dto.InfrastructureTypeBaseDTO;
 import es.redmic.models.es.maintenance.point.model.InfrastructureType;
+import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.converter.BidirectionalConverter;
 import ma.glasnost.orika.metadata.Type;
 
@@ -44,7 +45,7 @@ public class InfrastructureTypeClassificationESConverter
 
 	@Override
 	public List<ClassificationItem> convertTo(InfrastructureTypeBaseDTO source,
-			Type<List<ClassificationItem>> destinationType) {
+			Type<List<ClassificationItem>> destinationType, MappingContext mappingContext) {
 
 		List<ClassificationItem> result = new ArrayList<ClassificationItem>();
 
@@ -63,7 +64,7 @@ public class InfrastructureTypeClassificationESConverter
 
 	@Override
 	public InfrastructureTypeBaseDTO convertFrom(List<ClassificationItem> source,
-			Type<InfrastructureTypeBaseDTO> destinationType) {
+			Type<InfrastructureTypeBaseDTO> destinationType, MappingContext mappingContext) {
 
 		if (source == null || source.size() == 0)
 			return null;

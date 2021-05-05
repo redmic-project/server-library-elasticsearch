@@ -9,9 +9,9 @@ package es.redmic.es.series.objectcollecting.converter;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,6 +31,7 @@ import es.redmic.models.es.geojson.common.model.Aggregations;
 import es.redmic.models.es.series.objectcollecting.dto.ClassificationForListDTO;
 import es.redmic.models.es.series.objectcollecting.dto.ClassificationsForListDTO;
 import es.redmic.models.es.series.objectcollecting.dto.ObjectClassificationForListDTO;
+import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.metadata.Type;
 
 @Component
@@ -40,7 +41,7 @@ public class ClassificationForListConverter
 	@SuppressWarnings("unchecked")
 	@Override
 	public ClassificationsForListDTO convert(Aggregations source,
-			Type<? extends ClassificationsForListDTO> destinationType) {
+			Type<? extends ClassificationsForListDTO> destinationType, MappingContext mappingContext) {
 
 		ClassificationsForListDTO classificationList = new ClassificationsForListDTO();
 

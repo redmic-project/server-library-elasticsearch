@@ -9,9 +9,9 @@ package es.redmic.es.series.common.converter;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,6 +29,7 @@ import es.redmic.es.series.objectcollecting.converter.ClassificationConverterBas
 import es.redmic.models.es.geojson.common.model.Aggregations;
 import es.redmic.models.es.series.timeseries.dto.DataHistogramDTO;
 import es.redmic.models.es.series.timeseries.dto.DataHistogramItemDTO;
+import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.metadata.Type;
 
 @Component
@@ -36,7 +37,8 @@ public class DataHistogramConverter extends ClassificationConverterBase<Aggregat
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public DataHistogramDTO convert(Aggregations source, Type<? extends DataHistogramDTO> destinationType) {
+	public DataHistogramDTO convert(Aggregations source, Type<? extends DataHistogramDTO> destinationType,
+		MappingContext mappingContext) {
 
 		DataHistogramDTO data = new DataHistogramDTO();
 		Map<String, Object> aggregations = source.getAttributes();
@@ -52,7 +54,7 @@ public class DataHistogramConverter extends ClassificationConverterBase<Aggregat
 
 		DataHistogramItemDTO lastItem = new DataHistogramItemDTO();
 		for (int i = 0; i < size; i++) {
-			DataHistogramItemDTO item = mapperFacade.convert(hits.get(i), DataHistogramItemDTO.class, null);
+			DataHistogramItemDTO item = mapperFacade.convert(hits.get(i), DataHistogramItemDTO.class, null, null);
 			if (canInsertItem(lastItem, item)) {
 				data.setItemData(item);
 				lastItem = item;

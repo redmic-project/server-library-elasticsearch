@@ -9,9 +9,9 @@ package es.redmic.es.geodata.tracking.common.converter;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,6 +33,7 @@ import es.redmic.models.es.common.dto.UuidDTO;
 import es.redmic.models.es.geojson.common.model.Aggregations;
 import es.redmic.models.es.geojson.tracking.common.ElementListDTO;
 import ma.glasnost.orika.CustomConverter;
+import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.metadata.Type;
 
 @Component
@@ -46,7 +47,8 @@ public class ElementListConverter extends CustomConverter<Aggregations, ElementL
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public ElementListDTO convert(Aggregations source, Type<? extends ElementListDTO> destinationType) {
+	public ElementListDTO convert(Aggregations source, Type<? extends ElementListDTO> destinationType,
+		MappingContext mappingContext) {
 
 		ElementListDTO elementList = new ElementListDTO();
 
