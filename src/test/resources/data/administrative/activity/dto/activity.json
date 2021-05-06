@@ -4,6 +4,25 @@
 	"name": "Volcado de citas del documento BibOAG-00697",
 	"code": "VDOC-00697",
 	"endDate": "2014-10-06T09:00:00.000+00:00",
+	"parent": {
+		"id": 12,
+		"path": "root.1.12",
+		"name": "Banco de datos de especies marinas de Canarias (DIADEMA)"
+	},
+	"grandparent": {
+		"id": 1,
+		"path": "root.1",
+		"name": "Banco de datos de especies marinas de la Macaronesia"
+	},
+	"license": "license",
+	"spatialExtension": "bbox()",
+	"starred": false,
+	"themeInspire": {
+		"id": 1,
+		"name": "name",
+		"name_en": "name_en",
+		"code": "code"
+	},
 	"resources": [{
 		"id": 1,
 		"name": "Dataset",

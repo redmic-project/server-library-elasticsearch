@@ -37,6 +37,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 import es.redmic.es.administrative.mapper.ActivityESMapper;
+import es.redmic.es.administrative.mapper.ProjectESMapper;
 import es.redmic.es.administrative.repository.ActivityBaseESRepository;
 import es.redmic.es.administrative.service.ContactESService;
 import es.redmic.es.administrative.service.DocumentESService;
@@ -57,16 +58,19 @@ import es.redmic.es.maintenance.domain.administrative.service.ActivityTypeESServ
 import es.redmic.es.maintenance.domain.administrative.service.ContactRoleESService;
 import es.redmic.es.maintenance.domain.administrative.service.OrganisationRoleESService;
 import es.redmic.es.maintenance.domain.administrative.service.ScopeESService;
+import es.redmic.es.maintenance.domain.administrative.service.ThemeInspireESService;
 import es.redmic.models.es.administrative.dto.ActivityDTO;
 import es.redmic.models.es.administrative.model.Activity;
 import es.redmic.models.es.administrative.model.Contact;
 import es.redmic.models.es.administrative.model.Document;
 import es.redmic.models.es.administrative.model.Organisation;
 import es.redmic.models.es.administrative.model.Platform;
+import es.redmic.models.es.administrative.model.Program;
 import es.redmic.models.es.administrative.model.Project;
 import es.redmic.models.es.common.model.BaseES;
 import es.redmic.models.es.common.model.DomainES;
 import es.redmic.models.es.maintenance.administrative.model.ActivityType;
+import es.redmic.models.es.maintenance.administrative.model.ThemeInspire;
 import es.redmic.test.unit.geodata.common.MapperTestUtil;
 import ma.glasnost.orika.metadata.TypeFactory;
 
@@ -112,6 +116,9 @@ public class ActivityMapperTest extends MapperTestUtil {
 	@Mock
 	ActivityRankESService rankESService;
 
+	@Mock
+	ThemeInspireESService themeInspireESService;
+
 	@InjectMocks
 	ActivityESMapper mapper;
 
@@ -153,8 +160,8 @@ public class ActivityMapperTest extends MapperTestUtil {
 		Project project = (Project) getBean(projectModel, Project.class);
 		when(projectESService.findById(anyString())).thenReturn(project);
 
-		// Program program = (Program) getBean(programModel, Program.class);
-		// when(programESService.findById(anyString())).thenReturn(program);
+		Program program = (Program) getBean(programModel, Program.class);
+		when(programESService.findById(anyString())).thenReturn(program);
 
 		Organisation organisation = (Organisation) getBean(organisationModel, Organisation.class);
 		when(organisationESService.findById(anyString())).thenReturn(organisation);
@@ -171,12 +178,19 @@ public class ActivityMapperTest extends MapperTestUtil {
 		ActivityType activityType = (ActivityType) getBean(activityTypeModel, ActivityType.class);
 		when(activityTypeESService.findById(anyString())).thenReturn(activityType);
 
+		ThemeInspire themeInspire = new ThemeInspire();
+		themeInspire.setId(1L);
+		themeInspire.setName("name");
+		themeInspire.setName_en("name_en");
+		themeInspire.setCode("code");
+
 		DomainES domain = (DomainES) getBean(domainModel, DomainES.class);
 		when(accessibilityESService.findById(anyString())).thenReturn(domain);
 		when(scopeESService.findById(anyString())).thenReturn(domain);
 		when(contactRoleESService.findById(anyString())).thenReturn(domain);
 		when(organisationRoleESService.findById(anyString())).thenReturn(domain);
 		when(rankESService.findById(anyString())).thenReturn(domain);
+		when(themeInspireESService.findById(anyString())).thenReturn(themeInspire);
 	}
 
 	@Test
