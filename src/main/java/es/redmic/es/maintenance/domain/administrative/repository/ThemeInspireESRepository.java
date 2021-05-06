@@ -37,6 +37,6 @@ public class ThemeInspireESRepository extends RWDataESRepository<ThemeInspire> {
 
 	@Override
 	protected String getMappingFilePath(String index, String type) {
-		return MAPPING_BASE_PATH + "domains/" + INDEX + MAPPING_FILE_EXTENSION;
+		return MAPPING_BASE_PATH + "domains/" + INDEX[0] + MAPPING_FILE_EXTENSION;
 	}
 }
