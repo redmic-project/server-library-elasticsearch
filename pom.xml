@@ -24,7 +24,7 @@
 		<redmic.utils.version>0.10.0-feature-changeJtsVersion</redmic.utils.version>
 
 		<!-- OTHERS -->
-		<elasticsearch.version>6.5.1</elasticsearch.version>
+		<elasticsearch.version>6.6.2</elasticsearch.version>
 		<jts-core.version>1.16.0</jts-core.version>
 		<spatial4j.version>0.7</spatial4j.version>
 		<ma.glasnost.orika.core.version>1.5.4</ma.glasnost.orika.core.version>
