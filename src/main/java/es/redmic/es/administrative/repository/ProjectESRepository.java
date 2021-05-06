@@ -33,7 +33,7 @@ import es.redmic.models.es.data.common.model.DataSearchWrapper;
 public class ProjectESRepository extends ActivityCommonESRepository<Project> {
 
 	private static String[] INDEX = { "activity" };
-	private static String TYPE = "activity";
+	private static String TYPE = "_doc";
 
 	private static QueryBuilder INTERNAL_QUERY = QueryBuilders.boolQuery().must(QueryBuilders.termQuery("rank.id", 2));
 

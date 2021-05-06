@@ -28,7 +28,7 @@ import es.redmic.models.es.administrative.model.ActivityBase;
 public class ActivityBaseESRepository extends ActivityCommonESRepository<ActivityBase> {
 
 	private static String[] INDEX = { "activity" };
-	private static String TYPE = "activity";
+	private static String TYPE = "_doc";
 
 	public ActivityBaseESRepository() {
 		super(INDEX, TYPE);

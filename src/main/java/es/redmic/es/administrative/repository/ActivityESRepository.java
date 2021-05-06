@@ -40,7 +40,7 @@ import es.redmic.models.es.data.common.model.DataSearchWrapper;
 public class ActivityESRepository extends ActivityCommonESRepository<Activity> {
 
 	private static String[] INDEX = { "activity" };
-	private static String TYPE = "activity";
+	private static String TYPE = "_doc";
 
 	protected static String CHILDREN_NAME = "geodata";
 
