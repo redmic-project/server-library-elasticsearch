@@ -45,6 +45,11 @@ public abstract class ActivityCommonESRepository<TModel extends ActivityBase> ex
 	}
 
 	@Override
+	protected String getMappingFilePath(String index, String type) {
+		return MAPPING_BASE_PATH + "activity/" + getIndex()[0] + MAPPING_FILE_EXTENSION;
+	}
+
+	@Override
 	protected String[] getDefaultSearchFields() {
 		return new String[] { "name", "name.suggest", "code", "code.suggest" };
 	}
