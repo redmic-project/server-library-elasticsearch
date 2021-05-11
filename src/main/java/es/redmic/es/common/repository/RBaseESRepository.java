@@ -331,6 +331,8 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 				getRequest.routing(grandparentId);
 			}
 
+			LOGGER.debug("getRequest {} {} -> {}", getIndex(), getType(), getRequest.toString());
+
 			GetResponse response;
 			try {
 				response = ESProvider.getClient().get(getRequest, RequestOptions.DEFAULT);
@@ -398,8 +400,11 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 			.highlighter(getHighlightBuilder(queryDTO.getSuggest().getSearchFields()));
 
 		searchRequest.source(searchSourceBuilder);
+		searchRequest.types(getType());
 
 		SearchResponse searchResponse;
+
+		LOGGER.debug("suggest {} {} -> {}", getIndex(), getType(), searchRequest.toString());
 
 		try {
 			searchResponse = ESProvider.getClient().search(searchRequest, RequestOptions.DEFAULT);
@@ -452,6 +457,9 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 				request.add(item);
 			}
 		}
+
+		LOGGER.debug("multigetRequest {} {} -> {}", getIndex(), getType(), request.toString());
+
 		try {
 			return ESProvider.getClient().mget(request, RequestOptions.DEFAULT);
 		} catch (IOException e) {
@@ -491,7 +499,11 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 
 		searchRequest.source(searchSourceBuilder);
 
+		searchRequest.types(getType());
+
 		SearchResponse searchResponse;
+
+		LOGGER.debug("searchRequest {} {} -> {}", getIndex(), getType(), searchRequest.toString());
 
 		try {
 			searchResponse = ESProvider.getClient().search(searchRequest, RequestOptions.DEFAULT);
@@ -516,7 +528,11 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 
 		searchRequest.source(requestBuilder);
 
+		searchRequest.types(getType());
+
 		SearchResponse searchResponse;
+
+		LOGGER.debug("searchRequest {} {} -> {}", getIndex(), getType(), searchRequest.toString());
 
 		try {
 			searchResponse = ESProvider.getClient().search(searchRequest, RequestOptions.DEFAULT);
@@ -564,7 +580,7 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 		if (queryDTO.getText() != null && (queryDTO.getText().getHighlightFields() == null
 				|| queryDTO.getText().getHighlightFields().length == 0)) {
 
-					searchSourceBuilder.highlighter(getHighlightBuilder(queryDTO.getText().getHighlightFields()));
+			searchSourceBuilder.highlighter(getHighlightBuilder(queryDTO.getText().getHighlightFields()));
 		}
 		searchSourceBuilder.from(queryDTO.getFrom());
 		searchSourceBuilder.size(getSize(queryDTO, queryBuilder));
@@ -637,8 +653,11 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 		MultiSearchRequest request = new MultiSearchRequest();
 
 		for (int i = 0; i < searchs.size(); i++) {
-			request.add(new SearchRequest().indices(getIndex()).source(searchs.get(i)));
+			request.add(new SearchRequest().indices(getIndex()).types(getType()).source(searchs.get(i)));
 		}
+
+		LOGGER.debug("getMultiFindResponses {} {} -> {}", getIndex(), getType(), request.toString());
+
 		try {
 			return ESProvider.getClient().msearch(request, RequestOptions.DEFAULT);
 		} catch (IOException e) {
@@ -664,8 +683,11 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 
 		searchRequest.source(searchSourceBuilder);
 		searchRequest.scroll(new TimeValue(60000));
+		searchRequest.types(getType());
 
 		SearchResponse searchResponse;
+
+		LOGGER.debug("scrollQueryReturnItems {} {} -> {}", getIndex(), getType(), searchRequest.toString());
 		try {
 			searchResponse = ESProvider.getClient().search(searchRequest, RequestOptions.DEFAULT);
 		} catch (IOException e) {
@@ -681,6 +703,8 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 
 			SearchScrollRequest scrollRequest = new SearchScrollRequest(searchResponse.getScrollId());
 			scrollRequest.scroll(new TimeValue(600000));
+
+			LOGGER.debug("scrollQueryReturnItems {} {} -> {}", getIndex(), getType(), scrollRequest.toString());
 
 			try {
 				searchResponse = ESProvider.getClient().scroll(scrollRequest, RequestOptions.DEFAULT);
@@ -759,6 +783,9 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 		searchSourceBuilder.query(queryBuilder);
 		searchSourceBuilder.size(0);
 		searchRequest.source(searchSourceBuilder);
+		searchRequest.types(getType());
+
+		LOGGER.debug("getCount {} {} -> {}", getIndex(), getType(), searchRequest.toString());
 
 		SearchResponse queryCount;
 		try {
@@ -929,13 +956,13 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 
 	protected <W> W searchResponseToWrapper(SearchResponse response, JavaType wrapperType) {
 
-		return objectMapper.convertValue(ElasticSearchUtils.searchResponsetoObject(response), wrapperType);
+		return objectMapper.convertValue(ElasticSearchUtils.searchResponsetoObject(response, objectMapper), wrapperType);
 	}
 
 	@SuppressWarnings("unchecked")
 	protected <W> W mgetResponseToWrapper(MultiGetResponse result, JavaType wrapperType) {
 
-		return (W) ElasticSearchUtils.parseMGetHit(result, wrapperType);
+		return (W) ElasticSearchUtils.parseMGetHit(result, wrapperType, objectMapper);
 	}
 
 	public SimpleQueryDTO createSimpleQueryDTOFromSuggestQueryParams(String[] fields, String text, Integer size) {
