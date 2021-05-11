@@ -28,8 +28,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.annotation.PostConstruct;
-
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.get.MultiGetItemResponse;
@@ -39,8 +37,6 @@ import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.xcontent.ToXContentObject;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
-import org.elasticsearch.common.xcontent.XContentHelper;
-import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -55,7 +51,6 @@ import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.JavaType;
@@ -69,17 +64,6 @@ import es.redmic.models.es.common.query.dto.SortDTO;
 public class ElasticSearchUtils {
 
 	protected final static String SUGGESTSUFFIX = ".suggest";
-
-	@Autowired
-	ObjectMapper jacksonMapper;
-
-	// mapper estático para usarlos en las funciones estáticas de utils
-	static ObjectMapper jMapper;
-
-	@PostConstruct
-	public void initStaticMapper() {
-		jMapper = jacksonMapper;
-	}
 
 	/*
 	 * Obtiene los nombres de los campos de una clase
@@ -98,7 +82,7 @@ public class ElasticSearchUtils {
 		return fieldsName;
 	}
 
-	public static List<?> parseMGetHit(MultiGetResponse multiResponse, JavaType resultClass) {
+	public static List<?> parseMGetHit(MultiGetResponse multiResponse, JavaType resultClass, ObjectMapper mapper) {
 
 		MultiGetItemResponse[] responseList = multiResponse.getResponses();
 		List<Object> result = new ArrayList<>();
@@ -107,7 +91,7 @@ public class ElasticSearchUtils {
 			MultiGetItemResponse item = responseList[i];
 			GetResponse response = item.getResponse();
 			if (response != null && response.isExists()) {
-				result.add(jMapper.convertValue(getResponsetoObject(response), resultClass));
+				result.add(mapper.convertValue(getResponsetoObject(response), resultClass));
 			}
 		}
 		return result;
@@ -157,9 +141,9 @@ public class ElasticSearchUtils {
 	 * Pasa la respuesta map
 	 */
 	@SuppressWarnings("unchecked")
-	public static Map<String, Object> searchResponsetoObject(SearchResponse response) {
+	public static Map<String, Object> searchResponsetoObject(SearchResponse response, ObjectMapper mapper) {
 
-		if (response == null || response.status().equals(RestStatus.NO_CONTENT) || !response.status().equals(RestStatus.ACCEPTED) ) {
+		if (response == null || !response.status().equals(RestStatus.OK) || response.getHits().getTotalHits() < 0) {
 			return new HashMap<>();
 		}
 
@@ -170,7 +154,7 @@ public class ElasticSearchUtils {
 			response.innerToXContent(builder, ToXContentObject.EMPTY_PARAMS);
 			builder.endObject();
 
-			return jMapper.readValue(Strings.toString(builder), Map.class);
+			return mapper.readValue(Strings.toString(builder), Map.class);
 
 		} catch (IOException e) {
 			throw new ESParseException(e);
