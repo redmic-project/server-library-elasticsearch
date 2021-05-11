@@ -71,9 +71,9 @@ public class ActivityESMapper extends ActivityBaseESMapper<Activity, ActivityDTO
 		if (a.getActivityType() != null)
 			b.setActivityType(mapperFacade.map(a.getActivityType(), ActivityTypeDTO.class));
 
-		b.setParent(mapperFacade.map(getParent(a.getPath()), ActivityBaseDTO.class));
+		b.setParent(mapperFacade.map(a.getParent(), ActivityBaseDTO.class));
 
-		b.setGrandparent(mapperFacade.map(getGrandparent(a.getPath()), ActivityBaseDTO.class));
+		b.setGrandparent(mapperFacade.map(a.getGrandparent(), ActivityBaseDTO.class));
 
 		if (a.getThemeInspire() != null) {
 			b.setThemeInspire(mapperFacade.map(a.getThemeInspire(), ThemeInspireDTO.class));
