@@ -29,7 +29,7 @@ import org.locationtech.jts.geom.Point;
 import es.redmic.es.geodata.common.service.GeoDataESService;
 import es.redmic.es.geodata.geofixedstation.repository.GeoFixedBaseESRepository;
 import es.redmic.models.es.common.model.ReferencesES;
-import es.redmic.models.es.common.query.dto.DataQueryDTO;
+import es.redmic.models.es.common.query.dto.GeoDataQueryDTO;
 import es.redmic.models.es.geojson.common.dto.FixedSurveySeriesPropertiesDTO;
 import es.redmic.models.es.geojson.common.dto.MetaFeatureDTO;
 import es.redmic.models.es.geojson.common.model.Feature;
@@ -98,7 +98,7 @@ public abstract class GeoFixedBaseESService<TDTO extends MetaFeatureDTO<FixedSur
 
 		if (paths.size() > 0) {
 
-			DataQueryDTO query = new DataQueryDTO();
+			GeoDataQueryDTO query = new GeoDataQueryDTO();
 			query.setReturnFields(new ArrayList<String>() {{
 				add("id");
 				add("uuid");

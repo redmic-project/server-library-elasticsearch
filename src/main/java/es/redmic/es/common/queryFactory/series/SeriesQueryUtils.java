@@ -9,9 +9,9 @@ package es.redmic.es.common.queryFactory.series;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,6 +23,7 @@ package es.redmic.es.common.queryFactory.series;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -30,27 +31,29 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.join.query.JoinQueryBuilders;
 import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInterval;
 
-import es.redmic.es.common.queryFactory.geodata.DataQueryUtils;
+import es.redmic.es.common.queryFactory.geodata.GeoDataQueryUtils;
 import es.redmic.exception.elasticsearch.ESHistogramIntervalQueryException;
-import es.redmic.models.es.common.query.dto.DataQueryDTO;
+import es.redmic.models.es.common.query.dto.GeoDataQueryDTO;
 
-public abstract class SeriesQueryUtils extends DataQueryUtils {
+public abstract class SeriesQueryUtils extends GeoDataQueryUtils {
 
 	// @FORMATTER:OFF
 
-	public final static BoolQueryBuilder INTERNAL_QUERY = null;
+	public static final BoolQueryBuilder INTERNAL_QUERY = null;
 
-	public final static String DEFAULT_FIELD = "value", DATETIME_FIELD = "date", PARENT = "geodata",
-			GRANDPARENT = "activity";
+	public static final String DEFAULT_FIELD = "value";
+	public static final String DATETIME_FIELD = "date";
+	public static final String PARENT = "geodata";
+	public static final String GRANDPARENT = "activity";
 
 	// @FORMATTER:ON
 
-	public static BoolQueryBuilder getQuery(DataQueryDTO queryDTO, QueryBuilder internalQuery,
+	public static BoolQueryBuilder getQuery(GeoDataQueryDTO queryDTO, QueryBuilder internalQuery,
 			QueryBuilder partialQuery) {
 		return getSeriesQuery(queryDTO, internalQuery, partialQuery);
 	}
 
-	protected static BoolQueryBuilder getSeriesQuery(DataQueryDTO queryDTO, QueryBuilder internalQuery,
+	protected static BoolQueryBuilder getSeriesQuery(GeoDataQueryDTO queryDTO, QueryBuilder internalQuery,
 			QueryBuilder partialQuery) {
 
 		BoolQueryBuilder query = getOrInitializeBaseQuery(getBaseQuery(queryDTO, internalQuery, partialQuery));
@@ -64,15 +67,11 @@ public abstract class SeriesQueryUtils extends DataQueryUtils {
 		return getResultQuery(query);
 	}
 
-	@SuppressWarnings("serial")
 	public static BoolQueryBuilder getItemsQuery(String id, String parentId, String grandparentId,
 			List<Long> accessibilityIds) {
 
-		ArrayList<String> ids = new ArrayList<String>() {
-			{
-				add(id);
-			}
-		};
+		ArrayList<String> ids = new ArrayList<>();
+		ids.add(id);
 		return getItemsQuery(ids, parentId, grandparentId, accessibilityIds);
 	}
 
@@ -81,10 +80,10 @@ public abstract class SeriesQueryUtils extends DataQueryUtils {
 
 		BoolQueryBuilder query = QueryBuilders.boolQuery();
 
-		if (accessibilityIds != null && accessibilityIds.size() > 0 && parentId != null && grandparentId != null)
+		if (accessibilityIds != null && !accessibilityIds.isEmpty() && parentId != null && grandparentId != null)
 			query.must(getQueryOnParentAndGrandparent(parentId, grandparentId, accessibilityIds));
 
-		else if (accessibilityIds != null && accessibilityIds.size() > 0 && parentId == null && grandparentId == null)
+		else if (accessibilityIds != null && !accessibilityIds.isEmpty() && parentId == null && grandparentId == null)
 			query.must(getAccessibilityQueryOnGrandparent(accessibilityIds));
 
 		else if (accessibilityIds == null && parentId != null && grandparentId != null)
@@ -102,17 +101,17 @@ public abstract class SeriesQueryUtils extends DataQueryUtils {
 		return new DateHistogramInterval(interval);
 	}
 
-	public static QueryBuilder getHierarchicalQuery(DataQueryDTO queryDTO, String parentId, String grandparentId) {
+	public static QueryBuilder getHierarchicalQuery(GeoDataQueryDTO queryDTO, String parentId, String grandparentId) {
 
 		List<Long> accessibilityIds = queryDTO.getAccessibilityIds();
 
-		if (parentId == null && grandparentId == null && (accessibilityIds == null || accessibilityIds.size() == 0))
+		if (parentId == null && grandparentId == null && (accessibilityIds == null || accessibilityIds.isEmpty()))
 			return null;
 
-		if (parentId != null && grandparentId != null && (accessibilityIds == null || accessibilityIds.size() == 0))
+		if (parentId != null && grandparentId != null && (accessibilityIds == null || accessibilityIds.isEmpty()))
 			return getQueryByParentAndGrandparent(parentId, grandparentId);
 
-		if (parentId == null || grandparentId == null && (accessibilityIds != null && accessibilityIds.size() > 0))
+		if (parentId == null || grandparentId == null && (accessibilityIds != null && !accessibilityIds.isEmpty()))
 			return getAccessibilityQueryOnGrandparent(accessibilityIds);
 
 		return getQueryOnParentAndGrandparent(parentId, grandparentId, accessibilityIds);
@@ -146,13 +145,10 @@ public abstract class SeriesQueryUtils extends DataQueryUtils {
 				JoinQueryBuilders.hasParentQuery(GRANDPARENT, getAccessibilityQuery(accessibilityIds), true), true);
 	}
 
-	@SuppressWarnings("serial")
-	public static HashSet<String> getFieldsExcludedOnQuery() {
+	public static Set<String> getFieldsExcludedOnQuery() {
 
-		return new HashSet<String>() {
-			{
-				add(ZRANGE_QUERY_FIELD);
-			}
-		};
+		HashSet<String> fieldsExcludedOnQuery = new HashSet<>();
+		fieldsExcludedOnQuery.add(ZRANGE_QUERY_FIELD);
+		return fieldsExcludedOnQuery;
 	}
 }

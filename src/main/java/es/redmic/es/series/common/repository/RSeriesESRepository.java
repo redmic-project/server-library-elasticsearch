@@ -45,6 +45,7 @@ import es.redmic.es.common.repository.RBaseESRepository;
 import es.redmic.es.common.service.UserUtilsServiceItfc;
 import es.redmic.exception.data.ItemNotFoundException;
 import es.redmic.models.es.common.query.dto.DataQueryDTO;
+import es.redmic.models.es.common.query.dto.GeoDataQueryDTO;
 import es.redmic.models.es.common.query.dto.MgetDTO;
 import es.redmic.models.es.common.query.dto.SimpleQueryDTO;
 import es.redmic.models.es.series.common.model.SeriesCommon;
@@ -151,12 +152,12 @@ public abstract class RSeriesESRepository<TModel extends SeriesCommon> extends R
 	}
 
 	@Override
-	public SeriesSearchWrapper<?> find(DataQueryDTO queryDTO) {
+	public SeriesSearchWrapper<?> find(GeoDataQueryDTO queryDTO) {
 		return find(queryDTO, null, null);
 	}
 
 	@Override
-	public SeriesSearchWrapper<?> find(DataQueryDTO queryDTO, String parentId, String grandparentId) {
+	public SeriesSearchWrapper<?> find(GeoDataQueryDTO queryDTO, String parentId, String grandparentId) {
 
 		QueryBuilder serviceQuery = SeriesQueryUtils.getHierarchicalQuery(queryDTO, parentId, grandparentId);
 
@@ -193,10 +194,9 @@ public abstract class RSeriesESRepository<TModel extends SeriesCommon> extends R
 	 *
 	 * @return numero de elementos que devolverá la query
 	 */
-	@Override
-	protected Integer getSize(DataQueryDTO queryDTO, BoolQueryBuilder query) {
+	protected Integer getSize(GeoDataQueryDTO queryDTO, BoolQueryBuilder query) {
 
-		if ((queryDTO.getAggs() != null && queryDTO.getAggs().size() > 0) || (queryDTO.getInterval() != null))
+		if ((queryDTO.getAggs() != null && !queryDTO.getAggs().isEmpty()) || (queryDTO.getInterval() != null))
 			return 0;
 
 		return super.getSize(queryDTO, query);
@@ -211,7 +211,7 @@ public abstract class RSeriesESRepository<TModel extends SeriesCommon> extends R
 	@Override
 	protected List<SortBuilder<?>> getSort() {
 
-		List<SortBuilder<?>> sorts = new ArrayList<SortBuilder<?>>();
+		List<SortBuilder<?>> sorts = new ArrayList<>();
 		sorts.add(SortBuilders.fieldSort(dateTimeField).order(SortOrder.ASC));
 		return sorts;
 	}

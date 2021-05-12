@@ -35,7 +35,7 @@ import es.redmic.models.es.common.dto.AggregationsDTO;
 import es.redmic.models.es.common.dto.JSONCollectionDTO;
 import es.redmic.models.es.common.dto.UuidDTO;
 import es.redmic.models.es.common.query.dto.AggsPropertiesDTO;
-import es.redmic.models.es.common.query.dto.DataQueryDTO;
+import es.redmic.models.es.common.query.dto.GeoDataQueryDTO;
 import es.redmic.models.es.geojson.common.dto.GeoJSONFeatureCollectionDTO;
 import es.redmic.models.es.geojson.common.model.GeoPointData;
 import es.redmic.models.es.geojson.common.model.GeoSearchWrapper;
@@ -82,7 +82,7 @@ public class TrackingESService extends RGeoDataESService<ElementTrackingDTO, Geo
 	 * dada.
 	 */
 
-	public JSONCollectionDTO getElementsByActivity(String activityId, DataQueryDTO query) {
+	public JSONCollectionDTO getElementsByActivity(String activityId, GeoDataQueryDTO query) {
 
 		query.setSize(0);
 		// añade identificador para que se cree la agregación correspondinte en
@@ -101,7 +101,7 @@ public class TrackingESService extends RGeoDataESService<ElementTrackingDTO, Geo
 		return collection;
 	}
 
-	public GeoJSONFeatureCollectionDTO getTrackingPointsInLineStringCluster(String activityId, DataQueryDTO queryDTO,
+	public GeoJSONFeatureCollectionDTO getTrackingPointsInLineStringCluster(String activityId, GeoDataQueryDTO queryDTO,
 			String uuid) {
 
 		GeoJSONFeatureCollectionDTO clusterCollection = repository.getTrackingPointsInLineStringCluster(activityId,
@@ -110,7 +110,7 @@ public class TrackingESService extends RGeoDataESService<ElementTrackingDTO, Geo
 		return clusterCollection;
 	}
 
-	public GeoJSONFeatureCollectionDTO getTrackingPointsInLineStringCluster(String activityId, DataQueryDTO queryDTO) {
+	public GeoJSONFeatureCollectionDTO getTrackingPointsInLineStringCluster(String activityId, GeoDataQueryDTO queryDTO) {
 
 		GeoJSONFeatureCollectionDTO clusterCollection = repository.getTrackingPointsInLineStringCluster(activityId,
 				queryDTO);
@@ -121,7 +121,7 @@ public class TrackingESService extends RGeoDataESService<ElementTrackingDTO, Geo
 	/*
 	 * Devuelve todos los puntos de un track para un elemento dado
 	 */
-	public GeoJSONFeatureCollectionDTO find(String activityId, String uuid, DataQueryDTO queryDTO) {
+	public GeoJSONFeatureCollectionDTO find(String activityId, String uuid, GeoDataQueryDTO queryDTO) {
 
 		GeoSearchWrapper<?, ?> result = repository.find(activityId, uuid, queryDTO);
 
@@ -139,7 +139,7 @@ public class TrackingESService extends RGeoDataESService<ElementTrackingDTO, Geo
 	@Override
 	protected MappingContext getMappingContext() {
 
-		Map<Object, Object> globalProperties = new HashMap<Object, Object>();
+		Map<Object, Object> globalProperties = new HashMap<>();
 		globalProperties.put("targetTypeDto", ElementTrackingDTO.class);
 
 		return new MappingContext(globalProperties);

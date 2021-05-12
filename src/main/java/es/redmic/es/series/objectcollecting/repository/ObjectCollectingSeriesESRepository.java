@@ -35,6 +35,7 @@ import es.redmic.es.common.queryFactory.series.SeriesQueryUtils;
 import es.redmic.es.series.common.repository.RWSeriesESRepository;
 import es.redmic.models.es.common.query.dto.AggsPropertiesDTO;
 import es.redmic.models.es.common.query.dto.DataQueryDTO;
+import es.redmic.models.es.common.query.dto.GeoDataQueryDTO;
 import es.redmic.models.es.series.objectcollecting.model.ObjectCollectingSeries;
 
 @Repository
@@ -53,13 +54,11 @@ public class ObjectCollectingSeriesESRepository extends RWSeriesESRepository<Obj
 	 * Sobrescribe getAggs para hacer las agregaciones mediante histogramas
 	 *
 	 */
-
-	@Override
-	protected List<BaseAggregationBuilder> getAggs(DataQueryDTO elasticQueryDTO) {
+	protected List<BaseAggregationBuilder> getAggs(GeoDataQueryDTO elasticQueryDTO) {
 
 		List<AggsPropertiesDTO> aggs = elasticQueryDTO.getAggs();
 
-		if (elasticQueryDTO.getInterval() == null && (aggs == null || aggs.size() == 0))
+		if (elasticQueryDTO.getInterval() == null && (aggs == null || aggs.isEmpty()))
 			return new ArrayList<>();
 
 		List<BaseAggregationBuilder> histogramAggs = new ArrayList<>();
@@ -77,14 +76,14 @@ public class ObjectCollectingSeriesESRepository extends RWSeriesESRepository<Obj
 		return histogramAggs;
 	}
 
-	private DateHistogramAggregationBuilder getTemporalDataAggregationBuilder(DataQueryDTO elasticQueryDTO) {
+	private DateHistogramAggregationBuilder getTemporalDataAggregationBuilder(GeoDataQueryDTO elasticQueryDTO) {
 
 		return getDateHistogramAggregation(elasticQueryDTO.getInterval() != null
 				? SeriesQueryUtils.getInterval(elasticQueryDTO.getInterval()) : DateHistogramInterval.QUARTER)
 						.subAggregation(AggregationBuilders.stats(defaultField).field(defaultField));
 	}
 
-	private NestedAggregationBuilder getClassificationList(DataQueryDTO elasticQueryDTO) {
+	private NestedAggregationBuilder getClassificationList(GeoDataQueryDTO elasticQueryDTO) {
 
 		DateHistogramAggregationBuilder dateHistogramBuilder = getDateHistogramAggregation(
 				elasticQueryDTO.getInterval() != null ? SeriesQueryUtils.getInterval(elasticQueryDTO.getInterval())
@@ -110,7 +109,7 @@ public class ObjectCollectingSeriesESRepository extends RWSeriesESRepository<Obj
 																				dateHistogramBuilder)))))));
 	}
 
-	private DateHistogramAggregationBuilder getClassification(DataQueryDTO elasticQueryDTO) {
+	private DateHistogramAggregationBuilder getClassification(GeoDataQueryDTO elasticQueryDTO) {
 
 		return getDateHistogramAggregation(
 			elasticQueryDTO.getInterval() != null ? SeriesQueryUtils.getInterval(elasticQueryDTO.getInterval())

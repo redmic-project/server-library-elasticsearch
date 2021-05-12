@@ -1,5 +1,7 @@
 package es.redmic.es.common.queryFactory.common;
 
+import java.io.IOException;
+
 /*-
  * #%L
  * ElasticSearch
@@ -9,9 +11,9 @@ package es.redmic.es.common.queryFactory.common;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,17 +24,26 @@ package es.redmic.es.common.queryFactory.common;
 
 import java.util.List;
 
+import org.elasticsearch.common.geo.builders.EnvelopeBuilder;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.GeoShapeQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.RangeQueryBuilder;
+import org.locationtech.jts.geom.Coordinate;
 
-import es.redmic.models.es.common.query.dto.DataQueryDTO;
+import es.redmic.exception.elasticsearch.ESBBoxQueryException;
+import es.redmic.models.es.common.query.dto.BboxQueryDTO;
 import es.redmic.models.es.common.query.dto.DateLimitsDTO;
 import es.redmic.models.es.common.query.dto.RegexpDTO;
+import es.redmic.models.es.common.query.dto.SimpleQueryDTO;
 import es.redmic.models.es.common.query.dto.TextQueryDTO;
 
 public abstract class BaseQueryUtils {
+
+	protected BaseQueryUtils() {
+		throw new IllegalStateException("Utility class");
+	}
 
 	// @formatter:off
 
@@ -41,9 +52,10 @@ public abstract class BaseQueryUtils {
 			SITE_PATH = "properties.site",
 			SAMPLINGPLACE_PATH = "properties.samplingPlace",
 			MEASUREMENT_PATH = "properties.measurements",
-			
+
+			GEOMETRY_PROPERTY = "geometry",
 			DATA_DEFINITION_PROPERTY = "dataDefinition",
-			
+
 			ID_PROPERTY = "id",
 			QFLAG_PROPERTY = "qFlag",
 			VFLAG_PROPERTY = "vFlag",
@@ -54,12 +66,12 @@ public abstract class BaseQueryUtils {
 
 	// @formatter:on
 
-	public static BoolQueryBuilder getQuery(DataQueryDTO queryDTO, QueryBuilder internalQuery,
+	public static <TQueryDTO extends SimpleQueryDTO> BoolQueryBuilder getQuery(TQueryDTO queryDTO, QueryBuilder internalQuery,
 			QueryBuilder partialQuery) {
 		return getBaseQuery(queryDTO, internalQuery, partialQuery);
 	}
 
-	protected static BoolQueryBuilder getBaseQuery(DataQueryDTO queryDTO, QueryBuilder internalQuery,
+	protected static <TQueryDTO extends SimpleQueryDTO> BoolQueryBuilder getBaseQuery(TQueryDTO queryDTO, QueryBuilder internalQuery,
 			QueryBuilder partialQuery) {
 
 		BoolQueryBuilder query = QueryBuilders.boolQuery();
@@ -72,6 +84,28 @@ public abstract class BaseQueryUtils {
 		return query.hasClauses() ? query : null;
 	}
 
+	public static GeoShapeQueryBuilder getBBoxQuery(BboxQueryDTO bbox) {
+
+		return getBBoxQuery(bbox, GEOMETRY_PROPERTY);
+	}
+
+	public static GeoShapeQueryBuilder getBBoxQuery(BboxQueryDTO bbox, String property) {
+
+		if (bbox != null && bbox.getBottomRightLat() != null && bbox.getBottomRightLon() != null
+				&& bbox.getTopLeftLat() != null && bbox.getTopLeftLon() != null) {
+
+			Coordinate topLeft = new Coordinate(bbox.getTopLeftLon(), bbox.getTopLeftLat());
+			Coordinate bottomRight = new Coordinate(bbox.getBottomRightLon(), bbox.getBottomRightLat());
+
+			try {
+				return QueryBuilders.geoShapeQuery(property, new EnvelopeBuilder(topLeft, bottomRight));
+			} catch (IOException e) {
+				throw new ESBBoxQueryException(e);
+			}
+		}
+		return null;
+	}
+
 	protected static QueryBuilder getTextQuery(TextQueryDTO queryText) {
 
 		if (queryText == null || queryText.getText() == null || queryText.getSearchFields() == null)
@@ -82,7 +116,7 @@ public abstract class BaseQueryUtils {
 
 	protected static BoolQueryBuilder getRegexpQuery(List<RegexpDTO> regexp) {
 
-		if (regexp == null || regexp.size() < 1)
+		if (regexp == null || regexp.isEmpty())
 			return null;
 
 		BoolQueryBuilder regexpQuery = QueryBuilders.boolQuery();
@@ -103,7 +137,7 @@ public abstract class BaseQueryUtils {
 
 	protected static QueryBuilder getFlagQuery(List<String> flags, String propertyPath) {
 
-		if (flags == null || flags.size() == 0)
+		if (flags == null || flags.isEmpty())
 			return null;
 
 		return QueryBuilders.termsQuery(propertyPath, flags);

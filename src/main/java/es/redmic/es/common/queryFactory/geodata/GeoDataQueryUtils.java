@@ -20,34 +20,28 @@ package es.redmic.es.common.queryFactory.geodata;
  * #L%
  */
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.lucene.search.join.ScoreMode;
-import org.elasticsearch.common.geo.builders.EnvelopeBuilder;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.GeoShapeQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.join.query.JoinQueryBuilders;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptType;
-import org.locationtech.jts.geom.Coordinate;
 
 import es.redmic.es.common.queryFactory.common.BaseQueryUtils;
-import es.redmic.exception.elasticsearch.ESBBoxQueryException;
-import es.redmic.models.es.common.query.dto.BboxQueryDTO;
-import es.redmic.models.es.common.query.dto.DataQueryDTO;
+import es.redmic.models.es.common.query.dto.GeoDataQueryDTO;
 import es.redmic.models.es.common.query.dto.PrecisionQueryDTO;
 import es.redmic.models.es.common.query.dto.RangeOperator;
 import es.redmic.models.es.common.query.dto.ValueQueryDTO;
 import es.redmic.models.es.common.query.dto.ZRangeDTO;
 
-public abstract class DataQueryUtils extends BaseQueryUtils {
+public abstract class GeoDataQueryUtils extends BaseQueryUtils {
 
 	public static final String ID_PROPERTY = "uuid";
 	public static final String Z_PROPERTY = "z";
@@ -62,12 +56,12 @@ public abstract class DataQueryUtils extends BaseQueryUtils {
 	public static final String DATELIMIT_QUERY_FIELD = "dateLimits";
 	public static final String PRECISION_QUERY_FIELD = "precision";
 
-	public static BoolQueryBuilder getQuery(DataQueryDTO queryDTO, QueryBuilder internalQuery,
+	public static BoolQueryBuilder getQuery(GeoDataQueryDTO queryDTO, QueryBuilder internalQuery,
 			QueryBuilder partialQuery) {
 		return getGeoDataQuery(queryDTO, internalQuery, partialQuery);
 	}
 
-	protected static BoolQueryBuilder getGeoDataQuery(DataQueryDTO queryDTO, QueryBuilder internalQuery,
+	protected static BoolQueryBuilder getGeoDataQuery(GeoDataQueryDTO queryDTO, QueryBuilder internalQuery,
 			QueryBuilder partialQuery) {
 
 		BoolQueryBuilder query = getOrInitializeBaseQuery(getBaseQuery(queryDTO, internalQuery, partialQuery));
@@ -75,23 +69,6 @@ public abstract class DataQueryUtils extends BaseQueryUtils {
 		addMustTermIfExist(query, getBBoxQuery(queryDTO.getBbox()));
 
 		return getResultQuery(query);
-	}
-
-	public static GeoShapeQueryBuilder getBBoxQuery(BboxQueryDTO bbox) {
-
-		if (bbox != null && bbox.getBottomRightLat() != null && bbox.getBottomRightLon() != null
-				&& bbox.getTopLeftLat() != null && bbox.getTopLeftLon() != null) {
-
-			Coordinate topLeft = new Coordinate(bbox.getTopLeftLon(), bbox.getTopLeftLat());
-			Coordinate bottomRight = new Coordinate(bbox.getBottomRightLon(), bbox.getBottomRightLat());
-
-			try {
-				return QueryBuilders.geoShapeQuery("geometry", new EnvelopeBuilder(topLeft, bottomRight));
-			} catch (IOException e) {
-				throw new ESBBoxQueryException(e);
-			}
-		}
-		return null;
 	}
 
 	protected static QueryBuilder getPrecisionQuery(PrecisionQueryDTO precision) {
@@ -112,7 +89,7 @@ public abstract class DataQueryUtils extends BaseQueryUtils {
 		if (zRange == null)
 			return null;
 
-		Map<String, Object> scriptParams = new HashMap<String, Object>();
+		Map<String, Object> scriptParams = new HashMap<>();
 		scriptParams.put("zMin", zRange.getMin());
 		scriptParams.put("zMax", zRange.getMax());
 		scriptParams.put("basePath", basePath);
@@ -150,7 +127,7 @@ public abstract class DataQueryUtils extends BaseQueryUtils {
 
 	protected static QueryBuilder getValueQuery(List<ValueQueryDTO> valueList, String basePath, String property) {
 
-		if (valueList == null || valueList.size() == 0)
+		if (valueList == null || valueList.isEmpty())
 			return null;
 
 		String valuePath = (basePath != null) ? (basePath + "." + property) : property;
@@ -198,10 +175,10 @@ public abstract class DataQueryUtils extends BaseQueryUtils {
 
 		BoolQueryBuilder query = QueryBuilders.boolQuery();
 
-		if (accessibilityIds != null && accessibilityIds.size() > 0 && parentId != null)
+		if (accessibilityIds != null && !accessibilityIds.isEmpty() && parentId != null)
 			query.must(getQueryOnParent(parentId, accessibilityIds));
 
-		else if (accessibilityIds != null && accessibilityIds.size() > 0 && parentId == null)
+		else if (accessibilityIds != null && !accessibilityIds.isEmpty() && parentId == null)
 			query.must(getAccessibilityQueryOnParent(accessibilityIds));
 
 		else if (parentId != null)
@@ -212,14 +189,14 @@ public abstract class DataQueryUtils extends BaseQueryUtils {
 		return query;
 	}
 
-	public static QueryBuilder getHierarchicalQuery(DataQueryDTO queryDTO, String parentId) {
+	public static QueryBuilder getHierarchicalQuery(GeoDataQueryDTO queryDTO, String parentId) {
 
 		List<Long> accessibilityIds = queryDTO.getAccessibilityIds();
 
-		if ((accessibilityIds == null || accessibilityIds.size() == 0) && parentId == null)
+		if ((accessibilityIds == null || accessibilityIds.isEmpty()) && parentId == null)
 			return null;
 
-		if (accessibilityIds == null || accessibilityIds.size() == 0)
+		if (accessibilityIds == null || accessibilityIds.isEmpty())
 			return getQueryByParent(parentId);
 
 		if (parentId == null)
@@ -230,7 +207,7 @@ public abstract class DataQueryUtils extends BaseQueryUtils {
 
 	public static QueryBuilder getQueryOnParent(String parentId, List<Long> accessibilityIds) {
 
-		if (parentId == null || accessibilityIds == null || accessibilityIds.size() == 0)
+		if (parentId == null || accessibilityIds == null || accessibilityIds.isEmpty())
 			return null;
 
 		return JoinQueryBuilders.hasParentQuery(PARENT, QueryBuilders.boolQuery()
@@ -247,7 +224,7 @@ public abstract class DataQueryUtils extends BaseQueryUtils {
 
 	public static QueryBuilder getAccessibilityQueryOnParent(List<Long> accessibilityIds) {
 
-		if (accessibilityIds == null || accessibilityIds.size() == 0)
+		if (accessibilityIds == null || accessibilityIds.isEmpty())
 			return null;
 
 		return JoinQueryBuilders.hasParentQuery(PARENT, getAccessibilityQuery(accessibilityIds), true);
@@ -265,7 +242,7 @@ public abstract class DataQueryUtils extends BaseQueryUtils {
 
 	public static QueryBuilder getDocumentsQueryOnParent(List<String> documentIds) {
 
-		if (documentIds == null || documentIds.size() == 0)
+		if (documentIds == null || !documentIds.isEmpty())
 			return null;
 
 		return JoinQueryBuilders.hasParentQuery(PARENT, QueryBuilders.nestedQuery("documents",

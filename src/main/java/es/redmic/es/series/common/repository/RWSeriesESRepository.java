@@ -25,21 +25,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 import org.apache.commons.lang3.StringUtils;
-import org.elasticsearch.action.delete.DeleteResponse;
-import org.elasticsearch.action.index.IndexRequest;
-import org.elasticsearch.action.index.IndexResponse;
-import org.elasticsearch.action.support.WriteRequest.RefreshPolicy;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.action.update.UpdateResponse;
-import org.elasticsearch.rest.RestStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import es.redmic.es.common.utils.ElasticPersistenceUtils;
-import es.redmic.exception.elasticsearch.ESIndexException;
-import es.redmic.exception.elasticsearch.ESUpdateException;
 import es.redmic.models.es.common.model.ReferencesES;
 import es.redmic.models.es.common.utils.HierarchicalUtils;
 import es.redmic.models.es.series.common.model.SeriesCommon;

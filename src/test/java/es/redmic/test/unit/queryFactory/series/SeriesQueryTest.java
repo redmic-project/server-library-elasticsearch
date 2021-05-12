@@ -9,9 +9,9 @@ package es.redmic.test.unit.queryFactory.series;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,22 +26,23 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.json.JSONException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import es.redmic.es.common.queryFactory.series.SeriesQueryUtils;
-import es.redmic.test.unit.queryFactory.common.BaseQueryTest;
+import es.redmic.test.unit.queryFactory.common.GeoDataQueryTest;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SeriesQueryTest extends BaseQueryTest {
+public class SeriesQueryTest extends GeoDataQueryTest {
 
-	protected String parentId = "AS65565sWEWEsd", grandparentId = "239";
+	protected String parentId = "AS65565sWEWEsd";
+	protected String grandparentId = "239";
 
 	@Test
 	public void getQuery_ReturnDefaultQuery_IfIsDefaultQueryDTO() throws IOException, JSONException {
 
-		BoolQueryBuilder query = SeriesQueryUtils.getQuery(dataQueryDTO, SeriesQueryUtils.INTERNAL_QUERY,
-				SeriesQueryUtils.getHierarchicalQuery(dataQueryDTO, parentId, grandparentId));
+		BoolQueryBuilder query = SeriesQueryUtils.getQuery(geoDataQueryDTO, SeriesQueryUtils.INTERNAL_QUERY,
+				SeriesQueryUtils.getHierarchicalQuery(geoDataQueryDTO, parentId, grandparentId));
 
 		String queryExpected = getExpectedQuery("/queryfactory/series/internalQuery.json");
 
@@ -53,8 +54,8 @@ public class SeriesQueryTest extends BaseQueryTest {
 
 		createDateLimitsQuery();
 
-		BoolQueryBuilder query = SeriesQueryUtils.getQuery(dataQueryDTO, SeriesQueryUtils.INTERNAL_QUERY,
-				SeriesQueryUtils.getHierarchicalQuery(dataQueryDTO, parentId));
+		BoolQueryBuilder query = SeriesQueryUtils.getQuery(geoDataQueryDTO, SeriesQueryUtils.INTERNAL_QUERY,
+				SeriesQueryUtils.getHierarchicalQuery(geoDataQueryDTO, parentId, grandparentId));
 
 		String queryExpected = getExpectedQuery("/queryfactory/series/dateLimitsQuery.json");
 
@@ -66,8 +67,8 @@ public class SeriesQueryTest extends BaseQueryTest {
 
 		createFlagsQuery();
 
-		BoolQueryBuilder query = SeriesQueryUtils.getQuery(dataQueryDTO, SeriesQueryUtils.INTERNAL_QUERY,
-				SeriesQueryUtils.getHierarchicalQuery(dataQueryDTO, parentId));
+		BoolQueryBuilder query = SeriesQueryUtils.getQuery(geoDataQueryDTO, SeriesQueryUtils.INTERNAL_QUERY,
+				SeriesQueryUtils.getHierarchicalQuery(geoDataQueryDTO, parentId, grandparentId));
 
 		String queryExpected = getExpectedQuery("/queryfactory/series/flagsQuery.json");
 
@@ -79,8 +80,8 @@ public class SeriesQueryTest extends BaseQueryTest {
 
 		createValueQuery();
 
-		BoolQueryBuilder query = SeriesQueryUtils.getQuery(dataQueryDTO, SeriesQueryUtils.INTERNAL_QUERY,
-				SeriesQueryUtils.getHierarchicalQuery(dataQueryDTO, parentId));
+		BoolQueryBuilder query = SeriesQueryUtils.getQuery(geoDataQueryDTO, SeriesQueryUtils.INTERNAL_QUERY,
+				SeriesQueryUtils.getHierarchicalQuery(geoDataQueryDTO, parentId, grandparentId));
 
 		String queryExpected = getExpectedQuery("/queryfactory/series/valueQuery.json");
 
@@ -92,10 +93,13 @@ public class SeriesQueryTest extends BaseQueryTest {
 
 		createZRangeQuery();
 
-		BoolQueryBuilder query = SeriesQueryUtils.getQuery(dataQueryDTO, SeriesQueryUtils.INTERNAL_QUERY,
-				SeriesQueryUtils.getHierarchicalQuery(dataQueryDTO, parentId));
+		BoolQueryBuilder query = SeriesQueryUtils.getQuery(geoDataQueryDTO, SeriesQueryUtils.INTERNAL_QUERY,
+				SeriesQueryUtils.getHierarchicalQuery(geoDataQueryDTO, parentId, grandparentId));
 
 		String queryExpected = getExpectedQuery("/queryfactory/series/zRangeQuery.json");
+
+		System.out.println(queryExpected);
+		System.out.println(query.toString());
 
 		JSONAssert.assertEquals(queryExpected, query.toString(), false);
 	}
@@ -108,7 +112,7 @@ public class SeriesQueryTest extends BaseQueryTest {
 		createValueQuery();
 		createZRangeQuery();
 
-		BoolQueryBuilder query = SeriesQueryUtils.getQuery(dataQueryDTO, null, null);
+		BoolQueryBuilder query = SeriesQueryUtils.getQuery(geoDataQueryDTO, null, null);
 
 		String queryExpected = getExpectedQuery("/queryfactory/series/fullQuery.json");
 

@@ -33,7 +33,7 @@ import es.redmic.exception.elasticsearch.ESTermQueryException;
 import es.redmic.models.es.common.dto.ElasticSearchDTO;
 import es.redmic.models.es.common.model.DomainES;
 import es.redmic.models.es.common.model.ReferencesES;
-import es.redmic.models.es.common.query.dto.DataQueryDTO;
+import es.redmic.models.es.common.query.dto.GeoDataQueryDTO;
 import es.redmic.models.es.maintenance.objects.model.ObjectType;
 import es.redmic.models.es.series.common.model.SeriesSearchWrapper;
 import es.redmic.models.es.series.objectcollecting.dto.ClassificationsForListDTO;
@@ -80,7 +80,7 @@ public class ObjectCollectingSeriesESService
 	}
 
 	@SuppressWarnings("unchecked")
-	public ElasticSearchDTO findClassificationList(DataQueryDTO query) {
+	public ElasticSearchDTO findClassificationList(GeoDataQueryDTO query) {
 
 		SeriesSearchWrapper<ObjectCollectingSeries> response;
 
@@ -98,7 +98,7 @@ public class ObjectCollectingSeriesESService
 	}
 
 	@SuppressWarnings("unchecked")
-	public ElasticSearchDTO findClassificationStatistics(DataQueryDTO query) {
+	public ElasticSearchDTO findClassificationStatistics(GeoDataQueryDTO query) {
 
 		SeriesSearchWrapper<ObjectCollectingSeries> response;
 
@@ -122,7 +122,7 @@ public class ObjectCollectingSeriesESService
 	}
 
 	@SuppressWarnings("unchecked")
-	public ElasticSearchDTO findTemporalDataStatistics(DataQueryDTO query) {
+	public ElasticSearchDTO findTemporalDataStatistics(GeoDataQueryDTO query) {
 
 		SeriesSearchWrapper<ObjectCollectingSeries> response = (SeriesSearchWrapper<ObjectCollectingSeries>) repository
 				.find(query);

@@ -30,19 +30,19 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import es.redmic.es.common.queryFactory.geodata.CitationQueryUtils;
-import es.redmic.es.common.queryFactory.geodata.DataQueryUtils;
-import es.redmic.test.unit.queryFactory.common.BaseQueryTest;
+import es.redmic.es.common.queryFactory.geodata.GeoDataQueryUtils;
+import es.redmic.test.unit.queryFactory.common.GeoDataQueryTest;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CitationQueryTest extends BaseQueryTest {
+public class CitationQueryTest extends GeoDataQueryTest {
 
 	protected String parentId = "239";
 
 	@Test
 	public void getQuery_ReturnInternalQuery_IfIsDefaultQueryDTO() throws IOException, JSONException {
 
-		BoolQueryBuilder query = CitationQueryUtils.getQuery(dataQueryDTO, CitationQueryUtils.INTERNAL_QUERY,
-				DataQueryUtils.getHierarchicalQuery(dataQueryDTO, parentId));
+		BoolQueryBuilder query = CitationQueryUtils.getQuery(geoDataQueryDTO, CitationQueryUtils.INTERNAL_QUERY,
+				GeoDataQueryUtils.getHierarchicalQuery(geoDataQueryDTO, parentId));
 
 		String queryExpected = getExpectedQuery("/queryfactory/geodata/citation/internalQuery.json");
 
@@ -54,8 +54,8 @@ public class CitationQueryTest extends BaseQueryTest {
 
 		createZRangeQuery();
 
-		BoolQueryBuilder query = CitationQueryUtils.getQuery(dataQueryDTO, CitationQueryUtils.INTERNAL_QUERY,
-				DataQueryUtils.getHierarchicalQuery(dataQueryDTO, parentId));
+		BoolQueryBuilder query = CitationQueryUtils.getQuery(geoDataQueryDTO, CitationQueryUtils.INTERNAL_QUERY,
+				GeoDataQueryUtils.getHierarchicalQuery(geoDataQueryDTO, parentId));
 
 		String queryExpected = getExpectedQuery("/queryfactory/geodata/citation/zRangeQuery.json");
 
@@ -67,8 +67,8 @@ public class CitationQueryTest extends BaseQueryTest {
 
 		createDateLimitsQuery();
 
-		BoolQueryBuilder query = CitationQueryUtils.getQuery(dataQueryDTO, CitationQueryUtils.INTERNAL_QUERY,
-				DataQueryUtils.getHierarchicalQuery(dataQueryDTO, parentId));
+		BoolQueryBuilder query = CitationQueryUtils.getQuery(geoDataQueryDTO, CitationQueryUtils.INTERNAL_QUERY,
+				GeoDataQueryUtils.getHierarchicalQuery(geoDataQueryDTO, parentId));
 
 		String queryExpected = getExpectedQuery("/queryfactory/geodata/citation/dateLimitsQuery.json");
 
@@ -80,8 +80,8 @@ public class CitationQueryTest extends BaseQueryTest {
 
 		createPrecisionQuery();
 
-		BoolQueryBuilder query = CitationQueryUtils.getQuery(dataQueryDTO, CitationQueryUtils.INTERNAL_QUERY,
-				DataQueryUtils.getHierarchicalQuery(dataQueryDTO, parentId));
+		BoolQueryBuilder query = CitationQueryUtils.getQuery(geoDataQueryDTO, CitationQueryUtils.INTERNAL_QUERY,
+				GeoDataQueryUtils.getHierarchicalQuery(geoDataQueryDTO, parentId));
 
 		String queryExpected = getExpectedQuery("/queryfactory/geodata/citation/precisionQuery.json");
 

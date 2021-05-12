@@ -4,14 +4,46 @@
       {
         "has_parent" : {
           "query" : {
-            "term" : {
-              "id" : {
-                "value" : "AS65565sWEWEsd",
-                "boost" : 1.0
-              }
+            "bool" : {
+              "must" : [
+                {
+                  "has_parent" : {
+                    "query" : {
+                      "bool" : {
+                        "must" : [
+                          {
+                            "term" : {
+                              "id" : {
+                                "value" : "239",
+                                "boost" : 1.0
+                              }
+                            }
+                          }
+                        ],
+                        "adjust_pure_negative" : true,
+                        "boost" : 1.0
+                      }
+                    },
+                    "parent_type" : "activity",
+                    "score" : true,
+                    "ignore_unmapped" : false,
+                    "boost" : 1.0
+                  }
+                },
+                {
+                  "term" : {
+                    "_id" : {
+                      "value" : "AS65565sWEWEsd",
+                      "boost" : 1.0
+                    }
+                  }
+                }
+              ],
+              "adjust_pure_negative" : true,
+              "boost" : 1.0
             }
           },
-          "parent_type" : "activity",
+          "parent_type" : "geodata",
           "score" : true,
           "ignore_unmapped" : false,
           "boost" : 1.0
@@ -30,6 +62,7 @@
                   "fuzzy_transpositions" : true,
                   "lenient" : false,
                   "zero_terms_query" : "NONE",
+                  "auto_generate_synonyms_phrase_query" : true,
                   "boost" : 1.0
                 }
               }

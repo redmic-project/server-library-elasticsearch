@@ -34,14 +34,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.databind.JavaType;
 
-import es.redmic.es.common.queryFactory.geodata.DataQueryUtils;
+import es.redmic.es.common.queryFactory.geodata.GeoDataQueryUtils;
 import es.redmic.es.common.repository.RBaseESRepository;
 import es.redmic.es.common.service.UserUtilsServiceItfc;
 import es.redmic.exception.common.ExceptionType;
 import es.redmic.exception.common.InternalException;
 import es.redmic.exception.data.ItemNotFoundException;
 import es.redmic.models.es.common.query.dto.AggsPropertiesDTO;
-import es.redmic.models.es.common.query.dto.DataQueryDTO;
+import es.redmic.models.es.common.query.dto.GeoDataQueryDTO;
 import es.redmic.models.es.common.query.dto.MgetDTO;
 import es.redmic.models.es.common.query.dto.SimpleQueryDTO;
 import es.redmic.models.es.common.request.dto.CategoryPathInfo;
@@ -74,7 +74,7 @@ public abstract class RGeoDataESRepository<TModel extends Feature<?, ?>> extends
 	@Override
 	public GeoHitWrapper<?, ?> findById(String id, String parentId) {
 
-		BoolQueryBuilder query = DataQueryUtils.getItemsQuery(id, parentId, userService.getAccessibilityControl());
+		BoolQueryBuilder query = GeoDataQueryUtils.getItemsQuery(id, parentId, userService.getAccessibilityControl());
 
 		GeoSearchWrapper<?, ?> result = findBy(query);
 
@@ -97,7 +97,7 @@ public abstract class RGeoDataESRepository<TModel extends Feature<?, ?>> extends
 
 		List<String> ids = dto.getIds();
 
-		BoolQueryBuilder query = DataQueryUtils.getItemsQuery(ids, parentId, userService.getAccessibilityControl());
+		BoolQueryBuilder query = GeoDataQueryUtils.getItemsQuery(ids, parentId, userService.getAccessibilityControl());
 
 		GeoSearchWrapper<?, ?> result = findBy(query, dto.getFields());
 
@@ -133,23 +133,22 @@ public abstract class RGeoDataESRepository<TModel extends Feature<?, ?>> extends
 				getSourceType(GeoSearchWrapper.class));
 	}
 
-	@Override
-	public List<String> suggest(String parentId, DataQueryDTO queryDTO) {
+	public List<String> suggest(String parentId, GeoDataQueryDTO queryDTO) {
 
-		QueryBuilder serviceQuery = DataQueryUtils.getHierarchicalQuery(queryDTO, parentId);
+		QueryBuilder serviceQuery = GeoDataQueryUtils.getHierarchicalQuery(queryDTO, parentId);
 
 		return suggest(queryDTO, serviceQuery);
 	}
 
 	@Override
-	public GeoSearchWrapper<?, ?> find(DataQueryDTO queryDTO) {
+	public GeoSearchWrapper<?, ?> find(GeoDataQueryDTO queryDTO) {
 		return find(queryDTO, null);
 	}
 
 	@Override
-	public GeoSearchWrapper<?, ?> find(DataQueryDTO queryDTO, String parentId) {
+	public GeoSearchWrapper<?, ?> find(GeoDataQueryDTO queryDTO, String parentId) {
 
-		QueryBuilder serviceQuery = DataQueryUtils.getHierarchicalQuery(queryDTO, parentId);
+		QueryBuilder serviceQuery = GeoDataQueryUtils.getHierarchicalQuery(queryDTO, parentId);
 
 		SearchResponse result = searchRequest(queryDTO, serviceQuery);
 
@@ -180,7 +179,7 @@ public abstract class RGeoDataESRepository<TModel extends Feature<?, ?>> extends
 				Geometry.class);
 	}
 
-	public CategoryListDTO getCategories(String parentId, DataQueryDTO queryDTO) {
+	public CategoryListDTO getCategories(String parentId, GeoDataQueryDTO queryDTO) {
 
 		HashMap<String, CategoryPathInfo> categoriesPaths = getCategoriesPaths();
 		if (categoriesPaths == null)
@@ -199,7 +198,7 @@ public abstract class RGeoDataESRepository<TModel extends Feature<?, ?>> extends
 			if (values != null)
 				categories.get(i).setTarget(values.getTarget());
 			else {
-				LOGGER.debug("No hay target asignado para la categoría " + key);
+				LOGGER.debug("No hay target asignado para la categoría {}", key);
 				throw new InternalException(ExceptionType.INTERNAL_EXCEPTION);
 			}
 		}

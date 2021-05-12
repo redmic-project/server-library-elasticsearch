@@ -32,7 +32,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import es.redmic.es.common.queryFactory.geodata.CitationQueryUtils;
-import es.redmic.es.common.queryFactory.geodata.DataQueryUtils;
+import es.redmic.es.common.queryFactory.geodata.GeoDataQueryUtils;
 import es.redmic.es.geodata.common.repository.GeoPresenceESRepository;
 import es.redmic.models.es.common.query.dto.DataQueryDTO;
 import es.redmic.models.es.common.request.dto.CategoryPathInfo;
@@ -63,7 +63,7 @@ public class CitationESRepository extends GeoPresenceESRepository<GeoPointData> 
 			queryBuilder = QueryBuilders.matchAllQuery();
 
 		BoolQueryBuilder filterBuilder = QueryBuilders.boolQuery()
-				.must(DataQueryUtils.getDocumentQueryOnParent(documentId));
+				.must(GeoDataQueryUtils.getDocumentQueryOnParent(documentId));
 
 		return (GeoSearchWrapper<GeoDataProperties, Point>) findBy(
 				QueryBuilders.boolQuery().must(queryBuilder).filter(filterBuilder));
@@ -88,7 +88,7 @@ public class CitationESRepository extends GeoPresenceESRepository<GeoPointData> 
 	public QueryBuilder getTermQuery(Map<String, Object> terms, BoolQueryBuilder query) {
 
 		if (terms.containsKey("documents") && terms.containsKey("taxon")) {
-			query.must(DataQueryUtils.getDocumentsQueryOnParent((ArrayList<String>) terms.get("documents")))
+			query.must(GeoDataQueryUtils.getDocumentsQueryOnParent((ArrayList<String>) terms.get("documents")))
 					.must(QueryBuilders.termQuery("properties.collect.taxon.path.split", terms.get("taxon")));
 		}
 		return super.getTermQuery(terms, query);

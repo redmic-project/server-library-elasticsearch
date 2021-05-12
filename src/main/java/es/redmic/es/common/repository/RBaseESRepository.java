@@ -23,6 +23,8 @@ package es.redmic.es.common.repository;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -35,8 +37,6 @@ import org.elasticsearch.action.admin.cluster.health.ClusterHealthRequest;
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthResponse;
 import org.elasticsearch.action.admin.indices.alias.get.GetAliasesRequest;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
-import org.elasticsearch.action.admin.indices.mapping.get.GetMappingsRequest;
-import org.elasticsearch.action.admin.indices.mapping.get.GetMappingsResponse;
 import org.elasticsearch.action.admin.indices.template.put.PutIndexTemplateRequest;
 import org.elasticsearch.action.get.GetRequest;
 
@@ -51,8 +51,6 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchScrollRequest;
 import org.elasticsearch.client.GetAliasesResponse;
 import org.elasticsearch.client.RequestOptions;
-import org.elasticsearch.cluster.metadata.MappingMetaData;
-import org.elasticsearch.common.collect.ImmutableOpenMap;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -90,7 +88,6 @@ import es.redmic.exception.elasticsearch.ESCreateMappingException;
 import es.redmic.exception.elasticsearch.ESNotExistsIndexException;
 import es.redmic.exception.elasticsearch.ESQueryException;
 import es.redmic.models.es.common.model.BaseES;
-import es.redmic.models.es.common.query.dto.DataQueryDTO;
 import es.redmic.models.es.common.query.dto.MgetDTO;
 import es.redmic.models.es.common.query.dto.SimpleQueryDTO;
 import es.redmic.models.es.common.query.dto.SortDTO;
@@ -98,7 +95,7 @@ import es.redmic.models.es.common.query.dto.SuggestQueryDTO;
 
 public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRBaseESRepository<TModel> {
 
-	protected final static Logger LOGGER = LoggerFactory.getLogger(RBaseESRepository.class);
+	protected static final Logger LOGGER = LoggerFactory.getLogger(RBaseESRepository.class);
 
 	@Value("${redmic.elasticsearch.check.mappings}")
 	private boolean checkMappings;
@@ -193,48 +190,11 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 					prepareIndex(index);
 				} else if (noExist && !checkMappings) {
 					throw new ESNotExistsIndexException(index);
-				} else {
-					//checkType(index);
 				}
-			} else {
-				//checkType(index);
 			}
 
 		}
 	}
-
-	/**
-	 * Comprueba que existe el type para un index en concreto
-	 */
-	/*-private void checkType(String index) {
-
-		GetMappingsRequest request = new GetMappingsRequest();
-		request.indices(index);
-
-		GetMappingsResponse getMappingResponse;
-		try {
-			getMappingResponse = ESProvider.getClient().indices().getMapping(request, RequestOptions.DEFAULT);
-		} catch (IOException e) {
-			e.printStackTrace();
-			throw new ESNotExistsIndexException(index);
-		}
-
-		ImmutableOpenMap<String, ImmutableOpenMap<String, MappingMetaData>> allMappings = getMappingResponse.mappings();
-
-		if (allMappings.get(index) != null && allMappings.get(index).get(getType()) == null) {
-			throw new ESNotExistsTypeException(index, getType());
-
-		} else if (allMappings.get(index) == null) {
-			allMappings.forEach((entry) -> {
-				String key = entry.key;
-				if (key.contains(index) && allMappings.get(key).get(getType()) == null) {
-					throw new ESNotExistsTypeException(index, getType());
-				} else if (key.contains(index)) {
-					return;
-				}
-			});
-		}
-	}-*/
 
 	/**
 	 * En caso de no existir el index, se debe crear index y type con mapping. Si se
@@ -286,7 +246,7 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 		try {
 			InputStream resource = new ClassPathResource(mappingFilePath).getInputStream();
 
-			return IOUtils.toString(resource);
+			return IOUtils.toString(resource, Charset.forName(StandardCharsets.UTF_8.name()));
 		} catch (IOException e) {
 			e.printStackTrace();
 			LOGGER.error("Error obteniendo mapping {}",  mappingFilePath);
@@ -350,13 +310,13 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 	}
 
 	@Override
-	public List<String> suggest(DataQueryDTO queryDTO) {
+	public <TQueryDTO extends SimpleQueryDTO> List<String> suggest(TQueryDTO queryDTO) {
 
 		return suggest(queryDTO, null);
 	}
 
 	@Override
-	public List<String> suggest(DataQueryDTO queryDTO, QueryBuilder partialQuery) {
+	public <TQueryDTO extends SimpleQueryDTO> List<String> suggest(TQueryDTO queryDTO, QueryBuilder partialQuery) {
 
 		SuggestQueryDTO suggestDTO = queryDTO.getSuggest();
 
@@ -434,7 +394,7 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 
 		FetchSourceContext fetchSourceContext;
 
-		if (dto.getFields() == null || dto.getFields().size() == 0) {
+		if (dto.getFields() == null || dto.getFields().isEmpty()) {
 			fetchSourceContext = new FetchSourceContext(true);
 		} else {
 			String[] fieldsArray = dto.getFields().toArray(new String[dto.getFields().size()]);
@@ -515,12 +475,12 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 		return searchResponse;
 	}
 
-	protected SearchResponse searchRequest(DataQueryDTO queryDTO) {
+	protected <TQueryDTO extends SimpleQueryDTO> SearchResponse searchRequest(TQueryDTO queryDTO) {
 
 		return searchRequest(queryDTO, null);
 	}
 
-	protected SearchResponse searchRequest(DataQueryDTO queryDTO, QueryBuilder serviceQuery) {
+	protected <TQueryDTO extends SimpleQueryDTO> SearchResponse searchRequest(TQueryDTO queryDTO, QueryBuilder serviceQuery) {
 
 		SearchRequest searchRequest = new SearchRequest(getIndex());
 
@@ -544,12 +504,12 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 		return searchResponse;
 	}
 
-	protected SearchSourceBuilder searchRequestBuilder(DataQueryDTO queryDTO) {
+	protected <TQueryDTO extends SimpleQueryDTO> SearchSourceBuilder searchRequestBuilder(TQueryDTO queryDTO) {
 
 		return searchRequestBuilder(queryDTO, null);
 	}
 
-	protected SearchSourceBuilder searchRequestBuilder(DataQueryDTO queryDTO, QueryBuilder serviceQuery) {
+	protected <TQueryDTO extends SimpleQueryDTO> SearchSourceBuilder searchRequestBuilder(TQueryDTO queryDTO, QueryBuilder serviceQuery) {
 
 		LOGGER.debug("Find en {} {} con queryDTO {} y query interna.", getIndex(), getType(), queryDTO);
 
@@ -600,7 +560,7 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 		return searchSourceBuilder;
 	}
 
-	protected BoolQueryBuilder getQueryBuilder(DataQueryDTO queryDTO, QueryBuilder serviceQuery) {
+	protected <TQueryDTO extends SimpleQueryDTO> BoolQueryBuilder getQueryBuilder(TQueryDTO queryDTO, QueryBuilder serviceQuery) {
 
 		QueryBuilder termQuery = getTermQuery(queryDTO.getTerms());
 
@@ -734,7 +694,7 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 	 *            el repositorio específico
 	 * @return query de elastic.
 	 */
-	protected BoolQueryBuilder getQuery(DataQueryDTO queryDTO, QueryBuilder internalQuery, QueryBuilder partialQuery) {
+	protected <TQueryDTO extends SimpleQueryDTO> BoolQueryBuilder getQuery(TQueryDTO queryDTO, QueryBuilder internalQuery, QueryBuilder partialQuery) {
 		return QueryFactory.getQuery(queryDTO, getInternalQuery(), partialQuery);
 	}
 
@@ -760,7 +720,7 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 	 * @return aggs de elastic.
 	 */
 
-	protected List<BaseAggregationBuilder> getAggs(DataQueryDTO elasticQueryDTO) {
+	protected <TQueryDTO extends SimpleQueryDTO> List<BaseAggregationBuilder> getAggs(TQueryDTO elasticQueryDTO) {
 		return ElasticSearchUtils.getAggs(elasticQueryDTO.getAggs());
 	}
 
@@ -813,7 +773,7 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 	 * @return numero de elementos que devolverá la query
 	 */
 
-	protected Integer getSize(DataQueryDTO queryDTO, BoolQueryBuilder query) {
+	protected <TQueryDTO extends SimpleQueryDTO> Integer getSize(TQueryDTO queryDTO, BoolQueryBuilder query) {
 
 		Integer size = queryDTO.getSize();
 		if (size == null) {

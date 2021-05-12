@@ -26,7 +26,7 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 import es.redmic.es.common.repository.IRBaseESRepository;
 import es.redmic.models.es.common.model.BaseAbstractES;
-import es.redmic.models.es.common.query.dto.DataQueryDTO;
+import es.redmic.models.es.common.query.dto.GeoDataQueryDTO;
 import es.redmic.models.es.common.query.dto.MgetDTO;
 import es.redmic.models.es.series.common.model.SeriesHitWrapper;
 import es.redmic.models.es.series.common.model.SeriesHitsWrapper;
@@ -37,8 +37,8 @@ public interface IRSeriesESRepository<TModel extends BaseAbstractES> extends IRB
 	public SeriesHitWrapper<?> findById(String id, String parentId, String grandparentId);
 	public SeriesSearchWrapper<?> searchByIds(String[] ids);
 	public SeriesHitsWrapper<?> mget(MgetDTO dto, String parentId, String grandparentId);
-	public SeriesSearchWrapper<?> find(DataQueryDTO queryDTO, String parentId, String grandparentId);
-	public SeriesSearchWrapper<?> find(DataQueryDTO queryDTO);
+	public SeriesSearchWrapper<?> find(GeoDataQueryDTO queryDTO, String parentId, String grandparentId);
+	public SeriesSearchWrapper<?> find(GeoDataQueryDTO queryDTO);
 	public List<SeriesSearchWrapper<?>> multiFind(List<SearchSourceBuilder> searchs);
 	public SeriesHitWrapper<?> findById(String id);
 	public SeriesHitsWrapper<?> mget(MgetDTO dto);

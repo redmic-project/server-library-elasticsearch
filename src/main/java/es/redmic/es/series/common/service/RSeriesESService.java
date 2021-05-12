@@ -20,16 +20,13 @@ package es.redmic.es.series.common.service;
  * #L%
  */
 
-import java.util.HashMap;
-import java.util.Map;
-
 import es.redmic.es.common.service.RBaseESService;
 import es.redmic.es.series.common.repository.RSeriesESRepository;
 import es.redmic.exception.common.ExceptionType;
 import es.redmic.exception.common.InternalException;
 import es.redmic.models.es.common.dto.AggregationsDTO;
 import es.redmic.models.es.common.dto.JSONCollectionDTO;
-import es.redmic.models.es.common.query.dto.DataQueryDTO;
+import es.redmic.models.es.common.query.dto.GeoDataQueryDTO;
 import es.redmic.models.es.common.query.dto.MgetDTO;
 import es.redmic.models.es.common.query.dto.SimpleQueryDTO;
 import es.redmic.models.es.series.common.dto.SeriesCommonDTO;
@@ -43,13 +40,11 @@ public abstract class RSeriesESService<TModel extends SeriesCommon, TDTO extends
 
 	private RSeriesESRepository<TModel> repository;
 
-	Map<Object, Object> globalProperties = new HashMap<Object, Object>();
-
-	public RSeriesESService() {
+	protected RSeriesESService() {
 		super();
 	}
 
-	public RSeriesESService(RSeriesESRepository<TModel> repository) {
+	protected RSeriesESService(RSeriesESRepository<TModel> repository) {
 		super();
 		this.repository = repository;
 	}
@@ -79,12 +74,12 @@ public abstract class RSeriesESService<TModel extends SeriesCommon, TDTO extends
 		return null;
 	}
 
-	public JSONCollectionDTO find(DataQueryDTO query) {
+	public JSONCollectionDTO find(GeoDataQueryDTO query) {
 
 		return find(query, null, null);
 	}
 
-	public JSONCollectionDTO find(DataQueryDTO query, String parentId, String grandparentId) {
+	public JSONCollectionDTO find(GeoDataQueryDTO query, String parentId, String grandparentId) {
 
 		SeriesSearchWrapper<?> result;
 		if (parentId == null || grandparentId == null)
@@ -108,6 +103,7 @@ public abstract class RSeriesESService<TModel extends SeriesCommon, TDTO extends
 		return repository.createSimpleQueryDTOFromQueryParams(from, size);
 	}
 
+	@Override
 	protected MappingContext getMappingContext() {
 
 		globalProperties.put("targetTypeDto", typeOfTDTO);

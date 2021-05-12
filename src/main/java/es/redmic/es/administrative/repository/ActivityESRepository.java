@@ -172,6 +172,16 @@ public class ActivityESRepository extends ActivityCommonESRepository<Activity> {
 		if (terms.containsKey("path.split")) {
 			query.must(QueryBuilders.termsQuery("path.split", terms.get("path.split")));
 		}
+		if (terms.containsKey("starred")) {
+			query.must(QueryBuilders.termsQuery("starred", terms.get("starred")));
+		}
+		if (terms.containsKey("resources")) {
+			query.must(QueryBuilders.nestedQuery("resources", QueryBuilders.existsQuery("resources.name"), ScoreMode.Avg));
+		}
+		if (terms.containsKey("resources.name")) {
+			query.must(QueryBuilders.nestedQuery("resources", QueryBuilders.termQuery("resources.name",
+				terms.get("resources.name")), ScoreMode.Avg));
+		}
 		return super.getTermQuery(terms, query);
 	}
 }

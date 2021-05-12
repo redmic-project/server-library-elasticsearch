@@ -34,10 +34,10 @@ import org.elasticsearch.search.aggregations.BucketOrder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
-import es.redmic.es.common.queryFactory.geodata.DataQueryUtils;
+import es.redmic.es.common.queryFactory.geodata.GeoDataQueryUtils;
 import es.redmic.es.common.queryFactory.geodata.TrackingQueryUtils;
 import es.redmic.models.es.common.query.dto.AggsPropertiesDTO;
-import es.redmic.models.es.common.query.dto.DataQueryDTO;
+import es.redmic.models.es.common.query.dto.GeoDataQueryDTO;
 import es.redmic.models.es.common.request.dto.CategoryPathInfo;
 import es.redmic.models.es.geojson.common.model.GeoPointData;
 import es.redmic.models.es.geojson.common.model.GeoSearchWrapper;
@@ -62,8 +62,7 @@ public class TrackingESRepository extends ClusterTrackingESRepository<GeoPointDa
 		setInternalQuery(TrackingQueryUtils.INTERNAL_QUERY);
 	}
 
-	@Override
-	protected List<BaseAggregationBuilder> getAggs(DataQueryDTO elasticQueryDTO) {
+	protected List<BaseAggregationBuilder> getAggs(GeoDataQueryDTO elasticQueryDTO) {
 
 		List<AggsPropertiesDTO> aggs = elasticQueryDTO.getAggs();
 
@@ -83,9 +82,9 @@ public class TrackingESRepository extends ClusterTrackingESRepository<GeoPointDa
 	/*
 	 * Devuelve todos los puntos de un track para un elemento dado
 	 */
-	public GeoSearchWrapper<?, ?> find(String parentId, String uuid, DataQueryDTO queryDTO) {
+	public GeoSearchWrapper<?, ?> find(String parentId, String uuid, GeoDataQueryDTO queryDTO) {
 
-		QueryBuilder serviceQuery = DataQueryUtils.getHierarchicalQuery(queryDTO, parentId);
+		QueryBuilder serviceQuery = GeoDataQueryUtils.getHierarchicalQuery(queryDTO, parentId);
 
 		BoolQueryBuilder builder = QueryBuilders.boolQuery()
 				.filter(QueryBuilders.boolQuery()

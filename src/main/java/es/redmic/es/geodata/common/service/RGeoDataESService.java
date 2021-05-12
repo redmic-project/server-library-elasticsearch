@@ -9,9 +9,9 @@ package es.redmic.es.geodata.common.service;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,7 +31,7 @@ import es.redmic.exception.common.ExceptionType;
 import es.redmic.exception.common.InternalException;
 import es.redmic.models.es.common.DataPrefixType;
 import es.redmic.models.es.common.dto.AggregationsDTO;
-import es.redmic.models.es.common.query.dto.DataQueryDTO;
+import es.redmic.models.es.common.query.dto.GeoDataQueryDTO;
 import es.redmic.models.es.common.query.dto.MgetDTO;
 import es.redmic.models.es.common.query.dto.SimpleQueryDTO;
 import es.redmic.models.es.geojson.common.dto.CategoryListDTO;
@@ -47,14 +47,12 @@ public abstract class RGeoDataESService<TDTO extends MetaFeatureDTO<?, ?>, TMode
 
 	private RGeoDataESRepository<TModel> repository;
 
-	Map<Object, Object> globalProperties = new HashMap<Object, Object>();
-
-	public RGeoDataESService() {
+	protected RGeoDataESService() {
 		super();
 	}
 
 	@SuppressWarnings("unchecked")
-	public RGeoDataESService(RGeoDataESRepository<TModel> repository) {
+	protected RGeoDataESService(RGeoDataESRepository<TModel> repository) {
 		super();
 		this.repository = repository;
 		this.typeOfTDTO = (Class<TDTO>) ((ParameterizedType) getClass().getGenericSuperclass())
@@ -87,12 +85,12 @@ public abstract class RGeoDataESService<TDTO extends MetaFeatureDTO<?, ?>, TMode
 		return null;
 	}
 
-	public GeoJSONFeatureCollectionDTO find(DataQueryDTO query) {
+	public GeoJSONFeatureCollectionDTO find(GeoDataQueryDTO query) {
 
 		return find(query, null);
 	}
 
-	public GeoJSONFeatureCollectionDTO find(DataQueryDTO query, String parentId) {
+	public GeoJSONFeatureCollectionDTO find(GeoDataQueryDTO query, String parentId) {
 
 		GeoSearchWrapper<?, ?> result;
 		if (parentId == null)
@@ -111,12 +109,12 @@ public abstract class RGeoDataESService<TDTO extends MetaFeatureDTO<?, ?>, TMode
 		return featureCollection;
 	}
 
-	public List<String> suggest(DataQueryDTO queryDTO) {
+	public List<String> suggest(GeoDataQueryDTO queryDTO) {
 
 		return repository.suggest(queryDTO);
 	}
 
-	public List<String> suggest(String parentId, DataQueryDTO queryDTO) {
+	public List<String> suggest(String parentId, GeoDataQueryDTO queryDTO) {
 
 		return repository.suggest(parentId, queryDTO);
 	}
@@ -135,10 +133,11 @@ public abstract class RGeoDataESService<TDTO extends MetaFeatureDTO<?, ?>, TMode
 		return repository.createSimpleQueryDTOFromSuggestQueryParams(fields, text, size);
 	}
 
-	public CategoryListDTO getCategories(String parentId, DataQueryDTO queryDTO) {
+	public CategoryListDTO getCategories(String parentId, GeoDataQueryDTO queryDTO) {
 		return repository.getCategories(parentId, queryDTO);
 	}
 
+	@Override
 	protected MappingContext getMappingContext() {
 
 		globalProperties.put("targetTypeDto", typeOfTDTO);

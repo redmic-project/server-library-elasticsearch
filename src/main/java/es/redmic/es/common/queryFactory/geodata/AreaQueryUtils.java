@@ -9,9 +9,9 @@ package es.redmic.es.common.queryFactory.geodata;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,24 +23,25 @@ package es.redmic.es.common.queryFactory.geodata;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
 import es.redmic.models.es.common.DataPrefixType;
-import es.redmic.models.es.common.query.dto.DataQueryDTO;
+import es.redmic.models.es.common.query.dto.GeoDataQueryDTO;
 
-public abstract class AreaQueryUtils extends DataQueryUtils {
+public abstract class AreaQueryUtils extends GeoDataQueryUtils {
 
 	// @FORMATTER:OFF
 
-	public final static BoolQueryBuilder INTERNAL_QUERY = QueryBuilders.boolQuery()
+	public static final BoolQueryBuilder INTERNAL_QUERY = QueryBuilders.boolQuery()
 			.must(QueryBuilders.termQuery(SAMPLINGPLACE_PATH + ".id", DataPrefixType.AREA));
 
 	// @FORMATTER:ON
 
-	public static BoolQueryBuilder getQuery(DataQueryDTO queryDTO, QueryBuilder internalQuery,
+	public static BoolQueryBuilder getQuery(GeoDataQueryDTO queryDTO, QueryBuilder internalQuery,
 			QueryBuilder partialQuery) {
 
 		BoolQueryBuilder query = getOrInitializeBaseQuery(getGeoDataQuery(queryDTO, internalQuery, partialQuery));
@@ -48,9 +49,9 @@ public abstract class AreaQueryUtils extends DataQueryUtils {
 		return getResultQuery(query);
 	}
 
-	public static HashSet<String> getFieldsExcludedOnQuery() {
+	public static Set<String> getFieldsExcludedOnQuery() {
 
-		return new HashSet<String>();
+		return new HashSet<>();
 	}
 
 	public static Map<String, Object> getActivityCategoryTermQuery() {

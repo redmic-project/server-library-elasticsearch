@@ -22,6 +22,7 @@ package es.redmic.test.unit.geodata.common;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,7 +46,7 @@ public class JsonToBeanTestUtil {
 
 	protected String getJsonString(String filePath) throws IOException {
 
-		return IOUtils.toString(getClass().getResource(filePath).openStream(), Charset.forName("UTF8"));
+		return IOUtils.toString(getClass().getResource(filePath).openStream(), Charset.forName(StandardCharsets.UTF_8.name()));
 	}
 
 	protected Object getBean(String path, JavaType dtoClass) throws IOException {
