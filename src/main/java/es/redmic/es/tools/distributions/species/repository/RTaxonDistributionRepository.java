@@ -1,7 +1,5 @@
 package es.redmic.es.tools.distributions.species.repository;
 
-import java.io.IOException;
-
 /*-
  * #%L
  * ElasticSearch
@@ -21,7 +19,7 @@ import java.io.IOException;
  * limitations under the License.
  * #L%
  */
-
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,12 +28,10 @@ import java.util.Map;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.search.SearchRequest;
-import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchScrollRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.common.geo.builders.EnvelopeBuilder;
-import org.elasticsearch.common.geo.builders.ShapeBuilders;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.NestedQueryBuilder;
@@ -59,7 +55,7 @@ import es.redmic.es.geodata.tracking.animal.repository.AnimalTrackingESRepositor
 import es.redmic.exception.elasticsearch.ESBBoxQueryException;
 import es.redmic.exception.elasticsearch.ESQueryException;
 import es.redmic.models.es.common.query.dto.BboxQueryDTO;
-import es.redmic.models.es.common.query.dto.DataQueryDTO;
+import es.redmic.models.es.common.query.dto.GeoDataQueryDTO;
 import es.redmic.models.es.geojson.citation.dto.CitationDTO;
 import es.redmic.models.es.geojson.common.dto.GeoJSONFeatureCollectionDTO;
 import es.redmic.models.es.geojson.common.model.Feature;
@@ -108,7 +104,7 @@ public class RTaxonDistributionRepository extends RBaseESRepository<Distribution
 		return null;
 	}
 
-	public GeoJSONFeatureCollectionDTO findAll(DataQueryDTO dto, List<String> ids) {
+	public GeoJSONFeatureCollectionDTO findAll(GeoDataQueryDTO dto, List<String> ids) {
 
 		GeoJSONFeatureCollectionDTO res = new GeoJSONFeatureCollectionDTO();
 
@@ -178,7 +174,7 @@ public class RTaxonDistributionRepository extends RBaseESRepository<Distribution
 		return searchResponse;
 	}
 
-	private QueryBuilder createQuery(DataQueryDTO queryDTO, List<String> ids, List<Integer> confidence) {
+	private QueryBuilder createQuery(GeoDataQueryDTO queryDTO, List<String> ids, List<Integer> confidence) {
 
 		NestedQueryBuilder idsFilter;
 		if (ids != null && !ids.isEmpty()) // TODO: quitar, siempre debe ids
@@ -235,7 +231,7 @@ public class RTaxonDistributionRepository extends RBaseESRepository<Distribution
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<TaxonDistributionRegistersDTO> findByGridIdAndTaxons(DataQueryDTO queryDTO, String gridId,
+	public List<TaxonDistributionRegistersDTO> findByGridIdAndTaxons(GeoDataQueryDTO queryDTO, String gridId,
 			List<String> taxonIds) {
 
 		List<Integer> confidence = getConfidenceValues(queryDTO);
@@ -311,7 +307,7 @@ public class RTaxonDistributionRepository extends RBaseESRepository<Distribution
 	}
 
 	@SuppressWarnings("unchecked")
-	private List<Integer> getConfidenceValues(DataQueryDTO dto) {
+	private List<Integer> getConfidenceValues(GeoDataQueryDTO dto) {
 
 		if (dto.getTerms() == null || dto.getTerms().get("confidences") == null)
 			return new ArrayList<>();
