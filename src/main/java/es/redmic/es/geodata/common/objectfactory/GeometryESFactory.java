@@ -33,6 +33,10 @@ public class GeometryESFactory<TGeometry extends Geometry> implements ObjectFact
 	@SuppressWarnings("unchecked")
 	@Override
 	public TGeometry create(Object source, MappingContext mappingContext) {
+
+		if (!(source instanceof Geometry))
+			return null;
+
 		return (TGeometry) source;
 	}
 }
