@@ -38,8 +38,6 @@ import es.redmic.models.es.common.query.dto.SimpleQueryDTO;
 
 public final class QueryFactory {
 
-	protected static Logger logger = LogManager.getLogger();
-
 	/*
 	 * GetQuery para todo tipo de repositorios
 	 */
@@ -51,23 +49,22 @@ public final class QueryFactory {
 
 			Method method;
 
-			logger.debug("Obteniendo query para tipo {} - utils {}", queryDTO.getDataType(), utils.getSimpleName());
+			Class<?> classs;
 
 			if (queryDTO instanceof GeoDataQueryDTO) {
-
-				method = utils.getDeclaredMethod("getQuery", GeoDataQueryDTO.class, QueryBuilder.class,
-					QueryBuilder.class);
+				classs = GeoDataQueryDTO.class;
+			}
+			else if (queryDTO instanceof DataQueryDTO){
+				classs = DataQueryDTO.class;
 			}
 			else if (queryDTO instanceof MetadataQueryDTO) {
-
-				method = utils.getDeclaredMethod("getQuery", MetadataQueryDTO.class, QueryBuilder.class,
-					QueryBuilder.class);
+				classs = MetadataQueryDTO.class;
 			}
 			else {
-
-				method = utils.getDeclaredMethod("getQuery", DataQueryDTO.class, QueryBuilder.class,
-					QueryBuilder.class);
+				classs = SimpleQueryDTO.class;
 			}
+
+			method = utils.getDeclaredMethod("getQuery", classs , QueryBuilder.class, QueryBuilder.class);
 
 			Object[] params = new Object[] { queryDTO, internalQuery, partialQuery };
 
