@@ -34,6 +34,7 @@ import org.locationtech.jts.geom.Coordinate;
 
 import es.redmic.exception.elasticsearch.ESBBoxQueryException;
 import es.redmic.models.es.common.query.dto.BboxQueryDTO;
+import es.redmic.models.es.common.query.dto.DataQueryDTO;
 import es.redmic.models.es.common.query.dto.DateLimitsDTO;
 import es.redmic.models.es.common.query.dto.RegexpDTO;
 import es.redmic.models.es.common.query.dto.SimpleQueryDTO;
@@ -65,6 +66,11 @@ public abstract class BaseQueryUtils {
 			RADIUS_PROPERTY = "radius";
 
 	// @formatter:on
+
+	public static BoolQueryBuilder getQuery(DataQueryDTO queryDTO, QueryBuilder internalQuery,
+			QueryBuilder partialQuery) {
+		return getBaseQuery(queryDTO, internalQuery, partialQuery);
+	}
 
 	public static <TQueryDTO extends SimpleQueryDTO> BoolQueryBuilder getQuery(TQueryDTO queryDTO, QueryBuilder internalQuery,
 			QueryBuilder partialQuery) {
