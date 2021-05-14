@@ -9,9 +9,9 @@ package es.redmic.es.series.common.utils;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -47,6 +47,10 @@ public abstract class DataDefinitionUtils {
 
 	private static double TOLERANCE_LEVEL = 0.4;
 
+	private DataDefinitionUtils() {
+
+	}
+
 	public static RawDataItemDTO getItemData(OrikaScanBeanESItfc orikaMapper, SeriesBaseDTO item,
 			DateTime currentDateTime, Long currentDataDefinitionId, Map<Long, DataDefinition> dataDefinitions) {
 
@@ -56,7 +60,7 @@ public abstract class DataDefinitionUtils {
 		DateTime nextDateTime = item.getDate();
 
 		DataDefinition dataDefinition = dataDefinitions.get(item.getDataDefinition());
-		if (item.getDataDefinition() != currentDataDefinitionId) {
+		if (!item.getDataDefinition().equals(currentDataDefinitionId)) {
 
 			currentDataDefinitionId = item.getDataDefinition();
 			dataDefinition = dataDefinitions.get(currentDataDefinitionId);
@@ -64,11 +68,12 @@ public abstract class DataDefinitionUtils {
 		Long timeInterval = dataDefinition.getTimeInterval();
 
 		// TODO: crear excepción propia
-		if (dataDefinition.getIsRegularity() && timeInterval == null) {
+		if (Boolean.TRUE.equals(dataDefinition.getIsRegularity()) && timeInterval == null) {
 			LOGGER.debug("Serie temporal con timeInterval no definido");
 			throw new InternalException(ExceptionType.INTERNAL_EXCEPTION);
 		}
-		if (dataDefinition.getIsRegularity() && !fulfillIntervalCheck(currentDateTime, nextDateTime, timeInterval)) {
+		if (Boolean.TRUE.equals(dataDefinition.getIsRegularity()) &&
+				Boolean.FALSE.equals(fulfillIntervalCheck(currentDateTime, nextDateTime, timeInterval))) {
 			RawDataItemDTO nullItem = new RawDataItemDTO();
 			nullItem.setValue(null);
 			nullItem.setDate(currentDateTime.plusSeconds(millisec2sec(timeInterval)).toString());
@@ -79,17 +84,17 @@ public abstract class DataDefinitionUtils {
 
 	/**
 	 * Función para obtener el datadefinition almacenado.
-	 * 
+	 *
 	 * @param dataDefinitionId
 	 *            dataDefinition a buscar
-	 * 
+	 *
 	 * @return dataDefinition.
 	 */
 
-	public static HashMap<Long, DataDefinition> getDataDefinitions(OrikaScanBeanESItfc orikaMapper,
+	public static Map<Long, DataDefinition> getDataDefinitions(OrikaScanBeanESItfc orikaMapper,
 			List<Integer> dataDefinitionIds, GeoFixedBaseESService<?, ?> geoFixedService) {
 
-		HashMap<Long, DataDefinition> dataDefinitions = new HashMap<Long, DataDefinition>();
+		HashMap<Long, DataDefinition> dataDefinitions = new HashMap<>();
 
 		DataDefinition previousDataDefinition = null;
 
@@ -115,10 +120,10 @@ public abstract class DataDefinitionUtils {
 	/**
 	 * Función que checkea el path de los datasdefinition enviados en la
 	 * consulta sean iguales
-	 * 
+	 *
 	 * @return true si los dataDefinitions corresponden al mismo parámetro, en
 	 *         la misma estación y con la misma z
-	 * 
+	 *
 	 */
 	public static void checkDataDefinionIntegrity(DataDefinition previousDataDefinition,
 			DataDefinition currentDataDefinition) {
@@ -137,20 +142,20 @@ public abstract class DataDefinitionUtils {
 	 * Función para comprobar que el intervalo de tiempo entre los datos
 	 * cargados corresponde con el definido en dataDefinition + una tolerancia.
 	 * Si el dato viene antes se acepta como válido
-	 * 
+	 *
 	 * @param previousDatetime
 	 *            tiempo en el dato actual.
 	 * @param currentDatetime
 	 *            tiempo en el dato siguiente.
 	 * @param itemInterval
 	 *            intervalo de tiempo definido en segundos.
-	 * 
+	 *
 	 * @return true si cumple las restricciones, false en caso contrario.
 	 */
 	public static Boolean fulfillIntervalCheck(DateTime currentDatetime, DateTime nextDatetime, Long itemInterval) {
 		// TODO: crear excepción propia
 		if (itemInterval < TOLERANCE_LEVEL) {
-			LOGGER.debug("El timeInterval de los datos no es correcto. TimeInterval = " + itemInterval);
+			LOGGER.debug("El timeInterval de los datos no es correcto. TimeInterval = {}", itemInterval);
 			throw new InternalException(ExceptionType.INTERNAL_EXCEPTION);
 		}
 		int tolerance = new Double(millisec2sec(itemInterval) * TOLERANCE_LEVEL).intValue();
@@ -163,22 +168,19 @@ public abstract class DataDefinitionUtils {
 		return (int) (millisec / 1000);
 	}
 
-	@SuppressWarnings("serial")
 	public static void addDataDefinitionFieldToReturn(DataQueryDTO query) {
 
 		List<String> returnFields = query.getReturnFields();
 
-		if (returnFields == null)
-			returnFields = new ArrayList<String>() {
-				{
-					add("date");
-					add("value");
-					add("dataDefinition");
-				}
-			};
-		else
+		if (returnFields == null) {
+			returnFields = new ArrayList<>();
+			returnFields.add("date");
+			returnFields.add("value");
 			returnFields.add("dataDefinition");
-
+		}
+		else {
+			returnFields.add("dataDefinition");
+		}
 		query.setReturnFields(returnFields);
 	}
 }

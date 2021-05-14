@@ -21,9 +21,7 @@ package es.redmic.es.geodata.common.service;
  */
 
 import java.lang.reflect.ParameterizedType;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import es.redmic.es.common.service.RBaseESService;
 import es.redmic.es.geodata.common.repository.RGeoDataESRepository;

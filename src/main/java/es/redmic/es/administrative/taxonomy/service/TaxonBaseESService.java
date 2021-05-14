@@ -9,9 +9,9 @@ package es.redmic.es.administrative.taxonomy.service;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -96,15 +96,16 @@ public abstract class TaxonBaseESService<TModel extends Taxon, TDTO extends Taxo
 
 		int serviceRankId = Integer.parseInt(rankId);
 		if ((serviceRankId == taxonBaseDTO.getRank().getId())
-				|| (serviceRankId == 10 && serviceRankId < taxonBaseDTO.getRank().getId()))
+				|| (serviceRankId == 10 && serviceRankId < taxonBaseDTO.getRank().getId())) {
 			return true;
+		}
 		return false;
 	}
 
 	public TaxonDTO findByAphia(Integer aphia) {
 
 		DataSearchWrapper<Taxon> result = baseRepository.findByAphia(aphia);
-		if (result.getSourceList().size() > 0)
+		if (!result.getSourceList().isEmpty())
 			return orikaMapper.getMapperFacade().map(result.getSourceList().get(0), TaxonDTO.class);
 		return null;
 	}
@@ -118,9 +119,9 @@ public abstract class TaxonBaseESService<TModel extends Taxon, TDTO extends Taxo
 			return null;
 
 		DataSearchWrapper<Taxon> result;
-		
+
 		if (taxonParentDTO.getParent() != null) {
-		
+
 			result = baseRepository.findByScientificNameRankStatusAndParent(scientificName, rank,
 				status, taxonParentDTO.getParent().getId());
 		}
@@ -128,7 +129,7 @@ public abstract class TaxonBaseESService<TModel extends Taxon, TDTO extends Taxo
 			result = baseRepository.findByScientificNameRankAndStatus(scientificName, rank, status);
 		}
 
-		if (result.getSourceList().size() > 0)
+		if (!result.getSourceList().isEmpty())
 			return orikaMapper.getMapperFacade().map(result.getSourceList().get(0), TaxonDTO.class);
 		return null;
 	}
@@ -151,7 +152,7 @@ public abstract class TaxonBaseESService<TModel extends Taxon, TDTO extends Taxo
 	/**
 	 * Función para modificar las referencias de taxon en su repositorio en caso
 	 * de ser necesario.
-	 * 
+	 *
 	 * @param reference
 	 *            clase que encapsula el modelo de taxon antes y después de ser
 	 *            modificado.
@@ -165,7 +166,7 @@ public abstract class TaxonBaseESService<TModel extends Taxon, TDTO extends Taxo
 	/**
 	 * Función para modificar las referencias de status en taxon en caso de ser
 	 * necesario.
-	 * 
+	 *
 	 * @param reference
 	 *            clase que encapsula el modelo de status antes y después de ser
 	 *            modificado.
@@ -179,7 +180,7 @@ public abstract class TaxonBaseESService<TModel extends Taxon, TDTO extends Taxo
 	/**
 	 * Función para modificar las referencias de rank en taxon en caso de ser
 	 * necesario.
-	 * 
+	 *
 	 * @param reference
 	 *            clase que encapsula el modelo de rank antes y después de ser
 	 *            modificado.
@@ -268,11 +269,11 @@ public abstract class TaxonBaseESService<TModel extends Taxon, TDTO extends Taxo
 
 	public Integer getCountLeaves(List<String> parentsPath) {
 
-		if (parentsPath == null || parentsPath.size() == 0)
+		if (parentsPath == null || parentsPath.isEmpty())
 			return 0;
 
 		int size = parentsPath.size();
-		List<String> paths = new ArrayList<String>();
+		List<String> paths = new ArrayList<>();
 
 		for (int i = 0; i < size; i++) {
 
@@ -287,7 +288,7 @@ public abstract class TaxonBaseESService<TModel extends Taxon, TDTO extends Taxo
 	public List<String> getDescendantsIds(List<String> parentsPath) {
 
 		int size = parentsPath.size();
-		List<String> paths = new ArrayList<String>();
+		List<String> paths = new ArrayList<>();
 
 		for (int i = 0; i < size; i++) {
 
@@ -297,11 +298,11 @@ public abstract class TaxonBaseESService<TModel extends Taxon, TDTO extends Taxo
 
 		List<TModel> result = (List<TModel>) baseRepository.findByAscendants(paths).getSourceList();
 
-		List<String> childrenPaths = new ArrayList<String>();
+		List<String> childrenPaths = new ArrayList<>();
 		int resultSize = result.size();
 
 		for (int i = 0; i < resultSize; i++) {
-			String path = result.get(i).getPath().toString();
+			String path = result.get(i).getPath();
 			childrenPaths.add(path);
 		}
 

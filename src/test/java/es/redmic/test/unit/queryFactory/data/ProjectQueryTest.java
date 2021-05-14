@@ -25,11 +25,9 @@ import static org.junit.Assert.assertNull;
 import java.io.IOException;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.json.JSONException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.skyscreamer.jsonassert.JSONAssert;
 
 import es.redmic.es.common.queryFactory.data.ProjectQueryUtils;
 import es.redmic.test.unit.queryFactory.common.BaseQueryTest;

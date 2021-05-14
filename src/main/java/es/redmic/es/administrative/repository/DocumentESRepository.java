@@ -73,8 +73,8 @@ public class DocumentESRepository extends RWDataESRepository<Document> {
 			indexRequestList.add(indexRequest);
 		}
 
-		if (indexRequestList.size() == 0)
-			return null;
+		if (indexRequestList.isEmpty())
+			return new ArrayList<>();
 
 		elasticPersistenceUtils.indexByBulk(indexRequestList);
 

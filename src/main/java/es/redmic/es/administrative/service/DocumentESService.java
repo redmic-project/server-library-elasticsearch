@@ -9,9 +9,9 @@ package es.redmic.es.administrative.service;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -44,7 +44,7 @@ import es.redmic.models.es.geojson.common.dto.GeoJSONFeatureCollectionDTO;
 @Service
 public class DocumentESService extends MetaDataESService<Document, DocumentDTO> {
 
-	DocumentESRepository repository;
+	private DocumentESRepository _repository;
 
 	@Autowired
 	ActivityESService activityESService;
@@ -78,7 +78,7 @@ public class DocumentESService extends MetaDataESService<Document, DocumentDTO> 
 	@Autowired
 	public DocumentESService(DocumentESRepository repository) {
 		super(repository);
-		this.repository = repository;
+		this._repository = repository;
 	}
 
 	public GeoJSONFeatureCollectionDTO getCitation(DataQueryDTO dto, String documentId) {
@@ -92,7 +92,7 @@ public class DocumentESService extends MetaDataESService<Document, DocumentDTO> 
 
 	public JSONCollectionDTO findByIds(DataQueryDTO dto, List<String> documentsIds) {
 
-		DataSearchWrapper<Document> result = repository.findByIds(dto,
+		DataSearchWrapper<Document> result = _repository.findByIds(dto,
 				documentsIds.toArray(new String[documentsIds.size()]));
 
 		return orikaMapper.getMapperFacade().map(result.getHits(), JSONCollectionDTO.class, getMappingContext());
@@ -101,7 +101,7 @@ public class DocumentESService extends MetaDataESService<Document, DocumentDTO> 
 	/**
 	 * Función para modificar las referencias de documentType en document en
 	 * caso de ser necesario.
-	 * 
+	 *
 	 * @param reference
 	 *            clase que encapsula el modelo de documentType antes y después
 	 *            de ser modificado.
