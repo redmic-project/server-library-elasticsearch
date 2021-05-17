@@ -24,11 +24,11 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 
 import es.redmic.es.common.queryFactory.common.BaseQueryUtils;
-import es.redmic.models.es.common.query.dto.MetadataQueryDTO;
+import es.redmic.models.es.common.query.dto.DataQueryDTO;
 
 public abstract class ProjectQueryUtils extends BaseQueryUtils {
 
-	public static BoolQueryBuilder getQuery(MetadataQueryDTO queryDTO, QueryBuilder internalQuery,
+	public static BoolQueryBuilder getQuery(DataQueryDTO queryDTO, QueryBuilder internalQuery,
 			QueryBuilder partialQuery) {
 
 		BoolQueryBuilder query = getOrInitializeBaseQuery(getBaseQuery(queryDTO, internalQuery, partialQuery));
