@@ -23,6 +23,7 @@ package es.redmic.es.common.queryFactory.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -55,6 +56,19 @@ public abstract class ActivityQueryUtils extends BaseQueryUtils {
 
 		if (queryDTO.getBbox() != null) {
 			query.must(getBBoxQuery(queryDTO.getBbox(), GEOMETRY_PROPERTY));
+		}
+
+		if (queryDTO.getStarred() != null) {
+			query.must(QueryBuilders.termsQuery("starred", queryDTO.getStarred()));
+		}
+
+		if (queryDTO.getResources() != null) {
+			query.must(QueryBuilders.nestedQuery("resources", QueryBuilders.existsQuery("resources.name"), ScoreMode.Avg));
+		}
+
+		if (queryDTO.getResourceName() != null) {
+			query.must(QueryBuilders.nestedQuery("resources", QueryBuilders.termQuery("resources.name",
+				queryDTO.getResourceName()), ScoreMode.Avg));
 		}
 
 		return getResultQuery(query);
