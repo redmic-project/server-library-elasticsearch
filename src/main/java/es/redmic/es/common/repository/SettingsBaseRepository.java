@@ -20,19 +20,17 @@ package es.redmic.es.common.repository;
  * #L%
  */
 
-import org.springframework.stereotype.Repository;
+import es.redmic.es.data.common.repository.RWDataESRepository;
+import es.redmic.models.es.common.model.BaseES;
 
-import es.redmic.models.es.common.dto.SelectionDTO;
-import es.redmic.models.es.common.model.Selection;
+public abstract class SettingsBaseRepository<TModel extends BaseES<?>> extends RWDataESRepository<TModel> {
 
-@Repository
-public class SelectionRepository
-		extends SettingsRepository<Selection, SelectionDTO> {
+	protected SettingsBaseRepository(String[] index, String type) {
+		super(index, type);
+	}
 
-	private static String[] INDEX = { "selection" };
-	private static String TYPE = "_doc";
-
-	public SelectionRepository() {
-		super(INDEX, TYPE);
+	@Override
+	protected String getMappingFilePath(String index, String type) {
+		return MAPPING_BASE_PATH + "selection/" + index + MAPPING_FILE_EXTENSION;
 	}
 }

@@ -31,20 +31,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import es.redmic.es.common.utils.ElasticPersistenceUtils;
-import es.redmic.es.data.common.repository.RWDataESRepository;
 import es.redmic.models.es.common.dto.SelectionWorkDTO;
 import es.redmic.models.es.common.model.Selection;
 import es.redmic.models.es.data.common.model.DataHitWrapper;
 import es.redmic.models.es.data.common.model.DataSearchWrapper;
 
 @Repository
-public class SelectionWorkRepository extends RWDataESRepository<Selection> {
+public class SelectionWorkRepository extends SettingsBaseRepository<Selection> {
 
 	@Autowired
 	ElasticPersistenceUtils<Selection> elasticPersistenceUtils;
 
 	public static String[] INDEX = { "selectionwork" };
-	public static String TYPE = "selection";
+	public static String TYPE = "_doc";
 
 	public SelectionWorkRepository() {
 		super(INDEX, TYPE);
