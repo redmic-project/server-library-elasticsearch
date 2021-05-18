@@ -33,10 +33,15 @@ import es.redmic.models.es.data.common.model.DataSearchWrapper;
 public class AnimalESRepository extends RWDataESRepository<Animal> {
 
 	private static String[] INDEX = { "animal" };
-	private static String TYPE = "taxon";
+	private static String TYPE = "_doc";
 
 	public AnimalESRepository() {
 		super(INDEX, TYPE);
+	}
+
+	@Override
+	protected String getMappingFilePath(String index, String type) {
+		return MAPPING_BASE_PATH + "taxon/" + getIndex()[0] + MAPPING_FILE_EXTENSION;
 	}
 
 	@SuppressWarnings("unchecked")

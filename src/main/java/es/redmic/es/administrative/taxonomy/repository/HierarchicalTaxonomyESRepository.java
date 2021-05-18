@@ -35,10 +35,15 @@ public abstract class HierarchicalTaxonomyESRepository<TModel extends Taxon, TDT
 		extends HierarchicalESRepository<TModel, TDTO> {
 
 	private static String[] INDEX = { "taxon" };
-	private static String TYPE = "taxon";
+	private static String TYPE = "_doc";
 
 	protected HierarchicalTaxonomyESRepository() {
 		super(INDEX, TYPE);
+	}
+
+	@Override
+	protected String getMappingFilePath(String index, String type) {
+		return MAPPING_BASE_PATH + "taxon/" + getIndex()[0] + MAPPING_FILE_EXTENSION;
 	}
 
 	@SuppressWarnings("unchecked")

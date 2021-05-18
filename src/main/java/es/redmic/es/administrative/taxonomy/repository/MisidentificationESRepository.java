@@ -29,10 +29,15 @@ import es.redmic.models.es.administrative.taxonomy.model.Misidentification;
 public class MisidentificationESRepository extends RWDataESRepository<Misidentification> {
 
 	private static String[] INDEX = { "misidentification" };
-	private static String TYPE = "taxon";
+	private static String TYPE = "_doc";
 
 	public MisidentificationESRepository() {
 		super(INDEX, TYPE);
+	}
+
+	@Override
+	protected String getMappingFilePath(String index, String type) {
+		return MAPPING_BASE_PATH + "taxon/" + getIndex()[0] + MAPPING_FILE_EXTENSION;
 	}
 
 	@Override
