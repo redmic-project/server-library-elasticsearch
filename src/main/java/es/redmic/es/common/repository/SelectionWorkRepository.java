@@ -68,10 +68,10 @@ public class SelectionWorkRepository extends SettingsBaseRepository<Selection> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public SelectionWorkDTO updateSelection(Selection model, String script) {
+	public SelectionWorkDTO updateSelection(Selection model, String script, Boolean inline) {
 
 		List<UpdateResponse> updateResponse = elasticPersistenceUtils.updateByBulk(elasticPersistenceUtils
-				.getUpdateScript(INDEX, TYPE, model.getId(), objectMapper.convertValue(model, Map.class), script));
+				.getUpdateScript(INDEX, TYPE, model.getId(), objectMapper.convertValue(model, Map.class), script, inline));
 
 		return objectMapper.convertValue(updateResponse.get(0).getGetResult().getSource(), SelectionWorkDTO.class);
 

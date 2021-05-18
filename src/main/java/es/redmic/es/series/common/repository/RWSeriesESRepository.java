@@ -232,7 +232,7 @@ public abstract class RWSeriesESRepository<TModel extends SeriesCommon> extends 
 		for (int i = 0; i < oldItems.size(); i++) {
 			requestBuilder.addAll(
 					elasticPersistenceUtils.getUpdateScript(getIndex(), getType(), oldItems.get(i).getId().toString(),
-							fields, script, oldItems.get(i).get_parentId(), oldItems.get(i).get_grandparentId()));
+							fields, script, oldItems.get(i).get_parentId(), oldItems.get(i).get_grandparentId(), false));
 		}
 
 		return multipleUpdate(requestBuilder, oldItems);
@@ -285,7 +285,7 @@ public abstract class RWSeriesESRepository<TModel extends SeriesCommon> extends 
 		for (int i = 0; i < oldItems.size(); i++) {
 			requestBuilder.addAll(
 					elasticPersistenceUtils.getUpdateScript(getIndex(), getType(), oldItems.get(i).getId().toString(),
-							fields, script, oldItems.get(i).get_parentId(), oldItems.get(i).get_grandparentId()));
+							fields, script, oldItems.get(i).get_parentId(), oldItems.get(i).get_grandparentId(), false));
 		}
 
 		return multipleUpdate(requestBuilder, oldItems);
@@ -328,7 +328,7 @@ public abstract class RWSeriesESRepository<TModel extends SeriesCommon> extends 
 		for (int i = 0; i < oldItems.size(); i++) {
 			requestBuilder.addAll(
 					elasticPersistenceUtils.getUpdateScript(getIndex(), getType(), oldItems.get(i).getId().toString(),
-							fields, script, oldItems.get(i).get_parentId(), oldItems.get(i).get_grandparentId()));
+							fields, script, oldItems.get(i).get_parentId(), oldItems.get(i).get_grandparentId(), false));
 		}
 		return multipleUpdate(requestBuilder, oldItems);
 	}

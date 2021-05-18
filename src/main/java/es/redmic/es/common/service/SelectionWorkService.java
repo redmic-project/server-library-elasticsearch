@@ -9,9 +9,9 @@ package es.redmic.es.common.service;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -46,17 +46,20 @@ public class SelectionWorkService implements ISelectionWorkService<SelectionWork
 	ElasticPersistenceUtils<Selection> elasticPersistenceUtils;
 
 	@Autowired
-	SelectionWorkRepository repository;
+	protected SelectionWorkRepository repository;
 
-	private String selectScript = "update-selections-ids";
+	protected String selectScript =
+		"if (ctx._source.ids == null) { ctx._source.ids = params.ids; } else { ctx._source.ids.addAll(params.ids); } " +
+		"ctx._source.ids = ids_save; ctx._source.service = params.service; ctx._source.date = params.date; " +
+		"ctx._source.name = params.name; ctx._source.userId = params.userId;";
 
-	private String deselectScript = "rm-selections-ids";
+	protected String deselectScript = "rm-selections-ids";
 
-	private String selectAllScript = "all-selections-ids";
+	protected String selectAllScript = "all-selections-ids";
 
-	private String reverseScript = "reverse-selections-ids";
+	protected String reverseScript = "reverse-selections-ids";
 
-	private String clearScript = "clear-selections-ids";
+	protected String clearScript = "clear-selections-ids";
 
 	public enum Actions {
 		select, deselect, selectAll, reverse
@@ -97,7 +100,7 @@ public class SelectionWorkService implements ISelectionWorkService<SelectionWork
 			model.setIds(result);
 			model.setName(dto.getAction());
 
-			dto = repository.updateSelection(model, script);
+			dto = repository.updateSelection(model, script, true);
 			dto.setAction(model.getName());
 			if (dto.getAction().equals(Actions.deselect.toString()))
 				dto.setIds(model.getIds());

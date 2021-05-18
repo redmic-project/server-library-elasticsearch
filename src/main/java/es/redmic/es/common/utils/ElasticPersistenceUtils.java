@@ -55,6 +55,8 @@ import es.redmic.models.es.common.model.BaseES;
 @Component
 public class ElasticPersistenceUtils<TModel extends BaseES<?>> {
 
+	private static final String SCRIPT_LANG = "painless";
+
 	protected static Logger logger = LogManager.getLogger();
 
 	@Autowired
@@ -257,19 +259,25 @@ public class ElasticPersistenceUtils<TModel extends BaseES<?>> {
 	}
 
 	public List<UpdateRequest> getUpdateScript(String[] index, String type, String id, Map<String, Object> fields,
-			String scriptName) {
+			String scriptNameOrCode) {
 
-		return getUpdateScript(index, type, id, fields, scriptName, null, null);
+		return getUpdateScript(index, type, id, fields, scriptNameOrCode, null, null, false);
 	}
 
 	public List<UpdateRequest> getUpdateScript(String[] index, String type, String id, Map<String, Object> fields,
-			String scriptName, String parentId) {
+			String scriptNameOrCode, Boolean inline) {
 
-		return getUpdateScript(index, type, id, fields, scriptName, parentId, null);
+		return getUpdateScript(index, type, id, fields, scriptNameOrCode, null, null, inline);
 	}
 
 	public List<UpdateRequest> getUpdateScript(String[] index, String type, String id, Map<String, Object> fields,
-			String scriptName, String parentId, String grandParentId) {
+			String scriptNameOrCode, String parentId, Boolean inline) {
+
+		return getUpdateScript(index, type, id, fields, scriptNameOrCode, parentId, null, inline);
+	}
+
+	public List<UpdateRequest> getUpdateScript(String[] index, String type, String id, Map<String, Object> fields,
+			String scriptNameOrCode, String parentId, String grandParentId, Boolean inline) {
 
 		List<UpdateRequest> result = new ArrayList<>();
 
@@ -288,7 +296,18 @@ public class ElasticPersistenceUtils<TModel extends BaseES<?>> {
 			if (grandParentId != null)
 				updateRequest.routing(grandParentId);
 
-			updateRequest.script(new Script(ScriptType.STORED, null, scriptName, fields));
+			ScriptType scriptType;
+			String lang = null;
+
+			if (Boolean.TRUE.equals(inline)) {
+				scriptType = ScriptType.INLINE;
+				lang = SCRIPT_LANG;
+			}
+			else {
+				scriptType = ScriptType.STORED;
+			}
+
+			updateRequest.script(new Script(scriptType, lang, scriptNameOrCode, fields));
 			updateRequest.retryOnConflict(2);
 			result.add(updateRequest);
 		}

@@ -189,7 +189,7 @@ public abstract class RWGeoDataESRepository<TModel extends Feature<?, ?>> extend
 
 		for (int i = 0; i < oldItems.size(); i++) {
 			requestBuilder.addAll(elasticPersistenceUtils.getUpdateScript(getIndex(), getType(),
-					oldItems.get(i).getUuid(), fields, script, oldItems.get(i).get_parentId()));
+					oldItems.get(i).getUuid(), fields, script, oldItems.get(i).get_parentId(), false));
 		}
 
 		return multipleUpdate(requestBuilder, oldItems);
@@ -231,7 +231,7 @@ public abstract class RWGeoDataESRepository<TModel extends Feature<?, ?>> extend
 
 		for (int i = 0; i < oldItems.size(); i++) {
 			requestBuilder.addAll(elasticPersistenceUtils.getUpdateScript(getIndex(), getType(),
-					oldItems.get(i).getUuid(), fields, script, oldItems.get(i).get_parentId()));
+					oldItems.get(i).getUuid(), fields, script, oldItems.get(i).get_parentId(), false));
 		}
 
 		return multipleUpdate(requestBuilder, oldItems);
