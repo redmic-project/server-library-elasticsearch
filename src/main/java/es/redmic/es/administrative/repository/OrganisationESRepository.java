@@ -22,14 +22,14 @@ package es.redmic.es.administrative.repository;
 
 import org.springframework.stereotype.Repository;
 
-import es.redmic.es.data.common.repository.RWDataESRepository;
+import es.redmic.es.data.common.repository.AdministrativeCommonESRepository;
 import es.redmic.models.es.administrative.model.Organisation;
 
 @Repository
-public class OrganisationESRepository extends RWDataESRepository<Organisation> {
+public class OrganisationESRepository extends AdministrativeCommonESRepository<Organisation> {
 
 	private static String[] INDEX = { "organisation" };
-	private static String TYPE = "administrative";
+	private static String TYPE = "_doc";
 
 	public OrganisationESRepository() {
 		super(INDEX, TYPE);

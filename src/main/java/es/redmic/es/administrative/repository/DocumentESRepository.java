@@ -27,7 +27,7 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.stereotype.Repository;
 
-import es.redmic.es.data.common.repository.RWDataESRepository;
+import es.redmic.es.data.common.repository.AdministrativeCommonESRepository;
 import es.redmic.exception.data.ItemNotFoundException;
 import es.redmic.models.es.administrative.model.Document;
 import es.redmic.models.es.common.query.dto.DataQueryDTO;
@@ -35,11 +35,11 @@ import es.redmic.models.es.data.common.model.DataHitWrapper;
 import es.redmic.models.es.data.common.model.DataSearchWrapper;
 
 @Repository
-public class DocumentESRepository extends RWDataESRepository<Document> {
+public class DocumentESRepository extends AdministrativeCommonESRepository<Document> {
 
 	private static String[] INDEX = { "document-es", "document-en", "document-it", "document-de", "document-fr",
 			"document-pt" };
-	private static String TYPE = "document";
+	private static String TYPE = "_doc";
 
 	private static String BASE_INDEX = "document-";
 

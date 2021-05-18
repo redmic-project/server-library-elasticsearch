@@ -24,16 +24,16 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.stereotype.Repository;
 
-import es.redmic.es.data.common.repository.RWDataESRepository;
+import es.redmic.es.data.common.repository.AdministrativeCommonESRepository;
 import es.redmic.models.es.administrative.dto.PlatformDTO;
 import es.redmic.models.es.administrative.model.Platform;
 import es.redmic.models.es.data.common.model.DataSearchWrapper;
 
 @Repository
-public class PlatformESRepository extends RWDataESRepository<Platform> {
+public class PlatformESRepository extends AdministrativeCommonESRepository<Platform> {
 
 	private static String[] INDEX = { "platform" };
-	private static String TYPE = "administrative";
+	private static String TYPE = "_doc";
 
 	public PlatformESRepository() {
 		super(INDEX, TYPE);
