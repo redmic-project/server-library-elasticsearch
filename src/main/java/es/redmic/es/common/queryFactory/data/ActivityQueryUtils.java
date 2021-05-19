@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.NestedQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
@@ -63,7 +64,16 @@ public abstract class ActivityQueryUtils extends BaseQueryUtils {
 		}
 
 		if (queryDTO.getResources() != null) {
-			query.must(QueryBuilders.nestedQuery("resources", QueryBuilders.existsQuery("resources.name"), ScoreMode.Avg));
+
+			NestedQueryBuilder resourceExistQuery =
+				QueryBuilders.nestedQuery("resources", QueryBuilders.existsQuery("resources.name"), ScoreMode.Avg);
+
+			if (Boolean.TRUE.equals(queryDTO.getResources())) {
+				query.must(resourceExistQuery);
+			}
+			else {
+				query.mustNot(resourceExistQuery);
+			}
 		}
 
 		if (queryDTO.getResourceName() != null) {
