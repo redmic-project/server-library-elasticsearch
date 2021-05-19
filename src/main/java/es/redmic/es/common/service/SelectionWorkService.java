@@ -48,18 +48,25 @@ public class SelectionWorkService implements ISelectionWorkService<SelectionWork
 	@Autowired
 	protected SelectionWorkRepository repository;
 
+	protected String commonScript = "ctx._source.service = params.service; ctx._source.date = params.date; " +
+	"ctx._source.name = params.name; ctx._source.userId = params.userId;";
+
 	protected String selectScript =
 		"if (ctx._source.ids == null) { ctx._source.ids = params.ids; } else { ctx._source.ids.addAll(params.ids); } " +
-		"ctx._source.ids = ids_save; ctx._source.service = params.service; ctx._source.date = params.date; " +
-		"ctx._source.name = params.name; ctx._source.userId = params.userId;";
+		commonScript;
 
-	protected String deselectScript = "rm-selections-ids";
+	protected String deselectScript =
+		"if (ctx._source.ids == null) { ctx._source.ids = []; } else { ctx._source.ids.removeAll(params.ids); } " +
+		commonScript;
 
-	protected String selectAllScript = "all-selections-ids";
+	protected String selectAllScript = "ctx._source.ids = params.ids;" + commonScript;
 
-	protected String reverseScript = "reverse-selections-ids";
+	protected String reverseScript =
+		"if (ctx._source.ids == null) { ctx._source.ids = params.ids; } ctx._source.ids = ctx._source.ids - params.ids; " +
+		commonScript;
 
-	protected String clearScript = "clear-selections-ids";
+	protected String clearScript =
+		"ctx._source.ids = []; " + commonScript;
 
 	public enum Actions {
 		select, deselect, selectAll, reverse
