@@ -81,6 +81,36 @@ public abstract class ActivityQueryUtils extends BaseQueryUtils {
 				queryDTO.getResourceName()), ScoreMode.Avg));
 		}
 
+		if (queryDTO.getDocument() != null) {
+			query.must(QueryBuilders.nestedQuery("documents", QueryBuilders.termQuery("documents.document.title",
+				queryDTO.getDocument()), ScoreMode.Avg));
+		}
+
+		if (queryDTO.getContact() != null) {
+			query.should(QueryBuilders.nestedQuery("contacts", QueryBuilders.termQuery("contacts.contact.firstName",
+					queryDTO.getContact()), ScoreMode.Avg))
+				.should(QueryBuilders.nestedQuery("contacts", QueryBuilders.termQuery("contacts.contact.surname",
+					queryDTO.getContact()), ScoreMode.Avg));
+		}
+
+		if (queryDTO.getOrganisation() != null) {
+			query.must(QueryBuilders.nestedQuery("organisations", QueryBuilders.termQuery("organisations.organisation.name",
+				queryDTO.getOrganisation()), ScoreMode.Avg));
+		}
+
+		if (queryDTO.getPlatform() != null) {
+			query.must(QueryBuilders.nestedQuery("platforms", QueryBuilders.termQuery("platforms.platform.name",
+				queryDTO.getPlatform()), ScoreMode.Avg));
+		}
+
+		if (queryDTO.getProject() != null) {
+			query.must(QueryBuilders.termQuery("parent.name", queryDTO.getProject()));
+		}
+
+		if (queryDTO.getProgram() != null) {
+			query.must(QueryBuilders.termQuery("grandParent.name", queryDTO.getProgram()));
+		}
+
 		return getResultQuery(query);
 	}
 
