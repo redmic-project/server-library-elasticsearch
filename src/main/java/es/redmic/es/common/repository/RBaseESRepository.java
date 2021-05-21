@@ -852,7 +852,10 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 	 */
 	protected Map<String, Object> findSelectedItems(String selectionId) {
 
-		GetRequest getRequest = new GetRequest(getIndex()[0], getType(), selectionId.toString());
+		String selectionIndex = SelectionWorkRepository.INDEX[0];
+		String selectionType = SelectionWorkRepository.TYPE;
+
+		GetRequest getRequest = new GetRequest(selectionIndex, selectionType, selectionId);
 
 		GetResponse response;
 		try {
