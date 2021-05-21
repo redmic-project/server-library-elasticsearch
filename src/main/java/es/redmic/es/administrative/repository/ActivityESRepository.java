@@ -44,7 +44,7 @@ public class ActivityESRepository extends ActivityCommonESRepository<Activity> {
 
 	protected static String CHILDREN_NAME = "geodata";
 
-	private static QueryBuilder INTERNAL_QUERY = QueryBuilders.boolQuery().must(QueryBuilders.termQuery("rank.id", 3));
+	private static QueryBuilder INTERNAL_QUERY = QueryBuilders.termQuery("rank.id", 3);
 
 	@Autowired
 	UserUtilsServiceItfc userService;
@@ -61,8 +61,9 @@ public class ActivityESRepository extends ActivityCommonESRepository<Activity> {
 	@SuppressWarnings("unchecked")
 	public DataSearchWrapper<Activity> findByGrandParent(String programId) {
 
-		QueryBuilder query = QueryBuilders.boolQuery().must(QueryBuilders.termQuery("path.split", programId))
-				.must(QueryBuilders.termQuery("rank.id", 3));
+		QueryBuilder query = QueryBuilders.boolQuery()
+			.must(INTERNAL_QUERY)
+			.must(QueryBuilders.termQuery("path.split", programId));
 
 		return (DataSearchWrapper<Activity>) findBy(QueryBuilders.boolQuery().must(query));
 	}
@@ -70,7 +71,9 @@ public class ActivityESRepository extends ActivityCommonESRepository<Activity> {
 	@SuppressWarnings("unchecked")
 	public DataSearchWrapper<Activity> findByParent(String projectId) {
 
-		QueryBuilder query = QueryBuilders.boolQuery().must(QueryBuilders.termQuery("path.split", projectId));
+		QueryBuilder query = QueryBuilders.boolQuery()
+			.must(INTERNAL_QUERY)
+			.must(QueryBuilders.termQuery("path.split", projectId));
 
 		return (DataSearchWrapper<Activity>) findBy(QueryBuilders.boolQuery().must(query));
 	}
@@ -96,7 +99,9 @@ public class ActivityESRepository extends ActivityCommonESRepository<Activity> {
 
 		QueryBuilder queryBuilder = getOrInitializeQuery(query, getInternalQuery(), getTermQuery(query.getTerms()));
 
-		BoolQueryBuilder filterBuilder = QueryBuilders.boolQuery().must(QueryBuilders.nestedQuery("organisations",
+		BoolQueryBuilder filterBuilder = QueryBuilders.boolQuery()
+			.must(INTERNAL_QUERY)
+			.must(QueryBuilders.nestedQuery("organisations",
 				QueryBuilders.termQuery("organisations.organisation.id", organisationId), ScoreMode.Avg));
 
 		return (DataSearchWrapper<Activity>) findBy(QueryBuilders.boolQuery().must(queryBuilder).filter(filterBuilder));
@@ -107,7 +112,9 @@ public class ActivityESRepository extends ActivityCommonESRepository<Activity> {
 
 		QueryBuilder queryBuilder = getOrInitializeQuery(query, getInternalQuery(), getTermQuery(query.getTerms()));
 
-		BoolQueryBuilder filterBuilder = QueryBuilders.boolQuery().must(QueryBuilders.nestedQuery("platforms",
+		BoolQueryBuilder filterBuilder = QueryBuilders.boolQuery()
+			.must(INTERNAL_QUERY)
+			.must(QueryBuilders.nestedQuery("platforms",
 				QueryBuilders.termQuery("platforms.platform.id", platformId), ScoreMode.Avg));
 
 		return (DataSearchWrapper<Activity>) findBy(QueryBuilders.boolQuery().must(queryBuilder).filter(filterBuilder));
@@ -118,7 +125,9 @@ public class ActivityESRepository extends ActivityCommonESRepository<Activity> {
 
 		QueryBuilder queryBuilder = getOrInitializeQuery(query, getInternalQuery(), getTermQuery(query.getTerms()));
 
-		BoolQueryBuilder filterBuilder = QueryBuilders.boolQuery().must(QueryBuilders.nestedQuery("documents",
+		BoolQueryBuilder filterBuilder = QueryBuilders.boolQuery()
+			.must(INTERNAL_QUERY)
+			.must(QueryBuilders.nestedQuery("documents",
 				QueryBuilders.termQuery("documents.document.id", documentId), ScoreMode.Avg));
 
 		return (DataSearchWrapper<Activity>) findBy(QueryBuilders.boolQuery().must(queryBuilder).filter(filterBuilder));
@@ -129,7 +138,9 @@ public class ActivityESRepository extends ActivityCommonESRepository<Activity> {
 
 		QueryBuilder queryBuilder = getOrInitializeQuery(query, getInternalQuery(), getTermQuery(query.getTerms()));
 
-		BoolQueryBuilder filterBuilder = QueryBuilders.boolQuery().must(QueryBuilders.nestedQuery("contacts",
+		BoolQueryBuilder filterBuilder = QueryBuilders.boolQuery()
+			.must(INTERNAL_QUERY)
+			.must(QueryBuilders.nestedQuery("contacts",
 				QueryBuilders.termQuery("contacts.contact.id", contactId), ScoreMode.Avg));
 
 		return (DataSearchWrapper<Activity>) findBy(QueryBuilders.boolQuery().must(queryBuilder).filter(filterBuilder));

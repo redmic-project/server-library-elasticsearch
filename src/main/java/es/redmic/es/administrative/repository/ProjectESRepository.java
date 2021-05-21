@@ -35,7 +35,7 @@ public class ProjectESRepository extends ActivityCommonESRepository<Project> {
 	private static String[] INDEX = { "activity" };
 	private static String TYPE = "_doc";
 
-	private static QueryBuilder INTERNAL_QUERY = QueryBuilders.boolQuery().must(QueryBuilders.termQuery("rank.id", 2));
+	private static QueryBuilder INTERNAL_QUERY = QueryBuilders.termQuery("rank.id", 2);
 
 	public ProjectESRepository() {
 		super(INDEX, TYPE);
@@ -55,7 +55,7 @@ public class ProjectESRepository extends ActivityCommonESRepository<Project> {
 	public QueryBuilder getTermQuery(Map<String, Object> terms, BoolQueryBuilder query) {
 
 		if (terms.containsKey("path.split")) {
-			query.must(QueryBuilders.termsQuery("path.split", terms.get("path.split")));
+			query.must(INTERNAL_QUERY).must(QueryBuilders.termsQuery("path.split", terms.get("path.split")));
 		}
 		return super.getTermQuery(terms, query);
 	}
@@ -63,7 +63,7 @@ public class ProjectESRepository extends ActivityCommonESRepository<Project> {
 	@SuppressWarnings("unchecked")
 	public DataSearchWrapper<Project> findByParent(String programId) {
 
-		QueryBuilder query = QueryBuilders.boolQuery().must(QueryBuilders.termQuery("path.split", programId));
+		QueryBuilder query = QueryBuilders.boolQuery().must(INTERNAL_QUERY).must(QueryBuilders.termQuery("path.split", programId));
 
 		return (DataSearchWrapper<Project>) findBy(QueryBuilders.boolQuery().must(query));
 	}

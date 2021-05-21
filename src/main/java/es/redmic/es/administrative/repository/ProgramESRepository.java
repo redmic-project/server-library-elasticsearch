@@ -31,7 +31,7 @@ public class ProgramESRepository extends ActivityCommonESRepository<Program> {
 	private static String[] INDEX = { "activity" };
 	private static String TYPE = "_doc";
 
-	private static QueryBuilder INTERNAL_QUERY = QueryBuilders.boolQuery().must(QueryBuilders.termQuery("rank.id", 1));
+	private static QueryBuilder INTERNAL_QUERY = QueryBuilders.termQuery("rank.id", 1);
 
 	public ProgramESRepository() {
 		super(INDEX, TYPE);
