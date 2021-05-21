@@ -28,6 +28,8 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.NestedQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.RangeQueryBuilder;
+import org.joda.time.DateTime;
 
 import es.redmic.es.common.queryFactory.common.BaseQueryUtils;
 import es.redmic.models.es.common.query.dto.DataQueryDTO;
@@ -109,6 +111,18 @@ public abstract class ActivityQueryUtils extends BaseQueryUtils {
 
 		if (queryDTO.getProgram() != null) {
 			query.must(QueryBuilders.termQuery("grandParent.name", queryDTO.getProgram()));
+		}
+
+		Integer status = queryDTO.getStatus();
+		if (status != null) {
+			if (status.equals(1)) {
+				query.should(QueryBuilders.boolQuery().mustNot(QueryBuilders.existsQuery(START_DATE_PROPERTY)))
+					.should(QueryBuilders.boolQuery().must(QueryBuilders.rangeQuery(START_DATE_PROPERTY).gt(DateTime.now())));
+			} else if (status.equals(2)) {
+				query.mustNot(QueryBuilders.existsQuery(END_DATE_PROPERTY));
+			} else if (status.equals(3)) {
+				query.must(QueryBuilders.existsQuery(END_DATE_PROPERTY));
+			}
 		}
 
 		return getResultQuery(query);
