@@ -65,12 +65,12 @@ public abstract class ActivityQueryUtils extends BaseQueryUtils {
 			query.must(QueryBuilders.termsQuery("starred", queryDTO.getStarred()));
 		}
 
-		if (queryDTO.getResources() != null) {
+		if (queryDTO.getHasResource() != null) {
 
 			NestedQueryBuilder resourceExistQuery =
 				QueryBuilders.nestedQuery("resources", QueryBuilders.existsQuery("resources.name"), ScoreMode.Avg);
 
-			if (Boolean.TRUE.equals(queryDTO.getResources())) {
+			if (Boolean.TRUE.equals(queryDTO.getHasResource())) {
 				query.must(resourceExistQuery);
 			}
 			else {
@@ -78,46 +78,46 @@ public abstract class ActivityQueryUtils extends BaseQueryUtils {
 			}
 		}
 
-		if (queryDTO.getResourceName() != null) {
-			query.must(QueryBuilders.nestedQuery("resources", QueryBuilders.termQuery("resources.name",
-				queryDTO.getResourceName()), ScoreMode.Avg));
+		if (queryDTO.getResource() != null) {
+			query.must(QueryBuilders.nestedQuery("resources", QueryBuilders.termQuery("resources.id",
+				queryDTO.getResource()), ScoreMode.Avg));
 		}
 
 		if (queryDTO.getDocument() != null) {
-			query.must(QueryBuilders.nestedQuery("documents", QueryBuilders.termQuery("documents.document.title",
+			query.must(QueryBuilders.nestedQuery("documents", QueryBuilders.termQuery("documents.document.id",
 				queryDTO.getDocument()), ScoreMode.Avg));
 		}
 
 		if (queryDTO.getContact() != null) {
-			query.should(QueryBuilders.nestedQuery("contacts", QueryBuilders.termQuery("contacts.contact.firstName",
-					queryDTO.getContact()), ScoreMode.Avg))
-				.should(QueryBuilders.nestedQuery("contacts", QueryBuilders.termQuery("contacts.contact.surname",
+			query.must(QueryBuilders.nestedQuery("contacts", QueryBuilders.termQuery("contacts.contact.id",
 					queryDTO.getContact()), ScoreMode.Avg));
 		}
 
 		if (queryDTO.getOrganisation() != null) {
-			query.must(QueryBuilders.nestedQuery("organisations", QueryBuilders.termQuery("organisations.organisation.name",
+			query.must(QueryBuilders.nestedQuery("organisations", QueryBuilders.termQuery("organisations.organisation.id",
 				queryDTO.getOrganisation()), ScoreMode.Avg));
 		}
 
 		if (queryDTO.getPlatform() != null) {
-			query.must(QueryBuilders.nestedQuery("platforms", QueryBuilders.termQuery("platforms.platform.name",
+			query.must(QueryBuilders.nestedQuery("platforms", QueryBuilders.termQuery("platforms.platform.id",
 				queryDTO.getPlatform()), ScoreMode.Avg));
 		}
 
 		if (queryDTO.getProject() != null) {
-			query.must(QueryBuilders.termQuery("parent.name", queryDTO.getProject()));
+			query.must(QueryBuilders.termQuery("parent.id", queryDTO.getProject()));
 		}
 
 		if (queryDTO.getProgram() != null) {
-			query.must(QueryBuilders.termQuery("grandParent.name", queryDTO.getProgram()));
+			query.must(QueryBuilders.termQuery("grandParent.id", queryDTO.getProgram()));
 		}
 
 		Integer status = queryDTO.getStatus();
 		if (status != null) {
 			if (status.equals(1)) {
-				query.should(QueryBuilders.boolQuery().mustNot(QueryBuilders.existsQuery(START_DATE_PROPERTY)))
+				BoolQueryBuilder statusQuery = QueryBuilders.boolQuery()
+					.should(QueryBuilders.boolQuery().mustNot(QueryBuilders.existsQuery(START_DATE_PROPERTY)))
 					.should(QueryBuilders.boolQuery().must(QueryBuilders.rangeQuery(START_DATE_PROPERTY).gt(DateTime.now())));
+				query.must(statusQuery);
 			} else if (status.equals(2)) {
 				query.mustNot(QueryBuilders.existsQuery(END_DATE_PROPERTY));
 			} else if (status.equals(3)) {
