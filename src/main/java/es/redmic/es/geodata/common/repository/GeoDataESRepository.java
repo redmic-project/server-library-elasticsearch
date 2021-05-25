@@ -26,9 +26,14 @@ public abstract class GeoDataESRepository<TModel extends Feature<?, ?>>
 		extends RWGeoDataESRepository<TModel> {
 
 	protected static String[] INDEX = { "geodata" };
-	protected static String TYPE = "geodata";
+	protected static String TYPE = "_doc";
 
 	protected GeoDataESRepository() {
 		super(INDEX, TYPE);
+	}
+
+	@Override
+	protected String getMappingFilePath(String index, String type) {
+		return MAPPING_BASE_PATH + "_doc/" + index + MAPPING_FILE_EXTENSION;
 	}
 }
