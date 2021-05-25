@@ -52,7 +52,6 @@ public enum QueryType {
 	INFRASTRUCTURE(DataPrefixType.INFRASTRUCTURE),
 	ISOLINES(DataPrefixType.ISOLINES),
 	AREA(DataPrefixType.AREA),
-	TOPONYM(DataPrefixType.TOPONYM),
 	TIMESERIES(DataPrefixType.TIMESERIES),
 	COLLECTINGSERIES(DataPrefixType.COLLECTINGSERIES),
 	ACTIVITY(DataPrefixType.ACTIVITY),
@@ -80,7 +79,6 @@ public enum QueryType {
 		utils.put(QueryType.INFRASTRUCTURE, InfrastructureQueryUtils.class);
 		utils.put(QueryType.ISOLINES, IsolinesQueryUtils.class);
 		utils.put(QueryType.AREA, AreaQueryUtils.class);
-		utils.put(QueryType.TOPONYM, GeoDataQueryUtils.class);
 		utils.put(QueryType.TIMESERIES, SeriesQueryUtils.class);
 		utils.put(QueryType.COLLECTINGSERIES, SeriesQueryUtils.class);
 		utils.put(QueryType.ACTIVITY, ActivityQueryUtils.class);
