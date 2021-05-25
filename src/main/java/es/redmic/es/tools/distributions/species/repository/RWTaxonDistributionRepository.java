@@ -76,7 +76,7 @@ public class RWTaxonDistributionRepository extends RTaxonDistributionRepository 
 		if (response != null && response.isExists()) {
 			fields.put("item", (Map<String, Object>) objectMapper.convertValue(dist, Map.class));
 			try {
-				requestBuilder.addAll(elasticPersistenceUtils.getUpdateScript(INDEX, TYPE, gridId, fields, script));
+				requestBuilder.addAll(elasticPersistenceUtils.getUpdateScript(getIndex(), getType(), gridId, fields, script));
 			} catch (Exception e) {
 				throw new ESUpdateException(e);
 			}
@@ -99,7 +99,7 @@ public class RWTaxonDistributionRepository extends RTaxonDistributionRepository 
 		Map<String, Object> fields = new HashMap<>();
 
 		fields.put("item", (Map<String, Object>) objectMapper.convertValue(dist, Map.class));
-		requestBuilder.addAll(elasticPersistenceUtils.getUpdateScript(INDEX, TYPE, id, fields, script));
+		requestBuilder.addAll(elasticPersistenceUtils.getUpdateScript(getIndex(), getType(), id, fields, script));
 
 		if (!requestBuilder.isEmpty())
 			elasticPersistenceUtils.updateByBulk(requestBuilder);
@@ -115,7 +115,7 @@ public class RWTaxonDistributionRepository extends RTaxonDistributionRepository 
 		TaxonDistribution source = findByRegisterId(id);
 		if (source != null) {
 			try {
-				requestBuilder.addAll(elasticPersistenceUtils.getUpdateScript(INDEX, TYPE,
+				requestBuilder.addAll(elasticPersistenceUtils.getUpdateScript(getIndex(), getType(),
 						String.valueOf(source.getId()), fields, script));
 			} catch (Exception e) {
 				throw new ESUpdateException(e);
