@@ -952,6 +952,17 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 		return objectMapper.convertValue(modelToIndex, Map.class);
 	}
 
+
+	protected String getUpdatePropertyScript() {
+		// TODO: return inline script
+		return "";
+	}
+
+	protected String getUpdateNestedPropertyScript() {
+		// TODO: return inline script
+		return "";
+	}
+
 	protected abstract String[] getDefaultSearchFields();
 
 	protected abstract String[] getDefaultHighlightFields();

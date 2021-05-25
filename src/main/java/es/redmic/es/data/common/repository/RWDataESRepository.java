@@ -182,14 +182,14 @@ public abstract class RWDataESRepository<TModel extends BaseES<?>> extends RData
 		if (Boolean.FALSE.equals(nestedProperty)) {
 			oldItems = findWithSpecificReference(path, Long.parseLong(model.get("id").toString()));
 			fields.put("propertyPath", StringUtils.join(Arrays.copyOf(pathSplit, pathSplit.length - 1), "."));
-			script = "update-property";
+			script = getUpdatePropertyScript();
 		} else {
 			String fieldProperty = HierarchicalUtils.getAncestorPath(path, nestingDepth);
 			oldItems = findWithNestedReference(fieldProperty, path, Long.parseLong(model.get("id").toString()));
 			fields.put("propertyPath", StringUtils
 					.join(Arrays.copyOfRange(pathSplit, (pathSplit.length - nestingDepth), pathSplit.length - 1), "."));
 			fields.put("nestedPath", fieldProperty);
-			script = "update-nested";
+			script = getUpdateNestedPropertyScript();
 		}
 		if (oldItems == null || oldItems.isEmpty())
 			return new ArrayList<>();
@@ -198,7 +198,7 @@ public abstract class RWDataESRepository<TModel extends BaseES<?>> extends RData
 
 		for (int i = 0; i < oldItems.size(); i++) {
 			requestBuilder.addAll(elasticPersistenceUtils.getUpdateScript(getIndex(), getType(),
-					oldItems.get(i).getId().toString(), fields, script));
+					oldItems.get(i).getId().toString(), fields, script, true));
 		}
 
 		return multipleUpdate(requestBuilder, oldItems);
