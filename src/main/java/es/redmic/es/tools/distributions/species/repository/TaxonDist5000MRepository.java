@@ -26,7 +26,7 @@ import org.springframework.stereotype.Repository;
 public class TaxonDist5000MRepository extends RWTaxonDistributionRepository {
 
 	private static String[] INDEX = { "distribution-5000" };
-	private static String TYPE = "taxon";
+	private static String TYPE = "_doc";
 
 	private Integer gridSize = 5000;
 

@@ -70,9 +70,6 @@ import es.redmic.models.es.tools.distribution.species.model.TaxonDistribution;
 @Component
 public class RTaxonDistributionRepository extends RBaseESRepository<Distribution> {
 
-	protected String[] INDEX;
-	protected String TYPE;
-
 	private static String COORDINATES_FIELD = "geometry";
 	private static String TAXON_ID_FIELD = "properties.taxons.path";
 	private static String TAXON_EQUIVALENT_ID_FIELD = "properties.taxons.equivalent";
@@ -96,8 +93,12 @@ public class RTaxonDistributionRepository extends RBaseESRepository<Distribution
 	}
 
 	public RTaxonDistributionRepository(String[] index, String type) {
-		this.INDEX = index;
-		this.TYPE = type;
+		super(index, type);
+	}
+
+	@Override
+	protected String getMappingFilePath(String index, String type) {
+		return MAPPING_BASE_PATH + "taxon/distribution" + MAPPING_FILE_EXTENSION;
 	}
 
 	public Integer getGridSize() {
