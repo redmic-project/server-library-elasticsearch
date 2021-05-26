@@ -29,14 +29,17 @@ import org.springframework.beans.factory.annotation.Value;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import es.redmic.es.common.repository.SelectionWorkRepository;
+import es.redmic.es.common.service.RBaseESService;
 import es.redmic.es.geodata.common.service.GridServiceItfc;
 import es.redmic.es.tools.distributions.species.repository.RTaxonDistributionRepository;
 import es.redmic.exception.elasticsearch.ESTooManySelectedItemsException;
+import es.redmic.models.es.common.dto.BaseDTO;
 import es.redmic.models.es.common.query.dto.GeoDataQueryDTO;
 import es.redmic.models.es.geojson.common.dto.GeoJSONFeatureCollectionDTO;
 import es.redmic.models.es.tools.distribution.dto.TaxonDistributionRegistersDTO;
+import es.redmic.models.es.tools.distribution.model.Distribution;
 
-public abstract class RTaxonDistributionService {
+public abstract class RTaxonDistributionService extends RBaseESService<Distribution, BaseDTO<?>> {
 
 	@Autowired
 	TaxonDistributionUtils taxonDistributionUtils;
