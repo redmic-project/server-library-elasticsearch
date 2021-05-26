@@ -38,6 +38,7 @@ import es.redmic.models.es.common.dto.JSONCollectionDTO;
 import es.redmic.models.es.common.model.DomainES;
 import es.redmic.models.es.common.model.ReferencesES;
 import es.redmic.models.es.common.query.dto.DataQueryDTO;
+import es.redmic.models.es.common.query.dto.GeoDataQueryDTO;
 import es.redmic.models.es.data.common.model.DataSearchWrapper;
 import es.redmic.models.es.geojson.common.dto.GeoJSONFeatureCollectionDTO;
 
@@ -81,7 +82,7 @@ public class DocumentESService extends MetaDataESService<Document, DocumentDTO> 
 		this._repository = repository;
 	}
 
-	public GeoJSONFeatureCollectionDTO getCitation(DataQueryDTO dto, String documentId) {
+	public GeoJSONFeatureCollectionDTO getCitation(GeoDataQueryDTO dto, String documentId) {
 		return citationESService.findByDocument(dto, documentId);
 	}
 

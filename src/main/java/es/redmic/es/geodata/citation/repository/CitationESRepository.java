@@ -20,7 +20,6 @@ package es.redmic.es.geodata.citation.repository;
  * #L%
  */
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,9 +31,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import es.redmic.es.common.queryFactory.geodata.CitationQueryUtils;
-import es.redmic.es.common.queryFactory.geodata.GeoDataQueryUtils;
 import es.redmic.es.geodata.common.repository.GeoPresenceESRepository;
 import es.redmic.models.es.common.query.dto.DataQueryDTO;
+import es.redmic.models.es.common.query.dto.GeoDataQueryDTO;
 import es.redmic.models.es.common.request.dto.CategoryPathInfo;
 import es.redmic.models.es.geojson.common.model.GeoPointData;
 import es.redmic.models.es.geojson.common.model.GeoSearchWrapper;
@@ -54,10 +53,9 @@ public class CitationESRepository extends GeoPresenceESRepository<GeoPointData> 
 		setInternalQuery(CitationQueryUtils.INTERNAL_QUERY);
 	}
 
-	@SuppressWarnings("unchecked")
-	public GeoSearchWrapper<GeoDataProperties, Point> findByDocument(DataQueryDTO queryDTO, String documentId) {
+	public GeoSearchWrapper<GeoDataProperties, Point> findByDocument(GeoDataQueryDTO queryDTO, String documentId) {
 
-		QueryBuilder termQuery = getTermQuery(queryDTO.getTerms());
+		/*-QueryBuilder termQuery = getTermQuery(queryDTO.getTerms());
 		QueryBuilder queryBuilder = getQuery(queryDTO, getInternalQuery(), termQuery);
 		if (queryBuilder == null)
 			queryBuilder = QueryBuilders.matchAllQuery();
@@ -66,7 +64,10 @@ public class CitationESRepository extends GeoPresenceESRepository<GeoPointData> 
 				.must(GeoDataQueryUtils.getDocumentQueryOnParent(documentId));
 
 		return (GeoSearchWrapper<GeoDataProperties, Point>) findBy(
-				QueryBuilders.boolQuery().must(queryBuilder).filter(filterBuilder));
+				QueryBuilders.boolQuery().must(queryBuilder).filter(filterBuilder));-*/
+
+		// TODO: Buscar forma de filtrar por documentos de actividad
+		return null;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -83,12 +84,13 @@ public class CitationESRepository extends GeoPresenceESRepository<GeoPointData> 
 	 * añadir implementación específica para crear una query a apartir de una
 	 * serie de términos obtenidos por el controlador.
 	 */
-	@SuppressWarnings("unchecked")
+
 	@Override
 	public QueryBuilder getTermQuery(Map<String, Object> terms, BoolQueryBuilder query) {
 
 		if (terms.containsKey("documents") && terms.containsKey("taxon")) {
-			query.must(GeoDataQueryUtils.getDocumentsQueryOnParent((ArrayList<String>) terms.get("documents")))
+			// TODO: Buscar forma de filtrar por documentos de actividad
+			query/*.must(GeoDataQueryUtils.getDocumentsQueryOnParent((ArrayList<String>) terms.get("documents")))*/
 					.must(QueryBuilders.termQuery("properties.collect.taxon.path.split", terms.get("taxon")));
 		}
 		return super.getTermQuery(terms, query);

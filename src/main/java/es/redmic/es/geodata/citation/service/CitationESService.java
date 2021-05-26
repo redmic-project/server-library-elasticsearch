@@ -36,7 +36,7 @@ import es.redmic.models.es.administrative.taxonomy.model.Species;
 import es.redmic.models.es.administrative.taxonomy.model.TaxonValid;
 import es.redmic.models.es.common.model.DomainES;
 import es.redmic.models.es.common.model.ReferencesES;
-import es.redmic.models.es.common.query.dto.DataQueryDTO;
+import es.redmic.models.es.common.query.dto.GeoDataQueryDTO;
 import es.redmic.models.es.geojson.citation.dto.CitationDTO;
 import es.redmic.models.es.geojson.common.dto.GeoJSONFeatureCollectionDTO;
 import es.redmic.models.es.geojson.common.model.Feature;
@@ -96,7 +96,7 @@ public class CitationESService extends GeoPresenceESService<CitationDTO, GeoPoin
 		return orikaMapper.getMapperFacade().map(dtoToIndex, GeoPointData.class);
 	}
 
-	public GeoJSONFeatureCollectionDTO findByDocument(DataQueryDTO queryDTO, String documentId) {
+	public GeoJSONFeatureCollectionDTO findByDocument(GeoDataQueryDTO queryDTO, String documentId) {
 
 		GeoSearchWrapper<GeoDataProperties, Point> result = repository.findByDocument(queryDTO, documentId);
 
