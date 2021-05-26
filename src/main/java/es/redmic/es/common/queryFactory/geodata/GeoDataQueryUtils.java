@@ -30,7 +30,6 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.RangeQueryBuilder;
-import org.elasticsearch.join.query.JoinQueryBuilders;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptType;
 
@@ -164,24 +163,18 @@ public abstract class GeoDataQueryUtils extends BaseQueryUtils {
 		return query;
 	}
 
-	public static BoolQueryBuilder getItemsQuery(String id, String parentId, List<Long> accessibilityIds) {
+	public static BoolQueryBuilder getItemsQuery(String id, String parentId) {
 
 		ArrayList<String> ids = new ArrayList<>();
 		ids.add(id);
-		return getItemsQuery(ids, parentId, accessibilityIds);
+		return getItemsQuery(ids, parentId);
 	}
 
-	public static BoolQueryBuilder getItemsQuery(List<String> ids, String parentId, List<Long> accessibilityIds) {
+	public static BoolQueryBuilder getItemsQuery(List<String> ids, String parentId) {
 
 		BoolQueryBuilder query = QueryBuilders.boolQuery();
 
-		if (accessibilityIds != null && !accessibilityIds.isEmpty() && parentId != null)
-			query.must(getQueryOnParent(parentId, accessibilityIds));
-
-		else if (accessibilityIds != null && !accessibilityIds.isEmpty() && parentId == null)
-			query.must(getAccessibilityQueryOnParent(accessibilityIds));
-
-		else if (parentId != null)
+		if (parentId != null)
 			query.must(getQueryByParent(parentId));
 
 		query.must(QueryBuilders.idsQuery().addIds(ids.toArray(new String[ids.size()])));
@@ -191,27 +184,7 @@ public abstract class GeoDataQueryUtils extends BaseQueryUtils {
 
 	public static QueryBuilder getHierarchicalQuery(GeoDataQueryDTO queryDTO, String parentId) {
 
-		List<Long> accessibilityIds = queryDTO.getAccessibilityIds();
-
-		if ((accessibilityIds == null || accessibilityIds.isEmpty()) && parentId == null)
-			return null;
-
-		if (accessibilityIds == null || accessibilityIds.isEmpty())
-			return getQueryByParent(parentId);
-
-		if (parentId == null)
-			return getAccessibilityQueryOnParent(accessibilityIds);
-
-		return getQueryOnParent(parentId, accessibilityIds);
-	}
-
-	public static QueryBuilder getQueryOnParent(String parentId, List<Long> accessibilityIds) {
-
-		if (parentId == null || accessibilityIds == null || accessibilityIds.isEmpty())
-			return null;
-
-		return JoinQueryBuilders.hasParentQuery(PARENT, QueryBuilders.boolQuery()
-				.must(QueryBuilders.termQuery("id", parentId)).must(getAccessibilityQuery(accessibilityIds)), true);
+		return getQueryByParent(parentId);
 	}
 
 	public static QueryBuilder getQueryByParent(String parentId) {
@@ -219,33 +192,6 @@ public abstract class GeoDataQueryUtils extends BaseQueryUtils {
 		if (parentId == null)
 			return null;
 
-		return JoinQueryBuilders.hasParentQuery(PARENT, QueryBuilders.termQuery("id", parentId), true);
-	}
-
-	public static QueryBuilder getAccessibilityQueryOnParent(List<Long> accessibilityIds) {
-
-		if (accessibilityIds == null || accessibilityIds.isEmpty())
-			return null;
-
-		return JoinQueryBuilders.hasParentQuery(PARENT, getAccessibilityQuery(accessibilityIds), true);
-	}
-
-	public static QueryBuilder getDocumentQueryOnParent(String documentId) {
-
-		if (documentId == null)
-			return null;
-
-		List<String> documentIds = new ArrayList<>();
-		documentIds.add(documentId);
-		return getDocumentsQueryOnParent(documentIds);
-	}
-
-	public static QueryBuilder getDocumentsQueryOnParent(List<String> documentIds) {
-
-		if (documentIds == null || !documentIds.isEmpty())
-			return null;
-
-		return JoinQueryBuilders.hasParentQuery(PARENT, QueryBuilders.nestedQuery("documents",
-				QueryBuilders.termsQuery("documents.document.id", documentIds), ScoreMode.Avg), true);
+		return QueryBuilders.termQuery("properties.activityId", parentId);
 	}
 }
