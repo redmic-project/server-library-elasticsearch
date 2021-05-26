@@ -74,7 +74,9 @@ public abstract class RGeoDataESRepository<TModel extends Feature<?, ?>> extends
 	@Override
 	public GeoHitWrapper<?, ?> findById(String id, String parentId) {
 
-		BoolQueryBuilder query = GeoDataQueryUtils.getItemsQuery(id, parentId, userService.getAccessibilityControl());
+		// TODO: Controlar accesibilidad -> userService.getAccessibilityControl()
+
+		BoolQueryBuilder query = GeoDataQueryUtils.getItemsQuery(id, parentId);
 
 		GeoSearchWrapper<?, ?> result = findBy(query);
 
@@ -97,7 +99,8 @@ public abstract class RGeoDataESRepository<TModel extends Feature<?, ?>> extends
 
 		List<String> ids = dto.getIds();
 
-		BoolQueryBuilder query = GeoDataQueryUtils.getItemsQuery(ids, parentId, userService.getAccessibilityControl());
+		// TODO: Controlar accesibilidad -> userService.getAccessibilityControl()
+		BoolQueryBuilder query = GeoDataQueryUtils.getItemsQuery(ids, parentId);
 
 		GeoSearchWrapper<?, ?> result = findBy(query, dto.getFields());
 
