@@ -20,6 +20,8 @@ package es.redmic.es.tools.distributions.species.repository;
  * #L%
  */
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -78,7 +80,9 @@ public class RTaxonDistributionRepository extends RBaseESRepository<Distribution
 	private static String REGISTERS_MISIDENTIFICATION_FIELD = "properties.taxons.registers.misidentification";
 	private static String REGISTERS_CONFIDENCE_FIELD = "properties.taxons.registers.confidence";
 
-	private static String FILTER_SCRIPT = "aggs-dist";
+	private static String AGGS_DISTRIBUTION_SCRIPT_PATH = "src/main/resources/scripts/aggs-distribution.txt";
+
+	private static final String SCRIPT_LANG = "painless";
 
 	private static String[] INCLUDE_DEFAULT = new String[] { "*" };
 	private static String[] EXCLUDE_DEFAULT = new String[] {};
@@ -159,7 +163,7 @@ public class RTaxonDistributionRepository extends RBaseESRepository<Distribution
 		searchSourceBuilder.query(query);
 		searchSourceBuilder.size(10000);
 		searchSourceBuilder.fetchSource(include, exclude);
-		searchSourceBuilder.scriptField("taxons", new Script(ScriptType.STORED, null, FILTER_SCRIPT, scriptParams));
+		searchSourceBuilder.scriptField("taxons", new Script(ScriptType.INLINE, SCRIPT_LANG, getFilterScript(), scriptParams));
 
 		searchRequest.source(searchSourceBuilder);
 
@@ -404,5 +408,16 @@ public class RTaxonDistributionRepository extends RBaseESRepository<Distribution
 	protected JavaType getSourceType(Class<?> wrapperClass) {
 		// TODO: Implementar cuando cambie distribution
 		return null;
+	}
+
+	private String getFilterScript() {
+
+		try {
+			return new String(Files.readAllBytes(Paths.get(AGGS_DISTRIBUTION_SCRIPT_PATH)));
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ESQueryException();
+		}
+
 	}
 }
