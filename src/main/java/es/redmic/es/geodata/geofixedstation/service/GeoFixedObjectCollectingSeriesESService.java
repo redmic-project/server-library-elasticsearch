@@ -9,9 +9,9 @@ package es.redmic.es.geodata.geofixedstation.service;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -48,7 +48,7 @@ public class GeoFixedObjectCollectingSeriesESService extends GeoFixedBaseESServi
 		MappingContext context = new MappingContext(globalProperties);
 		GeoLineStringData model = orikaMapper.getMapperFacade().map(dtoToIndex, GeoLineStringData.class, context);
 		if (dtoToIndex.getProperties() != null)
-			model.set_parentId(dtoToIndex.getProperties().getActivityId());
+			model.getProperties().setActivityId(dtoToIndex.getProperties().getActivityId());
 		return model;
 	}
 }

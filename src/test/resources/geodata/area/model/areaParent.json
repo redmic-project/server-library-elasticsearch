@@ -3,7 +3,6 @@
 	"_type": "geodata",
 	"_id": "435wrwef34535",
 	"_score": null,
-	"_parent": "2",
 	"_source": {
 		"id": 23,
 		"uuid": "435wrwef34535",
@@ -37,6 +36,7 @@
 		      ]
 		},
 		"properties": {
+			"activityId": "a.1.2",
 			"geodataRelations": null,
 			"length": null,
 			"area": null,

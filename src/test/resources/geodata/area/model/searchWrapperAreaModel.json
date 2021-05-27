@@ -14,7 +14,6 @@
 			"_type": "geodata",
 			"_id": "sdsd323sdds_3ed",
 			"_score": null,
-			"_parent": "3",
 			"_source": {
 				"id": 12931,
 				"uuid": "sdsd323sdds_3ed",
@@ -48,6 +47,7 @@
 				      ]
 				},
 				"properties": {
+					"activityId": "a.1.2",
 					"geodataRelations": ["ar-23"],
 					"length": null,
 					"area": null,

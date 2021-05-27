@@ -70,7 +70,7 @@ public class FeatureMapper extends CustomMapper<GeoHitWrapper, MetaFeatureDTO> {
 		b.setUuid(featureDTO.getUuid());
 
 		if (featureDTO.getProperties() != null) {
-			b.getProperties().setActivityId(a.get_parent());
+			b.getProperties().setActivityId(a.get_source().getProperties().getActivityId());
 		}
 
 		b.get_meta().setScore(a.get_score());

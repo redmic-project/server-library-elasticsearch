@@ -98,7 +98,7 @@ public class RWTaxonDistributionService extends RTaxonDistributionService {
 
 			GeoPointData register = reference.getNewModel();
 			String citationUrl = RWTaxonDistributionRepository.CITATION_BASE_URL.replace(
-					RWTaxonDistributionRepository.ID_STR_REPLACE, register.get_parentId()) + register.getUuid();
+				RWTaxonDistributionRepository.ID_STR_REPLACE, register.getProperties().getActivityId()) + register.getUuid();
 
 			TaxonDistribution distributionModel = taxonDistributionUtils.getTaxonDistribution(register);
 			// Si ha cambiado las coordenadas o el radio que afectan a la
@@ -158,7 +158,7 @@ public class RWTaxonDistributionService extends RTaxonDistributionService {
 
 		GeoPointData register = reference.getNewModel();
 		String animalTrackingBaseUrl = RWTaxonDistributionRepository.ANIMAL_TRACKING_BASE_URL
-				.replace(RWTaxonDistributionRepository.ID_STR_REPLACE, register.get_parentId()) + register.getUuid();
+			.replace(RWTaxonDistributionRepository.ID_STR_REPLACE, register.getProperties().getActivityId()) + register.getUuid();
 		// Si ha cambiado algún dato de los indexados y el dato es válido
 		if (needUpdateRegister(reference, animalTrackingFieldsInReference)
 				&& reference.getNewModel().getProperties().getCollect().getqFlag().equals(qFlagHigh)) {

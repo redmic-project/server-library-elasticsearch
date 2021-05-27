@@ -2,12 +2,12 @@
 	"id": 12931,
 	"uuid": "sdsd323sdds_3ed",
 	"type": "Feature",
-	"_parent": null,
 	"geometry": {
 		"type": "Point",
 		"coordinates": [-16.35215172, 28.35351045]
 	},
 	"properties": {
+		"activityId": "3",
 		"geodataRelations": null,
 		"length": null,
 		"area": null,

@@ -329,7 +329,7 @@ public class RTaxonDistributionRepository extends RBaseESRepository<Distribution
 
 	protected Feature<GeoDataProperties, Point> getGeoData(GeoHitWrapper<GeoDataProperties, Point> result) {
 		Feature<GeoDataProperties, Point> register = result.get_source();
-		register.set_parentId(result.get_parent());
+		register.getProperties().setActivityId(result.get_source().getProperties().getActivityId());
 
 		return register;
 	}

@@ -49,7 +49,8 @@ public abstract class RWGeoDataESRepository<TModel extends Feature<?, ?>> extend
 
 	public TModel save(TModel modelToIndex) {
 
-		return elasticPersistenceUtils.save(getIndex()[0], getType(), modelToIndex, modelToIndex.getUuid(), modelToIndex.get_parentId());
+		return elasticPersistenceUtils.save(getIndex()[0], getType(), modelToIndex, modelToIndex.getUuid(),
+			modelToIndex.getProperties().getActivityId());
 	}
 
 	public List<TModel> save(List<TModel> modelToIndexList) {
@@ -58,7 +59,7 @@ public abstract class RWGeoDataESRepository<TModel extends Feature<?, ?>> extend
 
 		for (TModel modelToIndex : modelToIndexList) {
 
-			String parentId = modelToIndex.get_parentId();
+			String parentId = modelToIndex.getProperties().getActivityId();
 
 			IndexRequest indexRequest = elasticPersistenceUtils.getIndexRequest(
 				getIndex(modelToIndex), getType(), modelToIndex, modelToIndex.getUuid(), parentId);
@@ -76,7 +77,8 @@ public abstract class RWGeoDataESRepository<TModel extends Feature<?, ?>> extend
 	public TModel update(TModel modelToIndex) {
 
 		return elasticPersistenceUtils.update(
-			getIndex(modelToIndex), getType(), modelToIndex, modelToIndex.getUuid(), modelToIndex.get_parentId(), typeOfTModel);
+			getIndex(modelToIndex), getType(), modelToIndex, modelToIndex.getUuid(),
+				modelToIndex.getProperties().getActivityId(), typeOfTModel);
 	}
 
 	public Boolean delete(String id, String parentId) {
@@ -116,7 +118,7 @@ public abstract class RWGeoDataESRepository<TModel extends Feature<?, ?>> extend
 
 		for (int i = 0; i < oldItems.size(); i++) {
 			requestBuilder.addAll(elasticPersistenceUtils.getUpdateRequest(getIndex(), getType(),
-					oldItems.get(i).getUuid(), fields, oldItems.get(i).get_parentId()));
+					oldItems.get(i).getUuid(), fields, oldItems.get(i).getProperties().getActivityId()));
 		}
 
 		return multipleUpdate(requestBuilder, oldItems);
@@ -189,7 +191,7 @@ public abstract class RWGeoDataESRepository<TModel extends Feature<?, ?>> extend
 
 		for (int i = 0; i < oldItems.size(); i++) {
 			requestBuilder.addAll(elasticPersistenceUtils.getUpdateScript(getIndex(), getType(),
-					oldItems.get(i).getUuid(), fields, script, oldItems.get(i).get_parentId(), false));
+					oldItems.get(i).getUuid(), fields, script, oldItems.get(i).getProperties().getActivityId(), false));
 		}
 
 		return multipleUpdate(requestBuilder, oldItems);
@@ -231,7 +233,7 @@ public abstract class RWGeoDataESRepository<TModel extends Feature<?, ?>> extend
 
 		for (int i = 0; i < oldItems.size(); i++) {
 			requestBuilder.addAll(elasticPersistenceUtils.getUpdateScript(getIndex(), getType(),
-					oldItems.get(i).getUuid(), fields, script, oldItems.get(i).get_parentId(), false));
+					oldItems.get(i).getUuid(), fields, script, oldItems.get(i).getProperties().getActivityId(), false));
 		}
 
 		return multipleUpdate(requestBuilder, oldItems);

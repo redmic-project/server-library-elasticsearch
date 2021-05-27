@@ -147,11 +147,13 @@ public class TaxonDistributionUtils {
 		Taxon result = taxonESService.findById(String.valueOf(taxonId));
 
 		String citationBaseUrl =
-				RWTaxonDistributionRepository.CITATION_BASE_URL.replace(RWTaxonDistributionRepository.ID_STR_REPLACE, model.get_parentId())+model.getUuid();
+			RWTaxonDistributionRepository.CITATION_BASE_URL.replace(RWTaxonDistributionRepository.ID_STR_REPLACE,
+				model.getProperties().getActivityId()) + model.getUuid();
 
 
 		if (model.getProperties().getCollect().getMisidentification() != null)
-			return createTaxonDistribution(result, confidenceId, citationBaseUrl, model.getProperties().getCollect().getMisidentification().getTaxon().getPath());
+			return createTaxonDistribution(result, confidenceId, citationBaseUrl,
+				model.getProperties().getCollect().getMisidentification().getTaxon().getPath());
 
 		return createTaxonDistribution(result, confidenceId, citationBaseUrl);
 	}
@@ -170,7 +172,8 @@ public class TaxonDistributionUtils {
 		Long taxonId = model.getProperties().getCollect().getTaxon().getId();
 		Taxon taxon = taxonESService.findById(String.valueOf(taxonId));
 		String animalTrackingBaseUrl =
-				RWTaxonDistributionRepository.ANIMAL_TRACKING_BASE_URL.replace(RWTaxonDistributionRepository.ID_STR_REPLACE, model.get_parentId())+model.getUuid();
+			RWTaxonDistributionRepository.ANIMAL_TRACKING_BASE_URL.replace(RWTaxonDistributionRepository.ID_STR_REPLACE,
+				model.getProperties().getActivityId()) + model.getUuid();
 
 		return createTaxonDistribution(taxon, highConfidence, animalTrackingBaseUrl);
 	}

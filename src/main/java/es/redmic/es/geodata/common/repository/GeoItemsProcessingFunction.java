@@ -53,8 +53,8 @@ public class GeoItemsProcessingFunction<TModel extends Feature<?, ?>> implements
 	private TModel mapper(SearchHit hit) {
 
 		TModel item = objectMapper.convertValue(hit.getSourceAsMap(), this.typeOfTModel);
-		DocumentField parent = (DocumentField) hit.getFields().get("_parent");
-		item.set_parentId(parent.getValue().toString());
+		//DocumentField parent = (DocumentField) hit.getFields().get("_parent");
+		//item.set_parentId(parent.getValue().toString());
 
 		return item;
 	}

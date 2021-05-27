@@ -74,7 +74,7 @@ public abstract class RGeoDataESService<TDTO extends MetaFeatureDTO<?, ?>, TMode
 		GeoSearchWrapper<?, ?> hitsWrapper = repository.searchByIds(new String[] { id });
 		if (hitsWrapper.getTotal() == 1) {
 			TDTO item = orikaMapper.getMapperFacade().map(hitsWrapper.getSource(0), typeOfTDTO, getMappingContext());
-			item.getProperties().setActivityId(hitsWrapper.getHits().getHits().get(0).get_parent());
+			item.getProperties().setActivityId(hitsWrapper.getHits().getHits().get(0).get_source().getProperties().getActivityId());
 			return item;
 		} else if (hitsWrapper.getTotal() > 1) {
 			LOGGER.debug("Existe más de un resultado para el mismo id");
