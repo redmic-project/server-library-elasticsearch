@@ -80,7 +80,7 @@ public class RTaxonDistributionRepository extends RBaseESRepository<Distribution
 	private static String REGISTERS_MISIDENTIFICATION_FIELD = "properties.taxons.registers.misidentification";
 	private static String REGISTERS_CONFIDENCE_FIELD = "properties.taxons.registers.confidence";
 
-	private static String AGGS_DISTRIBUTION_SCRIPT_PATH = "src/main/resources/scripts/aggs-distribution.txt";
+	private static String AGGS_DISTRIBUTION_SCRIPT_PATH = "/scripts/aggs-distribution.txt";
 
 	private static final String SCRIPT_LANG = "painless";
 
