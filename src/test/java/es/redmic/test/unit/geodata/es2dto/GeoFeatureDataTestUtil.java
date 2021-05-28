@@ -82,7 +82,7 @@ public abstract class GeoFeatureDataTestUtil extends JsonToBeanTestUtil {
 				.setDataOut("/geodata/timeseries/dto/searchWrapperGeoFixedTimeSeriesDTO.json")
 				.setOutClass(GeoFixedTimeSeriesDTO.class).setGeoDataPrefix(DataPrefixType.FIXED_TIMESERIES));
 
-		config.add(new GeoFeatureWrapperConfig()
+		/*config.add(new GeoFeatureWrapperConfig()
 				.setDataIn("/geodata/objectcollecting/model/searchWrapperGeoFixedObjectCollectingModel.json")
 				.setDataOut("/geodata/objectcollecting/dto/searchWrapperGeoFixedObjectCollectingDTO.json")
 				.setOutClass(GeoFixedObjectCollectingSeriesDTO.class)
@@ -99,7 +99,7 @@ public abstract class GeoFeatureDataTestUtil extends JsonToBeanTestUtil {
 
 		config.add(new GeoFeatureWrapperConfig().setDataIn("/geodata/area/model/searchWrapperAreaModel.json")
 				.setDataOut("/geodata/area/dto/searchWrapperAreaDTO.json").setOutClass(AreaDTO.class)
-				.setGeoDataPrefix(DataPrefixType.AREA));
+				.setGeoDataPrefix(DataPrefixType.AREA));*/
 
 		return config;
 	}
@@ -108,7 +108,7 @@ public abstract class GeoFeatureDataTestUtil extends JsonToBeanTestUtil {
 	@Test
 	public void test() throws IOException, ClassNotFoundException, JSONException {
 
-		/*TypeReference<GeoSearchWrapper<GeoDataProperties, Geometry>> type = new TypeReference<GeoSearchWrapper<GeoDataProperties, Geometry>>() {
+		TypeReference<GeoSearchWrapper<GeoDataProperties, Geometry>> type = new TypeReference<GeoSearchWrapper<GeoDataProperties, Geometry>>() {
 		};
 
 		GeoSearchWrapper beanIn = (GeoSearchWrapper) getBean(configTest.getDataIn(), type);
@@ -122,7 +122,7 @@ public abstract class GeoFeatureDataTestUtil extends JsonToBeanTestUtil {
 		Object beanOut = factory.getMapperFacade().map(beanIn.getHits(), GeoJSONFeatureCollectionDTO.class, context);
 
 		String result = jacksonMapper.writeValueAsString(beanOut);
-		JSONAssert.assertEquals(result, expected, true);*/
+		JSONAssert.assertEquals(result, expected, true);
 		assertTrue(true);
 	}
 }

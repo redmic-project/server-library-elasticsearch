@@ -55,7 +55,7 @@ import es.redmic.models.es.maintenance.parameter.model.Unit;
 import es.redmic.test.unit.geodata.common.MapperTestUtil;
 import ma.glasnost.orika.MappingContext;
 
-//@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class GeoFixedTimeSeriesMapperTest extends MapperTestUtil {
 
 	@Mock
@@ -99,7 +99,7 @@ public class GeoFixedTimeSeriesMapperTest extends MapperTestUtil {
 		when(deviceService.findById(any(String.class))).thenReturn(deviceExpected);
 	}
 
-	//@Test
+	@Test
 	public void mapperDtoToModel() throws JsonParseException, JsonMappingException, IOException, JSONException {
 
 		Map<Object, Object> globalProperties = new HashMap<Object, Object>();

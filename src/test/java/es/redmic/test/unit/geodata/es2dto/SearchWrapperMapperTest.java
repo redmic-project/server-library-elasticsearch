@@ -38,6 +38,7 @@ import org.locationtech.jts.geom.Geometry;
 import es.redmic.es.geodata.area.mapper.AreaESMapper;
 import es.redmic.es.geodata.area.mapper.AreaPropertiesESMapper;
 import es.redmic.es.geodata.area.repository.AreaESRepository;
+import es.redmic.es.geodata.citation.mapper.CitationDTOESMapper;
 import es.redmic.es.geodata.citation.mapper.CitationESMapper;
 import es.redmic.es.geodata.citation.mapper.CitationPropertiesESMapper;
 import es.redmic.es.geodata.common.converter.CustomIdConverter;
@@ -53,6 +54,7 @@ import es.redmic.es.geodata.infrastructure.mapper.InfrastructurePropertiesESMapp
 import es.redmic.es.geodata.isolines.converter.LineTypeClassificationESConverter;
 import es.redmic.es.geodata.isolines.mapper.IsolinesESMapper;
 import es.redmic.es.geodata.isolines.mapper.IsolinesPropertiesESMapper;
+import es.redmic.es.geodata.tracking.animal.mapper.AnimalTrackingDTOESMapper;
 import es.redmic.es.geodata.tracking.animal.mapper.AnimalTrackingESMapper;
 import es.redmic.es.geodata.tracking.animal.mapper.AnimalTrackingPropertiesESMapper;
 import es.redmic.es.maintenance.area.mapper.AreaClassificationESMapper;
@@ -81,8 +83,12 @@ public class SearchWrapperMapperTest extends GeoFeatureDataTestUtil {
 		factory.addMapper(new FeatureMapper());
 		factory.addMapper(new AnimalTrackingPropertiesESMapper());
 		factory.addMapper(new AnimalTrackingESMapper());
+		factory.addMapper(new AnimalTrackingDTOESMapper());
+
 		factory.addMapper(new CitationPropertiesESMapper());
 		factory.addMapper(new CitationESMapper());
+		factory.addMapper(new CitationDTOESMapper());
+
 		factory.addMapper(new SiteESMapper());
 		factory.addMapper(new DataDefinitionESMapper());
 		factory.addMapper(new MeasurementESMapper());
