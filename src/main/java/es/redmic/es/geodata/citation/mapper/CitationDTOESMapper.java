@@ -20,24 +20,22 @@ package es.redmic.es.geodata.citation.mapper;
  * #L%
  */
 
+import org.locationtech.jts.geom.Geometry;
 import org.springframework.stereotype.Component;
 
-import es.redmic.es.common.utils.DataMapperUtils;
-import es.redmic.models.es.common.DataPrefixType;
 import es.redmic.models.es.geojson.citation.dto.CitationDTO;
-import es.redmic.models.es.geojson.common.model.GeoPointData;
+import es.redmic.models.es.geojson.common.model.Feature;
+import es.redmic.models.es.geojson.common.model.Properties;
 import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MappingContext;
 
 @Component
-public class CitationESMapper extends CustomMapper<GeoPointData, CitationDTO> {
+public class CitationDTOESMapper
+	extends CustomMapper<Feature<Properties, Geometry>, CitationDTO> {
 
 	@Override
-	public void mapBtoA(CitationDTO b, GeoPointData a, MappingContext context) {
+	public void mapAtoB(Feature<Properties, Geometry> a, CitationDTO b, MappingContext context) {
 
-		if (a.getProperties() != null) {
-			a.getProperties().getCollect().setId(DataMapperUtils.convertIdentifier(b.getId(), DataPrefixType.CITATION));
-			a.getProperties().setActivityId(b.getProperties().getActivityId());
-		}
+		super.mapAtoB(a, b, context);
 	}
 }

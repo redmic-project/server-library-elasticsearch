@@ -53,8 +53,6 @@ public class AreaPropertiesESMapper extends CustomMapper<GeoDataProperties, Area
 	@Override
 	public void mapAtoB(GeoDataProperties a, AreaPropertiesDTO b, MappingContext context) {
 
-		mapperFacade.map(a.getSamplingPlace(), b);
-
 		if (a.getGeodataRelations() != null && a.getGeodataRelations().size() > 0) {
 
 			GeoHitWrapper<?, ?> parent = areaESRepository.findBySamplingId(a.getGeodataRelations().get(0));
@@ -67,13 +65,18 @@ public class AreaPropertiesESMapper extends CustomMapper<GeoDataProperties, Area
 			b.setParent(relationDTO);
 		}
 
-		if (a.getSamplingPlace().getAreaType() != null) {
-			b.setAreaType(mapperFacade.map(a.getSamplingPlace().getAreaType(), AreaTypeDTO.class));
-		}
+		if (a.getSamplingPlace() != null) {
 
-		if (a.getSamplingPlace().getAreaClassification() != null) {
-			b.setAreaClassification(
-					mapperFacade.mapAsList(a.getSamplingPlace().getAreaClassification(), AreaClassificationDTO.class));
+			mapperFacade.map(a.getSamplingPlace(), b);
+
+			if (a.getSamplingPlace().getAreaType() != null) {
+				b.setAreaType(mapperFacade.map(a.getSamplingPlace().getAreaType(), AreaTypeDTO.class));
+			}
+
+			if (a.getSamplingPlace().getAreaClassification() != null) {
+				b.setAreaClassification(
+						mapperFacade.mapAsList(a.getSamplingPlace().getAreaClassification(), AreaClassificationDTO.class));
+			}
 		}
 	}
 
