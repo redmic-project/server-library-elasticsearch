@@ -30,7 +30,7 @@
 	      ]
 	},
 	"properties": {
-		"activityId": "a.1.2.3",
+		"activityId": "3",
 		"geodataRelations": ["ar-23"],
 		"length": null,
 		"area": null,

@@ -6,7 +6,6 @@
 	"_source": {
 		"id": 23,
 		"uuid": "435wrwef34535",
-		"_parent": null,
 		"type": "Feature",
 		"geometry": {
 			"type": "MultiPolygon",
@@ -36,7 +35,7 @@
 		      ]
 		},
 		"properties": {
-			"activityId": "a.1.2",
+			"activityId": "2",
 			"geodataRelations": null,
 			"length": null,
 			"area": null,
