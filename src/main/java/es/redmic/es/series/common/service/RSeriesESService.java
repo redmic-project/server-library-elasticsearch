@@ -106,7 +106,9 @@ public abstract class RSeriesESService<TModel extends SeriesCommon, TDTO extends
 	@Override
 	protected MappingContext getMappingContext() {
 
-		globalProperties.put("targetTypeDto", typeOfTDTO);
-		return new MappingContext(globalProperties);
+		MappingContext context = orikaMapper.getMappingContext();
+		context.setProperty("targetTypeDto", typeOfTDTO);
+
+		return context;
 	}
 }

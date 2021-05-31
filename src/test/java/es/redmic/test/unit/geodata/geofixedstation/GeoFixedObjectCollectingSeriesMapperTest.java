@@ -24,9 +24,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
@@ -131,14 +128,12 @@ public class GeoFixedObjectCollectingSeriesMapperTest extends MapperTestUtil {
 	@Test
 	public void mapperDtoToModel() throws JsonParseException, JsonMappingException, IOException, JSONException {
 
-		Map<Object, Object> globalProperties = new HashMap<Object, Object>();
-
 		GeoFixedObjectCollectingSeriesDTO dtoIn = (GeoFixedObjectCollectingSeriesDTO) getBean(dtoInPath,
 				GeoFixedObjectCollectingSeriesDTO.class);
 
-		globalProperties.put("uuid", dtoIn.getUuid());
-		globalProperties.put("geoDataPrefix", DataPrefixType.OBJECT_COLLECTING);
-		MappingContext context = new MappingContext(globalProperties);
+		MappingContext context = factory.getMappingContext();
+		context.setProperty("uuid", dtoIn.getUuid());
+		context.setProperty("geoDataPrefix", DataPrefixType.OBJECT_COLLECTING);
 
 		GeoLineStringData modelOut = factory.getMapperFacade().map(dtoIn, GeoLineStringData.class, context);
 

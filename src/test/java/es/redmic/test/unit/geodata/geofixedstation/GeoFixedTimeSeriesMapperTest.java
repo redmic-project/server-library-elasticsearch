@@ -24,9 +24,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
@@ -102,13 +99,11 @@ public class GeoFixedTimeSeriesMapperTest extends MapperTestUtil {
 	@Test
 	public void mapperDtoToModel() throws JsonParseException, JsonMappingException, IOException, JSONException {
 
-		Map<Object, Object> globalProperties = new HashMap<Object, Object>();
-
 		GeoFixedTimeSeriesDTO dtoIn = (GeoFixedTimeSeriesDTO) getBean(dtoInPath, GeoFixedTimeSeriesDTO.class);
 
-		globalProperties.put("uuid", dtoIn.getUuid());
-		globalProperties.put("geoDataPrefix", DataPrefixType.FIXED_TIMESERIES);
-		MappingContext context = new MappingContext(globalProperties);
+		MappingContext context = factory.getMappingContext();
+		context.setProperty("uuid", dtoIn.getUuid());
+		context.setProperty("geoDataPrefix", DataPrefixType.FIXED_TIMESERIES);
 
 		GeoPointData modelOut = factory.getMapperFacade().map(dtoIn, GeoPointData.class, context);
 

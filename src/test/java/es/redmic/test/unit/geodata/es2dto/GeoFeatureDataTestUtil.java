@@ -25,8 +25,6 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.json.JSONException;
 import org.junit.Test;
@@ -82,7 +80,7 @@ public abstract class GeoFeatureDataTestUtil extends JsonToBeanTestUtil {
 				.setDataOut("/geodata/timeseries/dto/searchWrapperGeoFixedTimeSeriesDTO.json")
 				.setOutClass(GeoFixedTimeSeriesDTO.class).setGeoDataPrefix(DataPrefixType.FIXED_TIMESERIES));
 
-		/*config.add(new GeoFeatureWrapperConfig()
+		config.add(new GeoFeatureWrapperConfig()
 				.setDataIn("/geodata/objectcollecting/model/searchWrapperGeoFixedObjectCollectingModel.json")
 				.setDataOut("/geodata/objectcollecting/dto/searchWrapperGeoFixedObjectCollectingDTO.json")
 				.setOutClass(GeoFixedObjectCollectingSeriesDTO.class)
@@ -99,7 +97,7 @@ public abstract class GeoFeatureDataTestUtil extends JsonToBeanTestUtil {
 
 		config.add(new GeoFeatureWrapperConfig().setDataIn("/geodata/area/model/searchWrapperAreaModel.json")
 				.setDataOut("/geodata/area/dto/searchWrapperAreaDTO.json").setOutClass(AreaDTO.class)
-				.setGeoDataPrefix(DataPrefixType.AREA));*/
+				.setGeoDataPrefix(DataPrefixType.AREA));
 
 		return config;
 	}
@@ -111,13 +109,12 @@ public abstract class GeoFeatureDataTestUtil extends JsonToBeanTestUtil {
 		TypeReference<GeoSearchWrapper<GeoDataProperties, Geometry>> type = new TypeReference<GeoSearchWrapper<GeoDataProperties, Geometry>>() {
 		};
 
-		GeoSearchWrapper beanIn = (GeoSearchWrapper) getBean(configTest.getDataIn(), type);
+		GeoSearchWrapper<?,?> beanIn = (GeoSearchWrapper<?,?>) getBean(configTest.getDataIn(), type);
 		String expected = getJsonString(configTest.getDataOut());
 
-		Map<Object, Object> globalProperties = new HashMap<Object, Object>();
-		globalProperties.put("targetTypeDto", configTest.getOutClass());
-		globalProperties.put("geoDataPrefix", configTest.getGeoDataPrefix());
-		MappingContext context = new MappingContext(globalProperties);
+		MappingContext context = factory.getMappingContext();
+		context.setProperty("targetTypeDto", configTest.getOutClass());
+		context.setProperty("geoDataPrefix", configTest.getGeoDataPrefix());
 
 		Object beanOut = factory.getMapperFacade().map(beanIn.getHits(), GeoJSONFeatureCollectionDTO.class, context);
 

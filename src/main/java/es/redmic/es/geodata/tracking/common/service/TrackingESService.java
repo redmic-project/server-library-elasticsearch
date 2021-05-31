@@ -20,9 +20,6 @@ package es.redmic.es.geodata.tracking.common.service;
  * #L%
  */
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -139,9 +136,9 @@ public class TrackingESService extends RGeoDataESService<ElementTrackingDTO, Geo
 	@Override
 	protected MappingContext getMappingContext() {
 
-		Map<Object, Object> globalProperties = new HashMap<>();
-		globalProperties.put("targetTypeDto", ElementTrackingDTO.class);
+		MappingContext context = orikaMapper.getMappingContext();
+		context.setProperty("targetTypeDto", ElementTrackingDTO.class);
 
-		return new MappingContext(globalProperties);
+		return context;
 	}
 }

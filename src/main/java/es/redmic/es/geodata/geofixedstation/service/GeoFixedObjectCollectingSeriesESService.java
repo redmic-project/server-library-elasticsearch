@@ -20,9 +20,6 @@ package es.redmic.es.geodata.geofixedstation.service;
  * #L%
  */
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,10 +39,11 @@ public class GeoFixedObjectCollectingSeriesESService extends GeoFixedBaseESServi
 
 	@Override
 	public GeoLineStringData mapper(GeoFixedObjectCollectingSeriesDTO dtoToIndex) {
-		Map<Object, Object> globalProperties = new HashMap<Object, Object>();
-		globalProperties.put("uuid", dtoToIndex.getUuid());
-		globalProperties.put("geoDataPrefix", DataPrefixType.OBJECT_COLLECTING);
-		MappingContext context = new MappingContext(globalProperties);
+
+		MappingContext context = orikaMapper.getMappingContext();
+		context.setProperty("uuid", dtoToIndex.getUuid());
+		context.setProperty("geoDataPrefix", DataPrefixType.OBJECT_COLLECTING);
+
 		GeoLineStringData model = orikaMapper.getMapperFacade().map(dtoToIndex, GeoLineStringData.class, context);
 		if (dtoToIndex.getProperties() != null)
 			model.getProperties().setActivityId(dtoToIndex.getProperties().getActivityId());

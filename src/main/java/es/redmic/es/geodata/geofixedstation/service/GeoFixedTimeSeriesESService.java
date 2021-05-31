@@ -20,9 +20,6 @@ package es.redmic.es.geodata.geofixedstation.service;
  * #L%
  */
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -97,10 +94,10 @@ public class GeoFixedTimeSeriesESService extends GeoFixedBaseESService<GeoFixedT
 	@Override
 	public GeoPointData mapper(GeoFixedTimeSeriesDTO dtoToIndex) {
 
-		Map<Object, Object> globalProperties = new HashMap<>();
-		globalProperties.put("uuid", dtoToIndex.getUuid());
-		globalProperties.put("geoDataPrefix", DataPrefixType.FIXED_TIMESERIES);
-		MappingContext context = new MappingContext(globalProperties);
+		MappingContext context = orikaMapper.getMappingContext();
+		context.setProperty("uuid", dtoToIndex.getUuid());
+		context.setProperty("geoDataPrefix", DataPrefixType.FIXED_TIMESERIES);
+
 		GeoPointData model = orikaMapper.getMapperFacade().map(dtoToIndex, GeoPointData.class, context);
 		if (dtoToIndex.getProperties() != null)
 			model.getProperties().setActivityId(dtoToIndex.getProperties().getActivityId());

@@ -23,8 +23,6 @@ package es.redmic.test.unit.geodata.common;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 
@@ -66,8 +64,11 @@ public class JsonToBeanTestUtil {
 
 	protected MappingContext getContext(Class<?> dtoClass) {
 
-		Map<Object, Object> globalProperties = new HashMap<Object, Object>();
-		globalProperties.put("targetTypeDto", dtoClass);
-		return new MappingContext(globalProperties);
+		MappingContext.Factory mappingContextFactory = new MappingContext.Factory();
+
+		MappingContext context = mappingContextFactory.getContext();
+		context.setProperty("targetTypeDto", dtoClass);
+
+		return context;
 	}
 }

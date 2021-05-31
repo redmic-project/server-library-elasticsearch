@@ -23,9 +23,6 @@ package es.redmic.test.unit.objectFactory;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
@@ -97,10 +94,10 @@ public class ModelESFactoryTest {
 		TaxonDTO taxonDTO = new TaxonDTO();
 		taxonDTO.setId(1L);
 
-		Map<Object, Object> globalProperties = new HashMap<Object, Object>();
-		globalProperties.put("service", service);
+		MappingContext.Factory mappingContextFactory = new MappingContext.Factory();
+		MappingContext context = mappingContextFactory.getContext();
+		context.setProperty("service", service);
 
-		MappingContext context = new MappingContext(globalProperties);
 		TaxonValid taxonValid = (TaxonValid) factory.getMapperFacade().map(
 				factory.getMapperFacade().newObject(taxonDTO, TypeFactory.<BaseES<?>>valueOf(BaseES.class), context),
 				TaxonValid.class);

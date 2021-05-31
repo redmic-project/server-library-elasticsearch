@@ -4,7 +4,7 @@ package es.redmic.test.unit.geodata.es2dto;
  * #%L
  * ElasticSearch
  * %%
- * Copyright (C) 2019 REDMIC Project / Server
+ * Copyright (C) 2019 - 2021 REDMIC Project / Server
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,25 +20,24 @@ package es.redmic.test.unit.geodata.es2dto;
  * #L%
  */
 
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.io.IOException;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.locationtech.jts.geom.Geometry;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import org.locationtech.jts.geom.Geometry;
 
 import es.redmic.es.geodata.area.mapper.AreaESMapper;
 import es.redmic.es.geodata.area.mapper.AreaPropertiesESMapper;
 import es.redmic.es.geodata.area.repository.AreaESRepository;
-import es.redmic.es.geodata.citation.mapper.CitationDTOESMapper;
 import es.redmic.es.geodata.citation.mapper.CitationESMapper;
 import es.redmic.es.geodata.citation.mapper.CitationPropertiesESMapper;
 import es.redmic.es.geodata.common.converter.CustomIdConverter;
@@ -54,7 +53,6 @@ import es.redmic.es.geodata.infrastructure.mapper.InfrastructurePropertiesESMapp
 import es.redmic.es.geodata.isolines.converter.LineTypeClassificationESConverter;
 import es.redmic.es.geodata.isolines.mapper.IsolinesESMapper;
 import es.redmic.es.geodata.isolines.mapper.IsolinesPropertiesESMapper;
-import es.redmic.es.geodata.tracking.animal.mapper.AnimalTrackingDTOESMapper;
 import es.redmic.es.geodata.tracking.animal.mapper.AnimalTrackingESMapper;
 import es.redmic.es.geodata.tracking.animal.mapper.AnimalTrackingPropertiesESMapper;
 import es.redmic.es.maintenance.area.mapper.AreaClassificationESMapper;
@@ -79,15 +77,14 @@ public class SearchWrapperMapperTest extends GeoFeatureDataTestUtil {
 
 		// @formatter:off
 		factory.addConverter(new CustomIdConverter());
+
 		factory.addMapper(new FeatureCollectionMapper());
 		factory.addMapper(new FeatureMapper());
 		factory.addMapper(new AnimalTrackingPropertiesESMapper());
 		factory.addMapper(new AnimalTrackingESMapper());
-		factory.addMapper(new AnimalTrackingDTOESMapper());
 
 		factory.addMapper(new CitationPropertiesESMapper());
 		factory.addMapper(new CitationESMapper());
-		factory.addMapper(new CitationDTOESMapper());
 
 		factory.addMapper(new SiteESMapper());
 		factory.addMapper(new DataDefinitionESMapper());

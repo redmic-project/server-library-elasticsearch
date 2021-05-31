@@ -23,8 +23,6 @@ package es.redmic.test.unit.series.es2dto;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.json.JSONException;
 import org.junit.Test;
@@ -73,9 +71,8 @@ public abstract class SeriesDataTestUtil extends JsonToBeanTestUtil {
 		SeriesSearchWrapper<?> beanIn = (SeriesSearchWrapper<?>) getBean(configTest.getDataIn(), type);
 		String expected = getJsonString(configTest.getDataOut());
 
-		Map<Object, Object> globalProperties = new HashMap<Object, Object>();
-		globalProperties.put("targetTypeDto", configTest.getOutClass());
-		MappingContext context = new MappingContext(globalProperties);
+		MappingContext context = factory.getMappingContext();
+		context.setProperty("targetTypeDto", configTest.getOutClass());
 
 		Object beanOut = factory.getMapperFacade().map(beanIn.getHits(), JSONCollectionDTO.class, context);
 

@@ -64,8 +64,6 @@ public abstract class RBaseESService<TModel extends BaseES<?>, TDTO extends Base
 
 	protected Class<TModel> typeOfTModel;
 
-	protected Map<Object, Object> globalProperties = new HashMap<Object, Object>();
-
 	protected final Logger LOGGER = LoggerFactory.getLogger(RBaseESService.class);
 
 	@SuppressWarnings("unchecked")
@@ -120,7 +118,9 @@ public abstract class RBaseESService<TModel extends BaseES<?>, TDTO extends Base
 
 	protected MappingContext getMappingContext() {
 
-		globalProperties.put("targetTypeDto", typeOfTDTO);
-		return new MappingContext(globalProperties);
+		MappingContext context = orikaMapper.getMappingContext();
+		context.setProperty("targetTypeDto", typeOfTDTO);
+
+		return context;
 	}
 }

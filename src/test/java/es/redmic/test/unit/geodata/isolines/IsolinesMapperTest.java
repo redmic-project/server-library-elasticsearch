@@ -24,8 +24,6 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.json.JSONException;
 import org.junit.Before;
@@ -125,13 +123,11 @@ public class IsolinesMapperTest extends MapperTestUtil {
 	@Test
 	public void mapperDtoToModel() throws JsonParseException, JsonMappingException, IOException, JSONException {
 
-		Map<Object, Object> globalProperties = new HashMap<Object, Object>();
-
 		IsolinesDTO dtoIn = (IsolinesDTO) getBean(dtoInPath, IsolinesDTO.class);
 
-		globalProperties.put("uuid", dtoIn.getUuid());
-		globalProperties.put("geoDataPrefix", DataPrefixType.ISOLINES);
-		MappingContext context = new MappingContext(globalProperties);
+		MappingContext context = factory.getMappingContext();
+		context.setProperty("uuid", dtoIn.getUuid());
+		context.setProperty("geoDataPrefix", DataPrefixType.ISOLINES);
 
 		GeoMultiLineStringData modelOut = factory.getMapperFacade().map(dtoIn, GeoMultiLineStringData.class, context);
 

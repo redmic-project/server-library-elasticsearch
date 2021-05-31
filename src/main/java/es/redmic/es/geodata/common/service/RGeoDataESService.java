@@ -138,8 +138,10 @@ public abstract class RGeoDataESService<TDTO extends MetaFeatureDTO<?, ?>, TMode
 	@Override
 	protected MappingContext getMappingContext() {
 
-		globalProperties.put("targetTypeDto", typeOfTDTO);
-		globalProperties.put("geoDataPrefix", DataPrefixType.getPrefixTypeFromClass(typeOfTDTO));
-		return new MappingContext(globalProperties);
+		MappingContext context = orikaMapper.getMappingContext();
+		context.setProperty("targetTypeDto", typeOfTDTO);
+		context.setProperty("geoDataPrefix", DataPrefixType.getPrefixTypeFromClass(typeOfTDTO));
+
+		return context;
 	}
 }
