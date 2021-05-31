@@ -127,7 +127,8 @@ public abstract class RGeoDataESRepository<TModel extends Feature<?, ?>> extends
 
 	protected GeoSearchWrapper<?, ?> findBy(QueryBuilder queryBuilder) {
 
-		return findBy(queryBuilder, null);
+		return searchResponseToWrapper(searchRequest(queryBuilder, null, null),
+				getSourceType(GeoSearchWrapper.class));
 	}
 
 	protected GeoSearchWrapper<?, ?> findBy(QueryBuilder queryBuilder, List<String> returnFields) {

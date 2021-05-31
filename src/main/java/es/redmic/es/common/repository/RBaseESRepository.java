@@ -451,8 +451,11 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 		SearchRequest searchRequest = new SearchRequest(getIndex());
 
 		SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-		searchSourceBuilder.query(query).size(size).sort(sort);
+		searchSourceBuilder.query(query).size(size);
 
+		if (sort != null) {
+			searchSourceBuilder.sort(sort);
+		}
 		if (returnFields != null && !returnFields.isEmpty()) {
 			searchSourceBuilder.fetchSource(ElasticSearchUtils.getReturnFields(returnFields), null);
 		}
