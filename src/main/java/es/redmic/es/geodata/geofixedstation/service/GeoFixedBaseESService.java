@@ -26,6 +26,7 @@ import java.util.List;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
 
+import es.redmic.es.common.queryFactory.QueryType;
 import es.redmic.es.geodata.common.service.GeoDataESService;
 import es.redmic.es.geodata.geofixedstation.repository.GeoFixedBaseESRepository;
 import es.redmic.models.es.common.model.ReferencesES;
@@ -84,10 +85,10 @@ public abstract class GeoFixedBaseESService<TDTO extends MetaFeatureDTO<FixedSur
 	@SuppressWarnings({ "unchecked", "serial" })
 	public List<String> getDescendantsIds(List<String> parentsPath) {
 
-		List<String> ids = new ArrayList<String>();
+		List<String> ids = new ArrayList<>();
 
 		int size = parentsPath.size();
-		List<String> paths = new ArrayList<String>();
+		List<String> paths = new ArrayList<>();
 		for (int i = 0; i < size; i++) {
 			String idProperty = parentsPath.get(i);
 			if (idProperty.split("\\.").length == 2)
@@ -96,14 +97,15 @@ public abstract class GeoFixedBaseESService<TDTO extends MetaFeatureDTO<FixedSur
 				ids.add(idProperty);
 		}
 
-		if (paths.size() > 0) {
+		if (!paths.isEmpty()) {
 
 			GeoDataQueryDTO query = new GeoDataQueryDTO();
-			query.setReturnFields(new ArrayList<String>() {{
-				add("id");
-				add("uuid");
-				add("properties");
-			}});
+			query.setDataType(QueryType.FIXED_TIMESERIES.name());
+			List<String> returnFields = new ArrayList<>();
+			returnFields.add("id");
+			returnFields.add("uuid");
+			returnFields.add("properties");
+			query.setReturnFields(returnFields);
 			query.addTerm("ids", paths);
 
 			GeoSearchWrapper<GeoDataProperties, Point> response = (GeoSearchWrapper<GeoDataProperties, Point>) repository.find(query);
@@ -111,7 +113,7 @@ public abstract class GeoFixedBaseESService<TDTO extends MetaFeatureDTO<FixedSur
 			if (response != null) {
 				List<Feature<GeoDataProperties, Point>> features = response.getSourceList();
 
-				if (features.size() == 0)
+				if (features.isEmpty())
 					return parentsPath;
 
 				for (int i = 0; i < features.size(); i++) {
@@ -119,7 +121,6 @@ public abstract class GeoFixedBaseESService<TDTO extends MetaFeatureDTO<FixedSur
 					for (int j=0; j<measurements.size(); j++)
 						ids.add(measurements.get(j).getParameter().getPath());
 				}
-
 			}
 		}
 		return ids;
