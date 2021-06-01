@@ -26,9 +26,9 @@ import java.util.List;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
 
-import es.redmic.es.common.queryFactory.QueryType;
 import es.redmic.es.geodata.common.service.GeoDataESService;
 import es.redmic.es.geodata.geofixedstation.repository.GeoFixedBaseESRepository;
+import es.redmic.models.es.common.DataPrefixType;
 import es.redmic.models.es.common.model.ReferencesES;
 import es.redmic.models.es.common.query.dto.GeoDataQueryDTO;
 import es.redmic.models.es.geojson.common.dto.FixedSurveySeriesPropertiesDTO;
@@ -100,7 +100,7 @@ public abstract class GeoFixedBaseESService<TDTO extends MetaFeatureDTO<FixedSur
 		if (!paths.isEmpty()) {
 
 			GeoDataQueryDTO query = new GeoDataQueryDTO();
-			query.setDataType(QueryType.FIXED_TIMESERIES.name());
+			query.setDataType(DataPrefixType.getPrefixTypeFromClass(typeOfTDTO));
 			List<String> returnFields = new ArrayList<>();
 			returnFields.add("id");
 			returnFields.add("uuid");
