@@ -20,13 +20,15 @@ package es.redmic.es.tools.distributions.species.repository;
  * #L%
  */
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.search.SearchRequest;
@@ -44,6 +46,7 @@ import org.elasticsearch.script.ScriptType;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.JavaType;
@@ -54,6 +57,7 @@ import org.locationtech.jts.geom.Point;
 import es.redmic.es.common.repository.RBaseESRepository;
 import es.redmic.es.geodata.citation.repository.CitationESRepository;
 import es.redmic.es.geodata.tracking.animal.repository.AnimalTrackingESRepository;
+import es.redmic.exception.custom.ResourceNotFoundException;
 import es.redmic.exception.elasticsearch.ESBBoxQueryException;
 import es.redmic.exception.elasticsearch.ESQueryException;
 import es.redmic.models.es.common.query.dto.BboxQueryDTO;
@@ -163,7 +167,8 @@ public class RTaxonDistributionRepository extends RBaseESRepository<Distribution
 		searchSourceBuilder.query(query);
 		searchSourceBuilder.size(10000);
 		searchSourceBuilder.fetchSource(include, exclude);
-		searchSourceBuilder.scriptField("taxons", new Script(ScriptType.INLINE, SCRIPT_LANG, getFilterScript(), scriptParams));
+		searchSourceBuilder.scriptField("taxons",
+			new Script(ScriptType.INLINE, SCRIPT_LANG, getScriptFile(AGGS_DISTRIBUTION_SCRIPT_PATH), scriptParams));
 
 		searchRequest.source(searchSourceBuilder);
 
@@ -408,16 +413,5 @@ public class RTaxonDistributionRepository extends RBaseESRepository<Distribution
 	protected JavaType getSourceType(Class<?> wrapperClass) {
 		// TODO: Implementar cuando cambie distribution
 		return null;
-	}
-
-	private String getFilterScript() {
-
-		try {
-			return new String(Files.readAllBytes(Paths.get(AGGS_DISTRIBUTION_SCRIPT_PATH)));
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new ESQueryException();
-		}
-
 	}
 }

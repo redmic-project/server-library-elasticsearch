@@ -990,4 +990,17 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 	public String getType() {
 		return TYPE;
 	}
+
+	protected String getScriptFile(String mappingFilePath) {
+
+		try {
+			InputStream resource = new ClassPathResource(mappingFilePath).getInputStream();
+
+			return IOUtils.toString(resource, Charset.forName(StandardCharsets.UTF_8.name()));
+		} catch (IOException e) {
+			e.printStackTrace();
+			LOGGER.error("Error obteniendo mapping {}",  mappingFilePath);
+			throw new ResourceNotFoundException(e);
+		}
+	}
 }
