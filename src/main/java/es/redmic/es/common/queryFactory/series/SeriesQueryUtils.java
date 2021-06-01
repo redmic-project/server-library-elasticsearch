@@ -80,14 +80,13 @@ public abstract class SeriesQueryUtils extends GeoDataQueryUtils {
 
 		BoolQueryBuilder query = QueryBuilders.boolQuery();
 
-		if (accessibilityIds != null && !accessibilityIds.isEmpty() && parentId != null && grandparentId != null)
-			query.must(getQueryOnParentAndGrandparent(parentId, grandparentId, accessibilityIds));
+		if (accessibilityIds != null && !accessibilityIds.isEmpty() && grandparentId != null) {
+			//TODO: Comprobar accessibilidad de actividades
+		}
 
-		else if (accessibilityIds != null && !accessibilityIds.isEmpty() && parentId == null && grandparentId == null)
-			query.must(getAccessibilityQueryOnGrandparent(accessibilityIds));
-
-		else if (accessibilityIds == null && parentId != null && grandparentId != null)
-			query.must(getQueryByParentAndGrandparent(parentId, grandparentId));
+		if (grandparentId != null) {
+			query.must(getQueryByActivity(grandparentId));
+		}
 
 		query.must(QueryBuilders.idsQuery().addIds(ids.toArray(new String[ids.size()])));
 
@@ -103,46 +102,16 @@ public abstract class SeriesQueryUtils extends GeoDataQueryUtils {
 
 	public static QueryBuilder getHierarchicalQuery(GeoDataQueryDTO queryDTO, String parentId, String grandparentId) {
 
-		List<Long> accessibilityIds = queryDTO.getAccessibilityIds();
+		// TODO: Comprobar accessibilidad de actividades
+		return getQueryByActivity(grandparentId);
+	}
 
-		if (parentId == null && grandparentId == null && (accessibilityIds == null || accessibilityIds.isEmpty()))
+	public static QueryBuilder getQueryByActivity (String activityId) {
+
+		if (activityId == null)
 			return null;
 
-		if (parentId != null && grandparentId != null && (accessibilityIds == null || accessibilityIds.isEmpty()))
-			return getQueryByParentAndGrandparent(parentId, grandparentId);
-
-		if (parentId == null || grandparentId == null && (accessibilityIds != null && !accessibilityIds.isEmpty()))
-			return getAccessibilityQueryOnGrandparent(accessibilityIds);
-
-		return getQueryOnParentAndGrandparent(parentId, grandparentId, accessibilityIds);
-	}
-
-	public static QueryBuilder getQueryByParentAndGrandparent(String parentId, String grandparentId) {
-		return JoinQueryBuilders.hasParentQuery(PARENT,
-				QueryBuilders.boolQuery()
-						.must(JoinQueryBuilders.hasParentQuery(GRANDPARENT,
-								QueryBuilders.boolQuery().must(QueryBuilders.termQuery("id", grandparentId)), true))
-						.must(QueryBuilders.termQuery("_id", parentId)),
-				true);
-	}
-
-	public static QueryBuilder getQueryOnParentAndGrandparent(String parentId, String grandparentId,
-			List<Long> accessibilityIds) {
-
-		return JoinQueryBuilders.hasParentQuery(PARENT,
-				QueryBuilders.boolQuery()
-						.must(JoinQueryBuilders.hasParentQuery(GRANDPARENT,
-								QueryBuilders.boolQuery().must(QueryBuilders.termQuery("id", grandparentId))
-										.must(getAccessibilityQuery(accessibilityIds)),
-								true))
-						.must(QueryBuilders.termQuery("_id", parentId)),
-				true);
-	}
-
-	public static QueryBuilder getAccessibilityQueryOnGrandparent(List<Long> accessibilityIds) {
-
-		return JoinQueryBuilders.hasParentQuery(PARENT,
-				JoinQueryBuilders.hasParentQuery(GRANDPARENT, getAccessibilityQuery(accessibilityIds), true), true);
+		return QueryBuilders.termQuery("activityId", activityId);
 	}
 
 	public static Set<String> getFieldsExcludedOnQuery() {
