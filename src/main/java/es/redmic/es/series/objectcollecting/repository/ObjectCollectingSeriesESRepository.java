@@ -34,8 +34,8 @@ import org.springframework.stereotype.Repository;
 import es.redmic.es.common.queryFactory.series.SeriesQueryUtils;
 import es.redmic.es.series.common.repository.RWSeriesESRepository;
 import es.redmic.models.es.common.query.dto.AggsPropertiesDTO;
-import es.redmic.models.es.common.query.dto.DataQueryDTO;
 import es.redmic.models.es.common.query.dto.GeoDataQueryDTO;
+import es.redmic.models.es.common.query.dto.SimpleQueryDTO;
 import es.redmic.models.es.series.objectcollecting.model.ObjectCollectingSeries;
 
 @Repository
@@ -54,24 +54,28 @@ public class ObjectCollectingSeriesESRepository extends RWSeriesESRepository<Obj
 	 * Sobrescribe getAggs para hacer las agregaciones mediante histogramas
 	 *
 	 */
-	protected List<BaseAggregationBuilder> getAggs(GeoDataQueryDTO elasticQueryDTO) {
+
+	@Override
+	protected <TQueryDTO extends SimpleQueryDTO> List<BaseAggregationBuilder> getAggs(TQueryDTO elasticQueryDTO) {
+
+		GeoDataQueryDTO geoDataQueryDTO = (GeoDataQueryDTO) elasticQueryDTO;
 
 		List<AggsPropertiesDTO> aggs = elasticQueryDTO.getAggs();
 
-		if (elasticQueryDTO.getInterval() == null && (aggs == null || aggs.isEmpty()))
+		if (geoDataQueryDTO.getInterval() == null && (aggs == null || aggs.isEmpty()))
 			return new ArrayList<>();
 
 		List<BaseAggregationBuilder> histogramAggs = new ArrayList<>();
 
 		if (aggs.get(0).getField().equals("temporaldata")) {
 
-			histogramAggs.add(getTemporalDataAggregationBuilder(elasticQueryDTO));
+			histogramAggs.add(getTemporalDataAggregationBuilder(geoDataQueryDTO));
 		} else if (aggs.get(0).getField().equals("classificationList")) {
 
-			histogramAggs.add(getClassificationList(elasticQueryDTO));
+			histogramAggs.add(getClassificationList(geoDataQueryDTO));
 		} else if (aggs.get(0).getField().equals("classification")) {
 
-			histogramAggs.add(getClassification(elasticQueryDTO));
+			histogramAggs.add(getClassification(geoDataQueryDTO));
 		}
 		return histogramAggs;
 	}

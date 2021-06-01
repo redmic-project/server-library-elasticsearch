@@ -38,6 +38,7 @@ import es.redmic.es.common.queryFactory.geodata.GeoDataQueryUtils;
 import es.redmic.es.common.queryFactory.geodata.TrackingQueryUtils;
 import es.redmic.models.es.common.query.dto.AggsPropertiesDTO;
 import es.redmic.models.es.common.query.dto.GeoDataQueryDTO;
+import es.redmic.models.es.common.query.dto.SimpleQueryDTO;
 import es.redmic.models.es.common.request.dto.CategoryPathInfo;
 import es.redmic.models.es.geojson.common.model.GeoPointData;
 import es.redmic.models.es.geojson.common.model.GeoSearchWrapper;
@@ -62,11 +63,14 @@ public class TrackingESRepository extends ClusterTrackingESRepository<GeoPointDa
 		setInternalQuery(TrackingQueryUtils.INTERNAL_QUERY);
 	}
 
-	protected List<BaseAggregationBuilder> getAggs(GeoDataQueryDTO elasticQueryDTO) {
+	@Override
+	protected <TQueryDTO extends SimpleQueryDTO> List<BaseAggregationBuilder> getAggs(TQueryDTO elasticQueryDTO) {
 
-		List<AggsPropertiesDTO> aggs = elasticQueryDTO.getAggs();
+		GeoDataQueryDTO geoDataQueryDTO = (GeoDataQueryDTO) elasticQueryDTO;
 
-		if (aggs != null && aggs.size() > 0 && aggs.get(0).getField().equals("elements")) {
+		List<AggsPropertiesDTO> aggs = geoDataQueryDTO.getAggs();
+
+		if (aggs != null && !aggs.isEmpty() && aggs.get(0).getField().equals("elements")) {
 			List<BaseAggregationBuilder> aggsBuilder = new ArrayList<>();
 
 			aggsBuilder.add(AggregationBuilders.terms("animal").field("properties.collect.animal.id")
