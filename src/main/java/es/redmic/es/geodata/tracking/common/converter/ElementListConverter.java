@@ -56,7 +56,7 @@ public class ElementListConverter extends CustomConverter<Aggregations, ElementL
 		if (aggregations == null || aggregations.size() == 0)
 			return elementList;
 
-		Map<String, Object> animals = (Map<String, Object>) aggregations.get("animal");
+		Map<String, Object> animals = (Map<String, Object>) aggregations.get("lterms#animal");
 
 		if (!animals.isEmpty()) {
 			List<Map<String, Object>> animalIds = ElasticSearchUtils.getBucketsFromAggregations(animals);
@@ -67,7 +67,7 @@ public class ElementListConverter extends CustomConverter<Aggregations, ElementL
 			}
 		}
 
-		Map<String, Object> platforms = (Map<String, Object>) aggregations.get("platform");
+		Map<String, Object> platforms = (Map<String, Object>) aggregations.get("lterms#platform");
 
 		if (!platforms.isEmpty()) {
 			List<Map<String, Object>> platformIds = ElasticSearchUtils.getBucketsFromAggregations(platforms);
