@@ -134,11 +134,33 @@ public abstract class ActivityQueryUtils extends BaseQueryUtils {
 
 		BoolQueryBuilder metadataDateLimitsQuery = QueryBuilders.boolQuery();
 
-		if (dateLimitsDTO.getStartDate() != null)
-			metadataDateLimitsQuery.must(QueryBuilders.rangeQuery(START_DATE_FIELD).gte(dateLimitsDTO.getStartDate()));
-		if (dateLimitsDTO.getEndDate() != null)
-			metadataDateLimitsQuery.must(QueryBuilders.rangeQuery(END_DATE_FIELD).lte(dateLimitsDTO.getEndDate()));
-
+		if (dateLimitsDTO.getStartDate() != null && dateLimitsDTO.getEndDate() == null) {
+			metadataDateLimitsQuery.must(QueryBuilders.boolQuery()
+				.should(QueryBuilders.boolQuery().mustNot(QueryBuilders.existsQuery(END_DATE_FIELD)))
+				.should(QueryBuilders.rangeQuery(END_DATE_FIELD).gte(dateLimitsDTO.getStartDate())));
+		}
+		else if (dateLimitsDTO.getStartDate() != null && dateLimitsDTO.getEndDate() != null) {
+			metadataDateLimitsQuery.must(QueryBuilders.boolQuery()
+				.should(QueryBuilders.boolQuery()
+					.must(QueryBuilders.rangeQuery(START_DATE_FIELD).gte(dateLimitsDTO.getStartDate()))
+					.must(QueryBuilders.rangeQuery(START_DATE_FIELD).lte(dateLimitsDTO.getEndDate())))
+				.should(QueryBuilders.boolQuery()
+					.must(QueryBuilders.rangeQuery(END_DATE_FIELD).gte(dateLimitsDTO.getStartDate()))
+					.must(QueryBuilders.rangeQuery(END_DATE_FIELD).lte(dateLimitsDTO.getEndDate())))
+				.should(QueryBuilders.boolQuery()
+					.must(QueryBuilders.rangeQuery(START_DATE_FIELD).lte(dateLimitsDTO.getStartDate()))
+					.must(QueryBuilders.rangeQuery(END_DATE_FIELD).gte(dateLimitsDTO.getEndDate())))
+				.should(QueryBuilders.boolQuery()
+					.mustNot(QueryBuilders.existsQuery(END_DATE_FIELD))
+					.must(QueryBuilders.rangeQuery(START_DATE_FIELD).lte(dateLimitsDTO.getEndDate()))));
+		}
+		else {
+			metadataDateLimitsQuery.must(QueryBuilders.boolQuery()
+				.should(QueryBuilders.boolQuery()
+					.mustNot(QueryBuilders.existsQuery(END_DATE_FIELD))
+					.must(QueryBuilders.rangeQuery(START_DATE_FIELD).lte(dateLimitsDTO.getEndDate())))
+				.should(QueryBuilders.rangeQuery(END_DATE_FIELD).lte(dateLimitsDTO.getEndDate())));
+		}
 		return metadataDateLimitsQuery;
 	}
 

@@ -13,25 +13,128 @@
         "bool" : {
           "must" : [
             {
-              "range" : {
-                "startDate" : {
-                  "from" : "2015-03-17T00:00:00.000Z",
-                  "to" : null,
-                  "include_lower" : true,
-                  "include_upper" : true,
-                  "boost" : 1.0
-                }
-              }
-            },
-            {
-              "range" : {
-                "endDate" : {
-                  "from" : null,
-                  "to" : "2015-04-17T00:00:00.000Z",
-                  "include_lower" : true,
-                  "include_upper" : true,
-                  "boost" : 1.0
-                }
+              "bool" : {
+                "should" : [
+                  {
+                    "bool" : {
+                      "must" : [
+                        {
+                          "range" : {
+                            "startDate" : {
+                              "from" : "2015-03-17T00:00:00.000Z",
+                              "to" : null,
+                              "include_lower" : true,
+                              "include_upper" : true,
+                              "boost" : 1.0
+                            }
+                          }
+                        },
+                        {
+                          "range" : {
+                            "startDate" : {
+                              "from" : null,
+                              "to" : "2015-04-17T00:00:00.000Z",
+                              "include_lower" : true,
+                              "include_upper" : true,
+                              "boost" : 1.0
+                            }
+                          }
+                        }
+                      ],
+                      "adjust_pure_negative" : true,
+                      "boost" : 1.0
+                    }
+                  },
+                  {
+                    "bool" : {
+                      "must" : [
+                        {
+                          "range" : {
+                            "endDate" : {
+                              "from" : "2015-03-17T00:00:00.000Z",
+                              "to" : null,
+                              "include_lower" : true,
+                              "include_upper" : true,
+                              "boost" : 1.0
+                            }
+                          }
+                        },
+                        {
+                          "range" : {
+                            "endDate" : {
+                              "from" : null,
+                              "to" : "2015-04-17T00:00:00.000Z",
+                              "include_lower" : true,
+                              "include_upper" : true,
+                              "boost" : 1.0
+                            }
+                          }
+                        }
+                      ],
+                      "adjust_pure_negative" : true,
+                      "boost" : 1.0
+                    }
+                  },
+                  {
+                    "bool" : {
+                      "must" : [
+                        {
+                          "range" : {
+                            "startDate" : {
+                              "from" : null,
+                              "to" : "2015-03-17T00:00:00.000Z",
+                              "include_lower" : true,
+                              "include_upper" : true,
+                              "boost" : 1.0
+                            }
+                          }
+                        },
+                        {
+                          "range" : {
+                            "endDate" : {
+                              "from" : "2015-04-17T00:00:00.000Z",
+                              "to" : null,
+                              "include_lower" : true,
+                              "include_upper" : true,
+                              "boost" : 1.0
+                            }
+                          }
+                        }
+                      ],
+                      "adjust_pure_negative" : true,
+                      "boost" : 1.0
+                    }
+                  },
+                  {
+                    "bool" : {
+                      "must" : [
+                        {
+                          "range" : {
+                            "startDate" : {
+                              "from" : null,
+                              "to" : "2015-04-17T00:00:00.000Z",
+                              "include_lower" : true,
+                              "include_upper" : true,
+                              "boost" : 1.0
+                            }
+                          }
+                        }
+                      ],
+                      "must_not" : [
+                        {
+                          "exists" : {
+                            "field" : "endDate",
+                            "boost" : 1.0
+                          }
+                        }
+                      ],
+                      "adjust_pure_negative" : true,
+                      "boost" : 1.0
+                    }
+                  }
+                ],
+                "adjust_pure_negative" : true,
+                "boost" : 1.0
               }
             }
           ],
