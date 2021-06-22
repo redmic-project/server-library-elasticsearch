@@ -1,5 +1,7 @@
 package es.redmic.es.data.common.repository;
 
+import java.util.Arrays;
+
 /*-
  * #%L
  * ElasticSearch
@@ -44,10 +46,10 @@ import es.redmic.models.es.data.common.model.DataSearchWrapper;
 public abstract class RDataESRepository<TModel extends BaseES<?>> extends RBaseESRepository<TModel>
 		implements IRDataESRepository<TModel> {
 
-	public RDataESRepository() {
+	protected RDataESRepository() {
 	}
 
-	public RDataESRepository(String[] index, String type) {
+	protected RDataESRepository(String[] index, String type) {
 		super(index, type);
 	}
 
@@ -109,6 +111,11 @@ public abstract class RDataESRepository<TModel extends BaseES<?>> extends RBaseE
 
 	public SimpleQueryDTO createSimpleQueryDTOFromTextQueryParams(String[] fields, String text, Integer from,
 			Integer size) {
+		return createSimpleQueryDTOFromTextQueryParams(fields, text, from, size, null);
+	}
+
+	public SimpleQueryDTO createSimpleQueryDTOFromTextQueryParams(String[] fields, String text, Integer from,
+			Integer size, String[] returnFields) {
 
 		SimpleQueryDTO queryDTO = new SimpleQueryDTO();
 
@@ -126,6 +133,9 @@ public abstract class RDataESRepository<TModel extends BaseES<?>> extends RBaseE
 			queryDTO.setFrom(from);
 		if (size != null)
 			queryDTO.setSize(size);
+
+		if (returnFields != null)
+			queryDTO.setReturnFields(Arrays.asList(returnFields));
 
 		return queryDTO;
 	}
