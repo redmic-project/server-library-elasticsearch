@@ -64,40 +64,6 @@
 					"inTrack": null,
 					"collect": null
 				}
-			},
-			"inner_hits": {
-				"attributeseries": {
-					"hits": {
-						"total": 1,
-						"max_score": 9.428813,
-						"hits": [{
-							"_index": "activity",
-							"_type": "attributeseries",
-							"_id": "1",
-							"_score": 9.428813,
-							"_routing": "3",
-							"_parent": "sdsd323sdds_3ed",
-							"_source": {
-								"id": 3,
-								"remark": "Cámara go pro",
-								"startDate": null,
-								"endDate": null,
-								"attributeType": {
-									"id": 1,
-									"path": "root.1",
-									"leaves": 0,
-									"code": null,
-									"level": 1,
-									"name": "Otro",
-									"name_en": "Other",
-									"parent": null
-								},
-								"qFlag": "1",
-								"vFlag": "A"
-							}
-						}]
-					}
-				}
 			}
 		}]
 	}

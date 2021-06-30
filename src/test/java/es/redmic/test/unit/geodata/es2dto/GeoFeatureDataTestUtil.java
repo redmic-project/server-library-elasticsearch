@@ -91,9 +91,9 @@ public abstract class GeoFeatureDataTestUtil extends JsonToBeanTestUtil {
 				.setDataOut("/geodata/infrastructure/dto/searchWrapperInfrastructureDTO.json")
 				.setOutClass(InfrastructureDTO.class).setGeoDataPrefix(DataPrefixType.INFRASTRUCTURE));
 
-		config.add(new GeoFeatureWrapperConfig().setDataIn("/geodata/isolines/model/searchWrapperIsolinesModel.json")
+		/*-config.add(new GeoFeatureWrapperConfig().setDataIn("/geodata/isolines/model/searchWrapperIsolinesModel.json")
 				.setDataOut("/geodata/isolines/dto/searchWrapperIsolinesDTO.json").setOutClass(IsolinesDTO.class)
-				.setGeoDataPrefix(DataPrefixType.ISOLINES));
+				.setGeoDataPrefix(DataPrefixType.ISOLINES));-*/
 
 		config.add(new GeoFeatureWrapperConfig().setDataIn("/geodata/area/model/searchWrapperAreaModel.json")
 				.setDataOut("/geodata/area/dto/searchWrapperAreaDTO.json").setOutClass(AreaDTO.class)

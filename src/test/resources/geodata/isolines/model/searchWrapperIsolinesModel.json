@@ -160,33 +160,6 @@
 						}
 					}]
 				}
-			},
-			"inner_hits": {
-				"timeseries": {
-					"hits": {
-						"total": 1,
-						"max_score": 9.428813,
-						"hits": [{
-							"_index": "activity",
-							"_type": "timeseries",
-							"_id": "1",
-							"_score": 9.428813,
-							"_routing": "817",
-							"_parent": "4c583f88-a043-4668-983d-9de38291bde2",
-							"_source": {
-								"date": null,
-								"vFlag": "U",
-								"dataDefinition": 6,
-								"qFlag": "1",
-								"remark": null,
-								"id": 1,
-								"value": 0,
-								"z": 0,
-								"deviation": null
-							}
-						}]
-					}
-				}
 			}
 		}]
 	}

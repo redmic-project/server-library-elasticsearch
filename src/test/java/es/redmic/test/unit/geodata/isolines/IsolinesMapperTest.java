@@ -37,6 +37,7 @@ import org.skyscreamer.jsonassert.JSONAssert;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
+import es.redmic.es.geodata.common.converter.DataDefinitionConverter;
 import es.redmic.es.geodata.geofixedstation.mapper.DataDefinitionESMapper;
 import es.redmic.es.geodata.geofixedstation.mapper.MeasurementESMapper;
 import es.redmic.es.geodata.isolines.converter.LineTypeClassificationESConverter;
@@ -46,7 +47,6 @@ import es.redmic.es.maintenance.device.service.DeviceESService;
 import es.redmic.es.maintenance.line.service.LineTypeESService;
 import es.redmic.es.maintenance.parameter.service.ParameterESService;
 import es.redmic.es.maintenance.parameter.service.UnitESService;
-import es.redmic.es.series.common.converter.DataDefinitionConverter;
 import es.redmic.models.es.common.DataPrefixType;
 import es.redmic.models.es.geojson.common.model.GeoMultiLineStringData;
 import es.redmic.models.es.geojson.isolines.dto.IsolinesDTO;

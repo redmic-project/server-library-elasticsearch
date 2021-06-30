@@ -1,4 +1,4 @@
-package es.redmic.es.series.common.converter;
+package es.redmic.es.geodata.common.converter;
 
 /*-
  * #%L
@@ -20,29 +20,25 @@ package es.redmic.es.series.common.converter;
  * #L%
  */
 
-import java.util.LinkedHashMap;
-
 import org.springframework.stereotype.Component;
 
-import es.redmic.models.es.series.timeseries.dto.DataHistogramStatsDTO;
-import ma.glasnost.orika.CustomConverter;
+import es.redmic.models.es.maintenance.parameter.dto.DataDefinitionDTO;
 import ma.glasnost.orika.MappingContext;
+import ma.glasnost.orika.converter.BidirectionalConverter;
 import ma.glasnost.orika.metadata.Type;
 
-@SuppressWarnings("rawtypes")
-//@Component
-public class ItemStatsHistogramConverter extends CustomConverter<LinkedHashMap, DataHistogramStatsDTO> {
+@Component
+public class DataDefinitionConverter extends BidirectionalConverter<Long, DataDefinitionDTO> {
 
 	@Override
-	public DataHistogramStatsDTO convert(LinkedHashMap source, Type<? extends DataHistogramStatsDTO> destinationType,
-		MappingContext context) {
+	public DataDefinitionDTO convertTo(Long source, Type<DataDefinitionDTO> destinationType, MappingContext mappingContext) {
+		DataDefinitionDTO dto = new DataDefinitionDTO();
+		dto.setId(source);
+		return dto;
+	}
 
-		DataHistogramStatsDTO item = new DataHistogramStatsDTO();
-		item.setAvg((Double) source.get("avg"));
-		item.setCount((Integer) source.get("count"));
-		item.setMax((Double) source.get("max"));
-		item.setMin((Double) source.get("min"));
-		item.setSum((Double) source.get("sum"));
-		return item;
+	@Override
+	public Long convertFrom(DataDefinitionDTO source, Type<Long> destinationType, MappingContext mappingContext) {
+		return source.getId();
 	}
 }

@@ -56,7 +56,6 @@ import es.redmic.es.geodata.isolines.mapper.IsolinesPropertiesESMapper;
 import es.redmic.es.geodata.tracking.animal.mapper.AnimalTrackingESMapper;
 import es.redmic.es.geodata.tracking.animal.mapper.AnimalTrackingPropertiesESMapper;
 import es.redmic.es.maintenance.area.mapper.AreaClassificationESMapper;
-import es.redmic.es.series.common.mapper.SeriesItemMapper;
 import es.redmic.models.es.geojson.common.model.GeoHitWrapper;
 import es.redmic.models.es.geojson.properties.model.GeoDataProperties;
 import es.redmic.test.utils.ConfigMapper;
@@ -94,8 +93,6 @@ public class SearchWrapperMapperTest extends GeoFeatureDataTestUtil {
 		factory.addConverter(new InfrastructureTypeClassificationESConverter());
 		factory.addMapper(new InfrastructurePropertiesESMapper());
 		factory.addMapper(new InfrastructureESMapper());
-
-		factory.addMapper(new SeriesItemMapper());
 
 		factory.addConverter(new LineTypeClassificationESConverter());
 		factory.addMapper(new IsolinesPropertiesESMapper());

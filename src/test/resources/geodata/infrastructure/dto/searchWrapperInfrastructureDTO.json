@@ -35,28 +35,7 @@
 			"url": "http://webcam.es",
 			"inserted": "2016-05-11T09:15:54.639+00:00",
 			"updated": "2016-05-11T09:15:54.639+00:00",
-			"attributes": [{
-				"id": 3,
-				"_meta": {
-					 "score": 9.428813,
-					 "version": null,
-					 "highlight": null
-				},
-				"remark": "Cámara go pro",
-				"startDate": null,
-				"endDate": null,
-				"attributeType": {
-					"id": 1,
-					"path": "root.1",
-					"code": null,
-					"level": 1,
-					"name": "Otro",
-					"name_en": "Other",
-					"parent": null
-				},
-				"qFlag": "1",
-				"vFlag": "A"
-			}]
+			"attributes": null
 		},
 		"geometry": {
 			"type": "Point",

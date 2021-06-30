@@ -84,7 +84,6 @@ import es.redmic.es.maintenance.domain.administrative.taxonomy.service.OriginESS
 import es.redmic.es.maintenance.domain.administrative.taxonomy.service.PermanenceESService;
 import es.redmic.es.maintenance.domain.administrative.taxonomy.service.SpainProtectionESService;
 import es.redmic.es.maintenance.domain.administrative.taxonomy.service.TrophicRegimeESService;
-import es.redmic.es.series.common.repository.RWSeriesESRepository;
 import es.redmic.models.es.administrative.model.Contact;
 import es.redmic.models.es.administrative.model.ContactCompact;
 import es.redmic.models.es.administrative.taxonomy.model.Animal;
@@ -234,10 +233,6 @@ public class MultiLevelReferencesTest extends ReferencesBaseTest {
 
 		if (dependence.getRepository() instanceof RWDataESRepository) {
 			((RWDataESRepository<?>) verify(dependence.getRepository(), times(1))).multipleUpdateByScript(
-					referencesInfo.getReferencesUtil().getModelToIndex(), dependence.getPath(),
-					dependence.getNestingDepth(), dependence.getNestedProperty());
-		} else if (dependence.getRepository() instanceof RWSeriesESRepository) {
-			((RWSeriesESRepository<?>) verify(dependence.getRepository(), times(1))).multipleUpdateByScript(
 					referencesInfo.getReferencesUtil().getModelToIndex(), dependence.getPath(),
 					dependence.getNestingDepth(), dependence.getNestedProperty());
 		} else {

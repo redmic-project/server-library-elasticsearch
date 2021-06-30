@@ -109,24 +109,7 @@
 			"rotate": 2,
 			"remark": "null",
 			"updated": "2016-05-11T09:15:54.639+00:00",
-			"attributes": [
-				{
-					"id": "22",
-					"qFlag": "1",
-					"vFlag": "R",
-					"date": "2012-02-16T19:19:00.000+00:00",
-					"remark": "null",
-					"condition": {
-						"id": 2,
-						"name": "bueno",
-						"attributeType": {
-							"id": 1,
-							"name": "Development",
-							"name_en": "null"
-						}
-					}
-				}
-			],
+			"attributes": null,
 			"metrics": [
 				{
 					"id": "1",
@@ -313,24 +296,7 @@
 							}
 						}
 					],
-					"attributes": [
-						{
-							"id": "22",
-							"qFlag": "1",
-							"vFlag": "R",
-							"date": "2012-02-16T19:19:00.000+00:00",
-							"remark": "null",
-							"condition": {
-								"id": 2,
-								"name": "bueno",
-								"attributeType": {
-									"id": 1,
-									"name": "Development",
-									"name_en": "null"
-								}
-							}
-						}
-					],
+					"attributes": null,
 					"metrics": [
 						{
 							"id": "1",
@@ -454,24 +420,7 @@
 					}
 				}
 			],
-			"attributes": [
-				{
-					"id": "22",
-					"qFlag": "1",
-					"vFlag": "R",
-					"date": "2012-02-16T19:19:00.000+00:00",
-					"remark": null,
-					"condition": {
-						"id": 2,
-						"name": "bueno",
-						"attributeType": {
-							"id": 1,
-							"name": "Development",
-							"name_en": "null"
-						}
-					}
-				}
-			],
+			"attributes": null,
 			"metrics": [
 				{
 					"id": "1",
