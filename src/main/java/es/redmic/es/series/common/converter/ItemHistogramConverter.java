@@ -31,7 +31,7 @@ import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.metadata.Type;
 
 @SuppressWarnings("rawtypes")
-@Component
+//@Component
 public class ItemHistogramConverter extends CustomConverter<LinkedHashMap, DataHistogramItemDTO> {
 
 	@Override

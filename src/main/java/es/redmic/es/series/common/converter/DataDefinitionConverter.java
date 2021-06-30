@@ -27,7 +27,7 @@ import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.converter.BidirectionalConverter;
 import ma.glasnost.orika.metadata.Type;
 
-@Component
+//@Component
 public class DataDefinitionConverter extends BidirectionalConverter<Long, DataDefinitionDTO> {
 
 	@Override

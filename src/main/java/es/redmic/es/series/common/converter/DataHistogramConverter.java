@@ -32,7 +32,7 @@ import es.redmic.models.es.series.timeseries.dto.DataHistogramItemDTO;
 import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.metadata.Type;
 
-@Component
+//@Component
 public class DataHistogramConverter extends ClassificationConverterBase<Aggregations, DataHistogramDTO> {
 
 	@SuppressWarnings("unchecked")

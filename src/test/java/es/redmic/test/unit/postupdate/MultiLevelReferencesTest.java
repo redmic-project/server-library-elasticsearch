@@ -9,9 +9,9 @@ package es.redmic.test.unit.postupdate;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -85,8 +85,6 @@ import es.redmic.es.maintenance.domain.administrative.taxonomy.service.Permanenc
 import es.redmic.es.maintenance.domain.administrative.taxonomy.service.SpainProtectionESService;
 import es.redmic.es.maintenance.domain.administrative.taxonomy.service.TrophicRegimeESService;
 import es.redmic.es.series.common.repository.RWSeriesESRepository;
-import es.redmic.es.series.objectcollecting.repository.ObjectCollectingSeriesESRepository;
-import es.redmic.es.series.objectcollecting.service.ObjectCollectingSeriesESService;
 import es.redmic.models.es.administrative.model.Contact;
 import es.redmic.models.es.administrative.model.ContactCompact;
 import es.redmic.models.es.administrative.taxonomy.model.Animal;
@@ -124,9 +122,7 @@ public class MultiLevelReferencesTest extends ReferencesBaseTest {
 		config.add(new DomainReferencesConfig().setServiceClass(ConfidenceESService.class)
 				.setRepositoryClass(ConfidenceESRepository.class)
 				.addDependence("citationESService", CitationESService.class, CitationESRepository.class, DomainES.class,
-						"properties.collect.confidence.id")
-				.addDependence("objectCollectingSeriesESService", ObjectCollectingSeriesESService.class,
-						ObjectCollectingSeriesESRepository.class, DomainES.class, "confidence.id"));
+						"properties.collect.confidence.id"));
 
 		config.add(new DomainReferencesConfig().setServiceClass(DestinyESService.class)
 				.setRepositoryClass(DestinyESRepository.class).addDependence("animalESService", AnimalESService.class,

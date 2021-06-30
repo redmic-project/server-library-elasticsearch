@@ -28,7 +28,7 @@ import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MappingContext;
 
 @SuppressWarnings("rawtypes")
-@Component
+//@Component
 public class SeriesItemMapper extends CustomMapper<SeriesHitWrapper, DTOImplementWithMeta> {
 
 	@Override

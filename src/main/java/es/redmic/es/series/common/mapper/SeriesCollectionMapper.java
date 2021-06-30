@@ -30,7 +30,7 @@ import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MappingContext;
 
 @SuppressWarnings("rawtypes")
-@Component
+//@Component
 public class SeriesCollectionMapper extends CustomMapper<SeriesHitsWrapper, JSONCollectionDTO> {
 
 	@SuppressWarnings("unchecked")

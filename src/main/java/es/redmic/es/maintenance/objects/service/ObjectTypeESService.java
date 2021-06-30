@@ -25,7 +25,6 @@ import org.springframework.stereotype.Service;
 
 import es.redmic.es.common.service.HierarchicalESService;
 import es.redmic.es.maintenance.objects.repository.ObjectTypeESRepository;
-import es.redmic.es.series.objectcollecting.service.ObjectCollectingSeriesESService;
 import es.redmic.models.es.common.model.ReferencesES;
 import es.redmic.models.es.maintenance.objects.dto.ObjectClassificationDTO;
 import es.redmic.models.es.maintenance.objects.dto.ObjectTypeDTO;
@@ -34,8 +33,8 @@ import es.redmic.models.es.maintenance.objects.model.ObjectType;
 @Service
 public class ObjectTypeESService extends HierarchicalESService<ObjectType, ObjectTypeDTO> {
 
-	@Autowired
-	ObjectCollectingSeriesESService objectCollectingSeriesESService;
+	//@Autowired
+	//ObjectCollectingSeriesESService objectCollectingSeriesESService;
 
 	@Autowired
 	public ObjectTypeESService(ObjectTypeESRepository repository) {
@@ -52,6 +51,6 @@ public class ObjectTypeESService extends HierarchicalESService<ObjectType, Objec
 
 		super.postUpdate(reference);
 
-		objectCollectingSeriesESService.updateObjectType(reference);
+		//objectCollectingSeriesESService.updateObjectType(reference);
 	}
 }
