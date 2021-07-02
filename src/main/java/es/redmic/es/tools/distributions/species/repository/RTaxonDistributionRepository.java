@@ -20,15 +20,13 @@ package es.redmic.es.tools.distributions.species.repository;
  * #L%
  */
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.io.IOUtils;
+import com.fasterxml.jackson.databind.JavaType;
+
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.search.SearchRequest;
@@ -45,19 +43,14 @@ import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptType;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.stereotype.Component;
-
-import com.fasterxml.jackson.databind.JavaType;
-
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Point;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import es.redmic.es.common.repository.RBaseESRepository;
 import es.redmic.es.geodata.citation.repository.CitationESRepository;
 import es.redmic.es.geodata.tracking.animal.repository.AnimalTrackingESRepository;
-import es.redmic.exception.custom.ResourceNotFoundException;
 import es.redmic.exception.elasticsearch.ESBBoxQueryException;
 import es.redmic.exception.elasticsearch.ESQueryException;
 import es.redmic.models.es.common.query.dto.BboxQueryDTO;
@@ -72,6 +65,7 @@ import es.redmic.models.es.tools.distribution.dto.TaxonDistributionRegistersDTO;
 import es.redmic.models.es.tools.distribution.model.Distribution;
 import es.redmic.models.es.tools.distribution.model.Register;
 import es.redmic.models.es.tools.distribution.species.model.TaxonDistribution;
+import es.redmic.es.common.utils.ElasticSearchUtils;
 
 @Component
 public class RTaxonDistributionRepository extends RBaseESRepository<Distribution> {
@@ -168,7 +162,7 @@ public class RTaxonDistributionRepository extends RBaseESRepository<Distribution
 		searchSourceBuilder.size(10000);
 		searchSourceBuilder.fetchSource(include, exclude);
 		searchSourceBuilder.scriptField("taxons",
-			new Script(ScriptType.INLINE, SCRIPT_LANG, getScriptFile(AGGS_DISTRIBUTION_SCRIPT_PATH), scriptParams));
+			new Script(ScriptType.INLINE, SCRIPT_LANG, ElasticSearchUtils.getScriptFile(AGGS_DISTRIBUTION_SCRIPT_PATH), scriptParams));
 
 		searchRequest.source(searchSourceBuilder);
 

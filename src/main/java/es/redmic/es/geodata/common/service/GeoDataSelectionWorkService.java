@@ -29,6 +29,7 @@ import es.redmic.es.common.service.SelectionWorkService;
 import es.redmic.exception.elasticsearch.ESSelectionWorkException;
 import es.redmic.models.es.common.dto.SelectionWorkDTO;
 import es.redmic.models.es.common.model.Selection;
+import es.redmic.es.common.utils.ElasticSearchUtils;
 
 @Service
 public class GeoDataSelectionWorkService extends SelectionWorkService {
@@ -45,13 +46,13 @@ public class GeoDataSelectionWorkService extends SelectionWorkService {
 		if (model.getId() != null) {
 
 			List<String> result = null;
-			String script = clearScript;
+			String script = ElasticSearchUtils.getScriptFile(clearScriptPath);
 			if (dto.getAction().equals(Actions.select.toString())) {
 				result = model.getIds();
-				script = selectScript;
+				script = ElasticSearchUtils.getScriptFile(selectScriptPath);
 			} else if (dto.getAction().equals(Actions.deselect.toString())) {
 				result = model.getIds();
-				script = deselectScript;
+				script = ElasticSearchUtils.getScriptFile(deselectScriptPath);
 			}
 			// else clearSelection by default (save [])
 			model.setIds(result);
