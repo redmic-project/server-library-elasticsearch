@@ -33,6 +33,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import es.redmic.es.common.repository.SelectionWorkRepository;
 import es.redmic.es.common.utils.ElasticPersistenceUtils;
+import es.redmic.es.common.utils.ElasticSearchUtils;
 import es.redmic.es.data.common.service.RDataESService;
 import es.redmic.exception.elasticsearch.ESSelectionWorkException;
 import es.redmic.models.es.common.dto.SelectionWorkDTO;
@@ -48,25 +49,15 @@ public class SelectionWorkService implements ISelectionWorkService<SelectionWork
 	@Autowired
 	protected SelectionWorkRepository repository;
 
-	protected String commonScript = "ctx._source.service = params.service; ctx._source.date = params.date; " +
-	"ctx._source.name = params.name; ctx._source.userId = params.userId;";
+	protected String selectScriptPath = "/scripts/select.txt";
 
-	protected String selectScript =
-		"if (ctx._source.ids == null) { ctx._source.ids = params.ids; } else { ctx._source.ids.addAll(params.ids); } " +
-		commonScript;
+	protected String deselectScriptPath = "/scripts/deselect.txt";
 
-	protected String deselectScript =
-		"if (ctx._source.ids == null) { ctx._source.ids = []; } else { ctx._source.ids.removeAll(params.ids); } " +
-		commonScript;
+	protected String selectAllScriptPath = "/scripts/select-all.txt";
 
-	protected String selectAllScript = "ctx._source.ids = params.ids;" + commonScript;
+	protected String reverseScriptPath = "/scripts/reverse-selection.txt";
 
-	protected String reverseScript =
-		"if (ctx._source.ids == null) { ctx._source.ids = params.ids; } ctx._source.ids = ctx._source.ids - params.ids; " +
-		commonScript;
-
-	protected String clearScript =
-		"ctx._source.ids = []; " + commonScript;
+	protected String clearScriptPath = "/scripts/clear-selection.txt";
 
 	public enum Actions {
 		select, deselect, selectAll, reverse
@@ -89,19 +80,19 @@ public class SelectionWorkService implements ISelectionWorkService<SelectionWork
 		if (model.getId() != null) {
 
 			List<String> result = null;
-			String script = clearScript;
+			String script = ElasticSearchUtils.getScriptFile(clearScriptPath);
 			if (dto.getAction().equals(Actions.select.toString())) {
 				result = model.getIds();
-				script = selectScript;
+				script = ElasticSearchUtils.getScriptFile(selectScriptPath);
 			} else if (dto.getAction().equals(Actions.deselect.toString())) {
 				result = model.getIds();
-				script = deselectScript;
+				script = ElasticSearchUtils.getScriptFile(deselectScriptPath);
 			} else if (dto.getAction().equals(Actions.selectAll.toString())) {
 				result = getAllIds(dto.getQuery(), service, dto.getIdProperty());
-				script = selectAllScript;
+				script = ElasticSearchUtils.getScriptFile(selectAllScriptPath);
 			} else if (dto.getAction().equals(Actions.reverse.toString())) {
 				result = getAllIds(dto.getQuery(), service, dto.getIdProperty());
-				script = reverseScript;
+				script = ElasticSearchUtils.getScriptFile(reverseScriptPath);
 			}
 			// else clearSelection by default (save [])
 			model.setIds(result);
