@@ -97,6 +97,10 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 
 	protected static final Logger LOGGER = LoggerFactory.getLogger(RBaseESRepository.class);
 
+	private static final String UPDATE_NESTED_PROPERTY_SCRIPT_PATH = "/scripts/update-nested-property.txt";
+
+	private static final String UPDATE_PROPERTY_SCRIPT_PATH = "/scripts/update-property.txt";
+
 	@Value("${redmic.elasticsearch.check.mappings}")
 	private boolean checkMappings;
 
@@ -957,13 +961,11 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 
 
 	protected String getUpdatePropertyScript() {
-		// TODO: return inline script
-		return "";
+		return ElasticSearchUtils.getScriptFile(UPDATE_PROPERTY_SCRIPT_PATH);
 	}
 
 	protected String getUpdateNestedPropertyScript() {
-		// TODO: return inline script
-		return "";
+		return ElasticSearchUtils.getScriptFile(UPDATE_NESTED_PROPERTY_SCRIPT_PATH);
 	}
 
 	protected abstract String[] getDefaultSearchFields();
@@ -989,18 +991,5 @@ public abstract class RBaseESRepository<TModel extends BaseES<?>> implements IRB
 	@Override
 	public String getType() {
 		return TYPE;
-	}
-
-	protected String getScriptFile(String mappingFilePath) {
-
-		try {
-			InputStream resource = new ClassPathResource(mappingFilePath).getInputStream();
-
-			return IOUtils.toString(resource, Charset.forName(StandardCharsets.UTF_8.name()));
-		} catch (IOException e) {
-			e.printStackTrace();
-			LOGGER.error("Error obteniendo mapping {}",  mappingFilePath);
-			throw new ResourceNotFoundException(e);
-		}
 	}
 }

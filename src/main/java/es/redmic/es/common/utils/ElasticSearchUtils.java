@@ -21,6 +21,9 @@ package es.redmic.es.common.utils;
  */
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.get.MultiGetItemResponse;
@@ -51,11 +55,13 @@ import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import es.redmic.exception.custom.ResourceNotFoundException;
 import es.redmic.exception.elasticsearch.ESParseException;
 import es.redmic.models.es.common.query.dto.AggsPropertiesDTO;
 import es.redmic.models.es.common.query.dto.SortDTO;
@@ -278,5 +284,17 @@ public class ElasticSearchUtils {
 		}
 
 		return suggestFields;
+	}
+
+	public static String getScriptFile(String mappingFilePath) {
+
+		try {
+			InputStream resource = new ClassPathResource(mappingFilePath).getInputStream();
+
+			return IOUtils.toString(resource, Charset.forName(StandardCharsets.UTF_8.name()));
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new ResourceNotFoundException(e);
+		}
 	}
 }
