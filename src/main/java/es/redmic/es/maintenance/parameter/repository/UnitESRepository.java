@@ -28,8 +28,8 @@ import es.redmic.models.es.maintenance.parameter.model.Unit;
 @Repository
 public class UnitESRepository extends RWDataESRepository<Unit> {
 
-	private static String[] INDEX = { "unit" };
-	private static String TYPE = "parameters";
+	private static String[] INDEX = { "parameter-domains" };
+	private static String TYPE = "unit";
 
 	public UnitESRepository() {
 		super(INDEX, TYPE);
