@@ -107,7 +107,7 @@ public abstract class ActivityQueryUtils extends BaseQueryUtils {
 		}
 
 		if (queryDTO.getProgram() != null) {
-			query.must(QueryBuilders.termQuery("grandParent.id", queryDTO.getProgram()));
+			query.must(QueryBuilders.termQuery("grandparent.id", queryDTO.getProgram()));
 		}
 
 		Integer status = queryDTO.getStatus();
