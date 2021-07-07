@@ -94,7 +94,8 @@ public class GeoFixedObjectCollectingSeriesQueryTest extends GeoDataQueryTest {
 		JSONAssert.assertEquals(queryExpected, query.toString(), false);
 	}
 
-	@Test
+	// TODO: recuperar cuando se hagan consultas por z dentro de features
+	//@Test
 	public void getQuery_ReturnZRangeQuery_IfQueryDTOHasZRangeQueryDTO() throws IOException, JSONException {
 
 		createZRangeQuery();
