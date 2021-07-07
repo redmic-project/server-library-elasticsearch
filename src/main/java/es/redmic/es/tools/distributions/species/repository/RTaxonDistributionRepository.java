@@ -80,8 +80,6 @@ public class RTaxonDistributionRepository extends RBaseESRepository<Distribution
 
 	private static String AGGS_DISTRIBUTION_SCRIPT_PATH = "/scripts/aggs-distribution.txt";
 
-	private static final String SCRIPT_LANG = "painless";
-
 	private static String[] INCLUDE_DEFAULT = new String[] { "*" };
 	private static String[] EXCLUDE_DEFAULT = new String[] {};
 
@@ -162,7 +160,7 @@ public class RTaxonDistributionRepository extends RBaseESRepository<Distribution
 		searchSourceBuilder.size(10000);
 		searchSourceBuilder.fetchSource(include, exclude);
 		searchSourceBuilder.scriptField("taxons",
-			new Script(ScriptType.INLINE, SCRIPT_LANG, ElasticSearchUtils.getScriptFile(AGGS_DISTRIBUTION_SCRIPT_PATH), scriptParams));
+			new Script(ScriptType.INLINE, Script.DEFAULT_SCRIPT_LANG, ElasticSearchUtils.getScriptFile(AGGS_DISTRIBUTION_SCRIPT_PATH), scriptParams));
 
 		searchRequest.source(searchSourceBuilder);
 

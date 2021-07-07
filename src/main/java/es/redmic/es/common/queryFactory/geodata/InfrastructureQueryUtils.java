@@ -50,7 +50,7 @@ public abstract class InfrastructureQueryUtils extends GeoDataQueryUtils {
 		BoolQueryBuilder query = getOrInitializeBaseQuery(getGeoDataQuery(queryDTO, internalQuery, partialQuery));
 		BoolQueryBuilder queryOnChildren = getQueryOnChildren(queryDTO);
 
-		addMustTermIfExist(query, getZQuery(SITE_PATH, Z_PROPERTY, SEARCH_BY_Z_RANGE_SCRIPT, queryDTO.getZ()));
+		addMustTermIfExist(query, getZQuery(SITE_PATH, Z_PROPERTY, queryDTO.getZ()));
 		addMustTermIfExist(query, getDateLimitsQuery(queryDTO.getDateLimits(), SITE_PATH + "." + DATE_PROPERTY));
 
 		query.should(JoinQueryBuilders

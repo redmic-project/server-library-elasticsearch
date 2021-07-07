@@ -46,7 +46,7 @@ public abstract class CitationQueryUtils extends GeoDataQueryUtils {
 
 		BoolQueryBuilder query = getOrInitializeBaseQuery(getGeoDataQuery(queryDTO, internalQuery, partialQuery));
 
-		addMustTermIfExist(query, getZQuery(COLLECT_PATH, Z_PROPERTY, SEARCH_BY_Z_RANGE_SCRIPT, queryDTO.getZ()));
+		addMustTermIfExist(query, getZQuery(COLLECT_PATH, Z_PROPERTY, queryDTO.getZ()));
 
 		String startDateInCollect = COLLECT_PATH + "." + START_DATE_PROPERTY;
 		String endDateInCollect = COLLECT_PATH + "." + END_DATE_PROPERTY;

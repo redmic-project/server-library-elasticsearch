@@ -36,7 +36,6 @@ import es.redmic.es.common.queryFactory.geodata.InfrastructureQueryUtils;
 import es.redmic.es.common.queryFactory.geodata.IsolinesQueryUtils;
 import es.redmic.es.common.queryFactory.geodata.PlatformTrackingQueryUtils;
 import es.redmic.es.common.queryFactory.geodata.TrackingQueryUtils;
-import es.redmic.es.common.queryFactory.series.SeriesQueryUtils;
 import es.redmic.models.es.common.DataPrefixType;
 
 public enum QueryType {
@@ -79,8 +78,6 @@ public enum QueryType {
 		utils.put(QueryType.INFRASTRUCTURE, InfrastructureQueryUtils.class);
 		utils.put(QueryType.ISOLINES, IsolinesQueryUtils.class);
 		utils.put(QueryType.AREA, AreaQueryUtils.class);
-		utils.put(QueryType.TIMESERIES, SeriesQueryUtils.class);
-		utils.put(QueryType.COLLECTINGSERIES, SeriesQueryUtils.class);
 		utils.put(QueryType.ACTIVITY, ActivityQueryUtils.class);
 		utils.put(QueryType.PROJECT, ProjectQueryUtils.class);
 		utils.put(QueryType.PROGRAM, ProgramQueryUtils.class);

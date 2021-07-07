@@ -53,7 +53,7 @@ public abstract class TrackingQueryUtils extends GeoDataQueryUtils {
 
 		BoolQueryBuilder query = getGeoDataQuery(queryDTO, internalQuery, partialQuery);
 
-		addMustTermIfExist(query, getZQuery(INTRACK_PATH, Z_PROPERTY, SEARCH_BY_Z_RANGE_SCRIPT, queryDTO.getZ()));
+		addMustTermIfExist(query, getZQuery(INTRACK_PATH, Z_PROPERTY, queryDTO.getZ()));
 		addMustTermIfExist(query, getDateLimitsQuery(queryDTO.getDateLimits(), INTRACK_PATH + "." + DATE_PROPERTY));
 		addMustTermIfExist(query, getFlagQuery(queryDTO.getQFlags(), INTRACK_PATH + "." + QFLAG_PROPERTY));
 		addMustTermIfExist(query, getFlagQuery(queryDTO.getVFlags(), INTRACK_PATH + "." + VFLAG_PROPERTY));

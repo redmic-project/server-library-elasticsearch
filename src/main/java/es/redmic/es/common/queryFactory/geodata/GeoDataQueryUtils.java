@@ -34,6 +34,7 @@ import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptType;
 
 import es.redmic.es.common.queryFactory.common.BaseQueryUtils;
+import es.redmic.es.common.utils.ElasticSearchUtils;
 import es.redmic.models.es.common.query.dto.GeoDataQueryDTO;
 import es.redmic.models.es.common.query.dto.PrecisionQueryDTO;
 import es.redmic.models.es.common.query.dto.RangeOperator;
@@ -45,8 +46,6 @@ public abstract class GeoDataQueryUtils extends BaseQueryUtils {
 	public static final String ID_PROPERTY = "uuid";
 	public static final String Z_PROPERTY = "z";
 	public static final String VALUE_PROPERTY = "value";
-	public static final String SEARCH_BY_Z_RANGE_SCRIPT = "search-by-z-range";
-	public static final String SEARCH_NESTED_BY_Z_RANGE_SCRIPT = "search-nested-by-z-range";
 	public static final String PARENT = "activity";
 	public static final String QFLAG_QUERY_FIELD = "qFlags";
 	public static final String VFLAG_QUERY_FIELD = "vFlags";
@@ -54,6 +53,9 @@ public abstract class GeoDataQueryUtils extends BaseQueryUtils {
 	public static final String VALUE_QUERY_FIELD = "value";
 	public static final String DATELIMIT_QUERY_FIELD = "dateLimits";
 	public static final String PRECISION_QUERY_FIELD = "precision";
+
+	public static final String Z_QUERY_SCRIPT_PATH = "/scripts/z-query.txt";
+	public static final String Z_NESTED_QUERY_SCRIPT_PATH = "/scripts/z-nested-query.txt";
 
 	public static BoolQueryBuilder getQuery(GeoDataQueryDTO queryDTO, QueryBuilder internalQuery,
 			QueryBuilder partialQuery) {
@@ -79,14 +81,16 @@ public abstract class GeoDataQueryUtils extends BaseQueryUtils {
 				.to(precision.getMax());
 	}
 
-	protected static QueryBuilder getZQuery(String property, String scriptName, ZRangeDTO zRange) {
-		return getZQuery(null, property, scriptName, zRange);
+	protected static QueryBuilder getZQuery(String property, ZRangeDTO zRange) {
+		return getZQuery(null, property, zRange);
 	}
 
-	protected static QueryBuilder getZQuery(String basePath, String property, String scriptName, ZRangeDTO zRange) {
+	protected static QueryBuilder getZQuery(String basePath, String property, ZRangeDTO zRange) {
 
 		if (zRange == null)
 			return null;
+
+		String script = ElasticSearchUtils.getScriptFile(Z_QUERY_SCRIPT_PATH);
 
 		Map<String, Object> scriptParams = new HashMap<>();
 		scriptParams.put("zMin", zRange.getMin());
@@ -95,16 +99,17 @@ public abstract class GeoDataQueryUtils extends BaseQueryUtils {
 
 		BoolQueryBuilder query = new BoolQueryBuilder();
 		query.must(QueryBuilders.existsQuery((basePath != null) ? (basePath + "." + property) : property));
-		query.must(QueryBuilders.scriptQuery(new Script(ScriptType.STORED, null, scriptName, scriptParams)));
+		query.must(QueryBuilders.scriptQuery(new Script(ScriptType.INLINE, Script.DEFAULT_SCRIPT_LANG, script, scriptParams)));
 
 		return query;
 	}
 
-	protected static QueryBuilder getZNestedQuery(String nestedPath, String basePath, String property,
-			String scriptName, ZRangeDTO zRange) {
+	protected static QueryBuilder getZNestedQuery(String nestedPath, String basePath, String property, ZRangeDTO zRange) {
 
 		if (zRange == null)
 			return null;
+
+		String script = ElasticSearchUtils.getScriptFile(Z_NESTED_QUERY_SCRIPT_PATH);
 
 		Map<String, Object> scriptParams = new HashMap<>();
 		scriptParams.put("zMin", zRange.getMin());
@@ -115,7 +120,7 @@ public abstract class GeoDataQueryUtils extends BaseQueryUtils {
 		BoolQueryBuilder query = new BoolQueryBuilder();
 		query.must(QueryBuilders.nestedQuery(nestedPath,
 				QueryBuilders.existsQuery(nestedPath + "." + basePath + "." + property), ScoreMode.Avg));
-		query.must(QueryBuilders.scriptQuery(new Script(ScriptType.STORED, null, scriptName, scriptParams)));
+		query.must(QueryBuilders.scriptQuery(new Script(ScriptType.INLINE, Script.DEFAULT_SCRIPT_LANG, script, scriptParams)));
 
 		return query;
 	}

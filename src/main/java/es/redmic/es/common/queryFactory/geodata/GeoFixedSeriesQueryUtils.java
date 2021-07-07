@@ -39,8 +39,8 @@ public abstract class GeoFixedSeriesQueryUtils extends GeoDataQueryUtils {
 		BoolQueryBuilder query = getGeoDataQuery(queryDTO, internalQuery, partialQuery);
 		BoolQueryBuilder queryOnChildren = getQueryOnChildren(queryDTO);
 
-		addMustTermIfExist(query, getZNestedQuery(MEASUREMENT_PATH, DATA_DEFINITION_PROPERTY, Z_PROPERTY,
-				SEARCH_NESTED_BY_Z_RANGE_SCRIPT, queryDTO.getZ()));
+		// TODO: Implementar cuando sea necesario
+		//addMustTermIfExist(query, getZNestedQuery(MEASUREMENT_PATH, DATA_DEFINITION_PROPERTY, Z_PROPERTY, queryDTO.getZ()));
 
 		if (queryOnChildren.hasClauses())
 			query.must(JoinQueryBuilders.hasChildQuery(childrenName, queryOnChildren, ScoreMode.Avg));

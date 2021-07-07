@@ -55,8 +55,6 @@ import es.redmic.models.es.common.model.BaseES;
 @Component
 public class ElasticPersistenceUtils<TModel extends BaseES<?>> {
 
-	private static final String SCRIPT_LANG = "painless";
-
 	protected static Logger logger = LogManager.getLogger();
 
 	@Autowired
@@ -301,7 +299,7 @@ public class ElasticPersistenceUtils<TModel extends BaseES<?>> {
 
 			if (Boolean.TRUE.equals(inline)) {
 				scriptType = ScriptType.INLINE;
-				lang = SCRIPT_LANG;
+				lang = Script.DEFAULT_SCRIPT_LANG;
 			}
 			else {
 				scriptType = ScriptType.STORED;
