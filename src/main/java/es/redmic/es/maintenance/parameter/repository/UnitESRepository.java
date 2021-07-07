@@ -34,4 +34,9 @@ public class UnitESRepository extends RWDataESRepository<Unit> {
 	public UnitESRepository() {
 		super(INDEX, TYPE);
 	}
+
+	@Override
+	protected String getMappingFilePath(String index, String type) {
+		return MAPPING_BASE_PATH + "parameters/" + getType() + MAPPING_FILE_EXTENSION;
+	}
 }
