@@ -37,7 +37,7 @@
             {
               "script" : {
                 "script" : {
-                  "id" : "search-by-z-range",
+                  "source" : "def valuePropery = \"z\";\ndef deviationProperty = \"deviation\";\n\nif (doc[params.basePath + \".\" + valuePropery].empty)\n\treturn false;\n\ndef value = doc[params.basePath + \".\" + valuePropery].value;\ndef deviation = doc[params.basePath + \".\" + deviationProperty].value;\n\nif (deviation == null)\n\tdeviation = 0;\n\ndef lowerLimit = value-deviation;\ndef upperLimit = value+deviation;\n\n// Límites de query a null, no se permite query\nif (params.minValue == null && params.maxValue == null)\n\treturn false;\n// Límites de query not null, se tiene en cuenta la desviación\nif (params.minValue != null && params.maxValue != null) {\n\tif (value >= params.minValue && value <= params.maxValue)\n\t\treturn true;\n\tif (upperLimit >= params.maxValue && lowerLimit <= params.minValue)\n\t\treturn true;\n\tif (upperLimit <= params.maxValue && upperLimit >= params.minValue)\n\t\treturn true;\n\tif (lowerLimit <= params.maxValue && lowerLimit >= params.minValue)\n\t\treturn true;\n\treturn false;\n}\n// Algún límite de query a null\nif (params.maxValue != null && upperLimit <= params.maxValue)\n\treturn true;\nif (params.minValue != null && lowerLimit >= params.minValue)\n\treturn true;\nreturn false;\n",
                   "params" : {
                     "zMin" : -5000.0,
                     "zMax" : 5000.0,
