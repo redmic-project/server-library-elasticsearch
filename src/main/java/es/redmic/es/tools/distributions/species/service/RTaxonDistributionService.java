@@ -26,8 +26,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import es.redmic.es.common.repository.SelectionWorkRepository;
 import es.redmic.es.common.service.RBaseESService;
 import es.redmic.es.geodata.common.service.GridServiceItfc;
@@ -58,8 +56,6 @@ public abstract class RTaxonDistributionService extends RBaseESService<Distribut
 	@Autowired
 	SelectionWorkRepository selectionWorkRepository;
 
-	@Autowired
-	ObjectMapper objectMapper;
 
 	protected RTaxonDistributionService(RTaxonDistributionRepository repository, GridServiceItfc gridUtil) {
 		this.repository = repository;
@@ -80,8 +76,8 @@ public abstract class RTaxonDistributionService extends RBaseESService<Distribut
 
 		List<String> taxonsIds = getIdsBySelection(queryDTO);
 
-		if (taxonsIds == null || taxonsIds.size() <= 0)
-			return new ArrayList<TaxonDistributionRegistersDTO>();
+		if (taxonsIds == null || taxonsIds.isEmpty())
+			return new ArrayList<>();
 
 		return repository.findByGridIdAndTaxons(queryDTO, gridId, taxonsIds);
 	}
@@ -94,7 +90,7 @@ public abstract class RTaxonDistributionService extends RBaseESService<Distribut
 			ids = selectionWorkRepository.getSelectedIds(queryDTO.getTerms().get("selection").toString());
 		}
 
-		if ((ids == null || ids.size() <= 0)
+		if ((ids == null || ids.isEmpty())
 				&& (queryDTO.getTerms() == null && queryDTO.getTerms().get("taxonId") == null))
 			return null;
 

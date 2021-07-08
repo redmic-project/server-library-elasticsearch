@@ -110,14 +110,15 @@ public class RTaxonDistributionRepository extends RBaseESRepository<Distribution
 		GeoJSONFeatureCollectionDTO res = new GeoJSONFeatureCollectionDTO();
 
 		List<Integer> confidence = getConfidenceValues(dto);
+
 		if (confidence == null || confidence.isEmpty() || confidence.size() > 4)
 			return res;
 
 		Map<String, Object> scriptParams = new HashMap<>();
 		scriptParams.put("taxons", ids);
 		scriptParams.put("confidences", confidence);
-		SearchResponse response = findAll(createQuery(dto, ids, confidence), INCLUDE_DEFAULT, EXCLUDE_DEFAULT,
-				scriptParams);
+		SearchResponse response = findAll(createQuery(dto, ids, confidence, INCLUDE_DEFAULT, EXCLUDE_DEFAULT,
+				scriptParams));
 
 		if (response != null) {
 			List<Object> result = mapperHitsArrayToClass(response.getHits().getHits());
@@ -150,19 +151,7 @@ public class RTaxonDistributionRepository extends RBaseESRepository<Distribution
 		return ret;
 	}
 
-	public SearchResponse findAll(QueryBuilder query, String[] include, String[] exclude,
-			Map<String, Object> scriptParams) {
-
-		SearchRequest searchRequest = new SearchRequest(getIndex());
-		SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-
-		searchSourceBuilder.query(query);
-		searchSourceBuilder.size(10000);
-		searchSourceBuilder.fetchSource(include, exclude);
-		searchSourceBuilder.scriptField("taxons",
-			new Script(ScriptType.INLINE, Script.DEFAULT_SCRIPT_LANG, ElasticSearchUtils.getScriptFile(AGGS_DISTRIBUTION_SCRIPT_PATH), scriptParams));
-
-		searchRequest.source(searchSourceBuilder);
+	public SearchResponse findAll(SearchRequest searchRequest) {
 
 		SearchResponse searchResponse;
 
@@ -176,7 +165,8 @@ public class RTaxonDistributionRepository extends RBaseESRepository<Distribution
 		return searchResponse;
 	}
 
-	private QueryBuilder createQuery(GeoDataQueryDTO queryDTO, List<String> ids, List<Integer> confidence) {
+	public SearchRequest createQuery(GeoDataQueryDTO queryDTO, List<String> ids, List<Integer> confidence,
+		String[] include, String[] exclude, Map<String, Object> scriptParams) {
 
 		NestedQueryBuilder idsFilter;
 		if (ids != null && !ids.isEmpty()) // TODO: quitar, siempre debe ids
@@ -212,7 +202,19 @@ public class RTaxonDistributionRepository extends RBaseESRepository<Distribution
 			throw new ESBBoxQueryException(e);
 		}
 
-		return query;
+		SearchRequest searchRequest = new SearchRequest(getIndex());
+		SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+
+		searchSourceBuilder.query(query);
+		searchSourceBuilder.size(10000);
+		searchSourceBuilder.fetchSource(include, exclude);
+		searchSourceBuilder.scriptField("taxons",
+			new Script(ScriptType.INLINE, Script.DEFAULT_SCRIPT_LANG,
+				ElasticSearchUtils.getScriptFile(AGGS_DISTRIBUTION_SCRIPT_PATH), scriptParams));
+
+		searchRequest.source(searchSourceBuilder);
+
+		return searchRequest;
 	}
 
 	public TaxonDistribution findByRegisterId(String id) {
