@@ -23,16 +23,16 @@ void checkRegister(def result, def taxon, def params) {
 			def taxonRegisters = getRegisters(taxon, params);
 
 			if (taxonRegisters.registers.size() > 0) {
-				result['properties.registerCount'] += taxon.registers.size();
-				result['properties.taxonCount'] ++;
+				result['registerCount'] += taxon.registers.size();
+				result['taxonCount'] ++;
 			}
 	}
 }
 
 Map result = new HashMap();
 
-result['properties.registerCount'] = 0;
-result['properties.taxonCount'] = 0;
+result['registerCount'] = 0;
+result['taxonCount'] = 0;
 
 for (tax in params._source.properties.taxons) {
 	checkRegister(result, tax, params);

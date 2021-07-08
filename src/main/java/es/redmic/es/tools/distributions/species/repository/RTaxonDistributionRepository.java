@@ -143,10 +143,14 @@ public class RTaxonDistributionRepository extends RBaseESRepository<Distribution
 		List<Object> ret = new ArrayList<>();
 
 		for (SearchHit obj : result) {
-			Map<String, Object> properties = (Map<String, Object>) obj.getSourceAsMap().get("properties");
-			Integer registerCount = (Integer) properties.get("registerCount");
-			if (registerCount != null && registerCount > 0)
-				ret.add(obj.getSourceAsMap());
+			Map<String, Object> item = obj.getSourceAsMap();
+
+			Map<String,Integer> fields = (Map<String, Integer>) obj.getFields().get("taxons").getValues().get(0);
+			Integer registerCount = fields.get("registerCount");
+			if (registerCount != null && registerCount > 0) {
+				item.put("properties", fields);
+				ret.add(item);
+			}
 		}
 		return ret;
 	}
