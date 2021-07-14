@@ -1,5 +1,7 @@
 package es.redmic.es.administrative.repository;
 
+import java.util.List;
+
 /*-
  * #%L
  * ElasticSearch
@@ -26,11 +28,13 @@ import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.TermsQueryBuilder;
 import org.elasticsearch.join.query.JoinQueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import es.redmic.es.common.service.UserUtilsServiceItfc;
+import es.redmic.es.geodata.common.repository.SpeciesGeoESRepository;
 import es.redmic.models.es.administrative.model.Activity;
 import es.redmic.models.es.common.DataPrefixType;
 import es.redmic.models.es.common.query.dto.DataQueryDTO;
@@ -48,6 +52,9 @@ public class ActivityESRepository extends ActivityCommonESRepository<Activity> {
 
 	@Autowired
 	UserUtilsServiceItfc userService;
+
+	@Autowired
+	SpeciesGeoESRepository speciesGeoRepository;
 
 	public ActivityESRepository() {
 		super(INDEX, TYPE);
@@ -83,13 +90,9 @@ public class ActivityESRepository extends ActivityCommonESRepository<Activity> {
 
 		QueryBuilder queryBuilder = getOrInitializeQuery(query, getInternalQuery(), getTermQuery(query.getTerms()));
 
-		BoolQueryBuilder filterBuilder = QueryBuilders.boolQuery()
-				.must(JoinQueryBuilders.hasChildQuery(CHILDREN_NAME, QueryBuilders.boolQuery()
-						.should(QueryBuilders.termQuery("properties.collect.taxon.path.split", speciesId))
-						.should(QueryBuilders.termQuery("properties.collect.taxon.validAs.path.split", speciesId))
-						.should(QueryBuilders.termQuery(
-								"properties.collect.misidentification.goodIdentification.path.split", speciesId)),
-						ScoreMode.Avg));
+		List<String> activities = speciesGeoRepository.getActivitiesBySpecies(speciesId);
+
+		TermsQueryBuilder filterBuilder = QueryBuilders.termsQuery("id", activities);
 
 		return (DataSearchWrapper<Activity>) findBy(QueryBuilders.boolQuery().must(queryBuilder).filter(filterBuilder));
 	}
