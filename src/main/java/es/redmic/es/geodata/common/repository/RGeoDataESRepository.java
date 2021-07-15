@@ -29,6 +29,7 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.sort.SortBuilder;
 import org.locationtech.jts.geom.Geometry;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -134,6 +135,11 @@ public abstract class RGeoDataESRepository<TModel extends Feature<?, ?>> extends
 	protected GeoSearchWrapper<?, ?> findBy(QueryBuilder queryBuilder, List<String> returnFields) {
 
 		return searchResponseToWrapper(searchRequest(queryBuilder, returnFields),
+				getSourceType(GeoSearchWrapper.class));
+	}
+
+	protected GeoSearchWrapper<?, ?> findBy(QueryBuilder queryBuilder, SortBuilder<?> sort, List<String> returnFields) {
+		return searchResponseToWrapper(searchRequest(queryBuilder, sort, returnFields),
 				getSourceType(GeoSearchWrapper.class));
 	}
 

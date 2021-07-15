@@ -1,8 +1,8 @@
 package es.redmic.es.geodata.common.repository;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 /*-
@@ -30,6 +30,8 @@ import java.util.Map;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.sort.SortOrder;
+import org.elasticsearch.search.sort.SortBuilders;
 import org.locationtech.jts.geom.Geometry;
 import org.springframework.stereotype.Repository;
 
@@ -60,7 +62,10 @@ public class SpeciesGeoESRepository extends GeoPresenceESRepository<GeoPointData
 		List<String> returnFields = new ArrayList<>();
 		returnFields.add("activityId");
 		GeoSearchWrapper<Properties, Geometry> result =
-			(GeoSearchWrapper<Properties, Geometry>) findBy(QueryBuilders.boolQuery().filter(filterBuilder), returnFields);
+			(GeoSearchWrapper<Properties, Geometry>) findBy(
+				QueryBuilders.boolQuery().filter(filterBuilder),
+				SortBuilders.fieldSort("properties.date").order(SortOrder.DESC),
+				returnFields);
 
 		if (result == null || result.getTotal() == 0)
 			return activities;
@@ -71,7 +76,8 @@ public class SpeciesGeoESRepository extends GeoPresenceESRepository<GeoPointData
 
 			activities.add(item.get_source().getProperties().getActivityId());
 		}
-		return activities;
+		// ELimina duplicados
+		return new ArrayList<>(new LinkedHashSet<>(activities));
 	}
 
 	/**
