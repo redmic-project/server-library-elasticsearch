@@ -48,6 +48,7 @@ public class SpeciesGeoESRepository extends GeoPresenceESRepository<GeoPointData
 		super();
 	}
 
+	@SuppressWarnings({ "unchecked" })
 	public List<String> getActivitiesBySpecies(String speciesId) {
 
 		List<String> activities = new ArrayList<>();
@@ -64,7 +65,7 @@ public class SpeciesGeoESRepository extends GeoPresenceESRepository<GeoPointData
 		GeoSearchWrapper<Properties, Geometry> result =
 			(GeoSearchWrapper<Properties, Geometry>) findBy(
 				QueryBuilders.boolQuery().filter(filterBuilder),
-				SortBuilders.fieldSort("properties.date").order(SortOrder.DESC),
+				SortBuilders.fieldSort("properties.activityId").order(SortOrder.DESC),
 				returnFields);
 
 		if (result == null || result.getTotal() == 0)

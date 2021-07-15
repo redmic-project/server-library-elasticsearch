@@ -1,7 +1,5 @@
 package es.redmic.es.common.utils;
 
-import java.io.BufferedReader;
-
 /*-
  * #%L
  * ElasticSearch
@@ -24,7 +22,6 @@ import java.io.BufferedReader;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.lang.reflect.Field;
@@ -34,7 +31,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.get.GetResponse;
@@ -293,7 +289,9 @@ public class ElasticSearchUtils {
 	public static String getScriptFile(String mappingFilePath) {
 
 		try {
-			return FileUtils.readFileToString(new ClassPathResource(mappingFilePath).getFile(), StandardCharsets.UTF_8);
+			InputStream resource = new ClassPathResource(mappingFilePath).getInputStream();
+
+			return IOUtils.toString(resource, Charset.forName(StandardCharsets.UTF_8.name()));
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new ResourceNotFoundException(e);
