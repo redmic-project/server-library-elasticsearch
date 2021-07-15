@@ -57,9 +57,10 @@ public class SpeciesGeoESRepository extends GeoPresenceESRepository<GeoPointData
 						.should(QueryBuilders.termQuery(
 								"properties.collect.misidentification.goodIdentification.path.split", speciesId)));
 
+		List<String> returnFields = new ArrayList<>();
+		returnFields.add("activityId");
 		GeoSearchWrapper<Properties, Geometry> result =
-			(GeoSearchWrapper<Properties, Geometry>) findBy(QueryBuilders.boolQuery().filter(filterBuilder),
-				Arrays.asList("activityId"));
+			(GeoSearchWrapper<Properties, Geometry>) findBy(QueryBuilders.boolQuery().filter(filterBuilder), returnFields);
 
 		if (result == null || result.getTotal() == 0)
 			return activities;
