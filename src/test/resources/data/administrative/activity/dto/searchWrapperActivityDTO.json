@@ -40,8 +40,12 @@
 			},
 			"resources": [{
 				"id": 1,
-				"name": "Dataset",
-				"description": "Descarga de dataset en CKAN",
+				"resourceType": {
+					"id":1,
+					"name": "CKAN",
+					"name_en": "CKAN",
+					"description": "Descarga de dataset en CKAN"
+				},
 				"urlResource": "https://ckan.redmic.es"
 			}],
 			"accessibility": {
