@@ -25,6 +25,9 @@ import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+
 import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,11 +36,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-
 import es.redmic.es.administrative.mapper.ActivityESMapper;
-import es.redmic.es.administrative.mapper.ProjectESMapper;
 import es.redmic.es.administrative.repository.ActivityBaseESRepository;
 import es.redmic.es.administrative.service.ContactESService;
 import es.redmic.es.administrative.service.DocumentESService;
@@ -49,6 +48,7 @@ import es.redmic.es.common.objectFactory.ModelESFactory;
 import es.redmic.es.data.common.mapper.DataCollectionMapper;
 import es.redmic.es.data.common.mapper.DataItemMapper;
 import es.redmic.es.maintenance.domain.administrative.mapper.ActivityDocumentESMapper;
+import es.redmic.es.maintenance.domain.administrative.mapper.ActivityResourceESMapper;
 import es.redmic.es.maintenance.domain.administrative.mapper.ContactOrganisationRoleESMapper;
 import es.redmic.es.maintenance.domain.administrative.mapper.OrganisationRoleESMapper;
 import es.redmic.es.maintenance.domain.administrative.mapper.PlatformContactRoleESMapper;
@@ -57,10 +57,12 @@ import es.redmic.es.maintenance.domain.administrative.service.ActivityRankESServ
 import es.redmic.es.maintenance.domain.administrative.service.ActivityTypeESService;
 import es.redmic.es.maintenance.domain.administrative.service.ContactRoleESService;
 import es.redmic.es.maintenance.domain.administrative.service.OrganisationRoleESService;
+import es.redmic.es.maintenance.domain.administrative.service.ResourceTypeESService;
 import es.redmic.es.maintenance.domain.administrative.service.ScopeESService;
 import es.redmic.es.maintenance.domain.administrative.service.ThemeInspireESService;
 import es.redmic.models.es.administrative.dto.ActivityDTO;
 import es.redmic.models.es.administrative.model.Activity;
+import es.redmic.models.es.administrative.model.ActivityResource;
 import es.redmic.models.es.administrative.model.Contact;
 import es.redmic.models.es.administrative.model.Document;
 import es.redmic.models.es.administrative.model.Organisation;
@@ -70,6 +72,7 @@ import es.redmic.models.es.administrative.model.Project;
 import es.redmic.models.es.common.model.BaseES;
 import es.redmic.models.es.common.model.DomainES;
 import es.redmic.models.es.maintenance.administrative.model.ActivityType;
+import es.redmic.models.es.maintenance.administrative.model.ResourceType;
 import es.redmic.models.es.maintenance.administrative.model.ThemeInspire;
 import es.redmic.test.unit.geodata.common.MapperTestUtil;
 import ma.glasnost.orika.metadata.TypeFactory;
@@ -119,6 +122,9 @@ public class ActivityMapperTest extends MapperTestUtil {
 	@Mock
 	ThemeInspireESService themeInspireESService;
 
+	@Mock
+	ResourceTypeESService resourceTypeESService;
+
 	@InjectMocks
 	ActivityESMapper mapper;
 
@@ -133,6 +139,9 @@ public class ActivityMapperTest extends MapperTestUtil {
 
 	@InjectMocks
 	ActivityDocumentESMapper activityDocumentESMapper;
+
+	@InjectMocks
+	ActivityResourceESMapper activityResourceESMapper;
 
 	String modelOutPath = "/data/administrative/activity/model/activity2.json",
 			dtoInPath = "/data/administrative/activity/dto/activity.json",
@@ -154,6 +163,7 @@ public class ActivityMapperTest extends MapperTestUtil {
 		factory.addMapper(platformContactRoleESMapper);
 		factory.addMapper(contactOrganisationRoleESMapper);
 		factory.addMapper(organisationRoleESMapper);
+		factory.addMapper(activityResourceESMapper);
 		factory.addMapper(new DataCollectionMapper());
 		factory.addMapper(new DataItemMapper());
 
@@ -184,6 +194,16 @@ public class ActivityMapperTest extends MapperTestUtil {
 		themeInspire.setName_en("name_en");
 		themeInspire.setCode("code");
 
+		ActivityResource resource = new ActivityResource();
+		resource.setId(1L);
+		resource.setUrlResource("https://ckan.redmic.es");
+		ResourceType resourceType = new ResourceType();
+		resourceType.setId(1L);
+		resourceType.setName("CKAN");
+		resourceType.setName_en("CKAN");
+		resourceType.setDescription("Descarga de dataset en CKAN");
+		resource.setResourceType(resourceType);
+
 		DomainES domain = (DomainES) getBean(domainModel, DomainES.class);
 		when(accessibilityESService.findById(anyString())).thenReturn(domain);
 		when(scopeESService.findById(anyString())).thenReturn(domain);
@@ -191,6 +211,7 @@ public class ActivityMapperTest extends MapperTestUtil {
 		when(organisationRoleESService.findById(anyString())).thenReturn(domain);
 		when(rankESService.findById(anyString())).thenReturn(domain);
 		when(themeInspireESService.findById(anyString())).thenReturn(themeInspire);
+		when(resourceTypeESService.findById(anyString())).thenReturn(resourceType);
 	}
 
 	@Test

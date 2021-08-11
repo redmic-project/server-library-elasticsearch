@@ -9,9 +9,9 @@ package es.redmic.test.unit.data.es2dto;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -53,6 +53,7 @@ import es.redmic.es.data.common.mapper.DataItemMapper;
 import es.redmic.es.maintenance.device.mapper.CalibrationESMapper;
 import es.redmic.es.maintenance.device.mapper.DeviceESMapper;
 import es.redmic.es.maintenance.domain.administrative.mapper.ActivityDocumentESMapper;
+import es.redmic.es.maintenance.domain.administrative.mapper.ActivityResourceESMapper;
 import es.redmic.es.maintenance.domain.administrative.mapper.ActivityTypeESMapper;
 import es.redmic.es.maintenance.domain.administrative.mapper.ContactOrganisationRoleESMapper;
 import es.redmic.es.maintenance.domain.administrative.mapper.OrganisationRoleESMapper;
@@ -101,6 +102,7 @@ public class DataSearchWrapperMapperTest extends DataTestUtil {
 		factory.addMapper(new DataCollectionMapper());
 		factory.addMapper(new DataItemMapper());
 		factory.addMapper(new ActivityTypeESMapper());
+		factory.addMapper(new ActivityResourceESMapper());
 		factory.addMapper(new ContactOrganisationRoleESMapper());
 		factory.addMapper(new OrganisationRoleESMapper());
 		factory.addMapper(new PlatformContactRoleESMapper());
