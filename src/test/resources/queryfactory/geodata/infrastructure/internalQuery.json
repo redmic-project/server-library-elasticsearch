@@ -26,31 +26,6 @@
         }
       }
     ],
-    "should" : [
-      {
-        "has_child" : {
-          "query" : {
-            "match_all" : {
-              "boost" : 1.0
-            }
-          },
-          "type" : "attributeseries",
-          "score_mode" : "avg",
-          "min_children" : 0,
-          "max_children" : 2147483647,
-          "ignore_unmapped" : false,
-          "boost" : 1.0,
-          "inner_hits" : {
-            "ignore_unmapped" : false,
-            "from" : 0,
-            "size" : 3,
-            "version" : false,
-            "explain" : false,
-            "track_scores" : false
-          }
-        }
-      }
-    ],
     "adjust_pure_negative" : true,
     "boost" : 1.0
   }

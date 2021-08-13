@@ -23,12 +23,9 @@ package es.redmic.es.common.queryFactory.geodata;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.InnerHitBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.join.query.JoinQueryBuilders;
 
 import es.redmic.models.es.common.DataPrefixType;
 import es.redmic.models.es.common.query.dto.GeoDataQueryDTO;
@@ -48,22 +45,11 @@ public abstract class InfrastructureQueryUtils extends GeoDataQueryUtils {
 			QueryBuilder partialQuery) {
 
 		BoolQueryBuilder query = getOrInitializeBaseQuery(getGeoDataQuery(queryDTO, internalQuery, partialQuery));
-		BoolQueryBuilder queryOnChildren = getQueryOnChildren(queryDTO);
 
 		addMustTermIfExist(query, getZQuery(SITE_PATH, Z_PROPERTY, queryDTO.getZ()));
 		addMustTermIfExist(query, getDateLimitsQuery(queryDTO.getDateLimits(), SITE_PATH + "." + DATE_PROPERTY));
 
-		query.should(JoinQueryBuilders
-				.hasChildQuery(CHILDREN_NAME,
-						queryOnChildren.hasClauses() ? queryOnChildren : QueryBuilders.matchAllQuery(), ScoreMode.Avg)
-				.innerHit(new InnerHitBuilder()));
-
 		return getResultQuery(query);
-	}
-
-	private static BoolQueryBuilder getQueryOnChildren(GeoDataQueryDTO queryDTO) {
-
-		return QueryBuilders.boolQuery();
 	}
 
 	public static Set<String> getFieldsExcludedOnQuery() {
