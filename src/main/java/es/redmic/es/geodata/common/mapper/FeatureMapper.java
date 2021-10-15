@@ -9,9 +9,9 @@ package es.redmic.es.geodata.common.mapper;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,9 +22,9 @@ package es.redmic.es.geodata.common.mapper;
 
 import org.springframework.stereotype.Component;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Point;
 
 import es.redmic.exception.common.ExceptionType;
 import es.redmic.exception.common.InternalException;
@@ -49,7 +49,7 @@ public class FeatureMapper extends CustomMapper<GeoHitWrapper, MetaFeatureDTO> {
 			throw new InternalException(ExceptionType.INTERNAL_EXCEPTION);
 
 		context.setProperty("inner_hits", a.getInner_hits());
-		
+
 		Feature source = a.get_source();
 
 		MetaFeatureDTO featureDTO = (MetaFeatureDTO) mapperFacade.map(source, targetTypeDto, context);
@@ -70,7 +70,7 @@ public class FeatureMapper extends CustomMapper<GeoHitWrapper, MetaFeatureDTO> {
 		b.setUuid(featureDTO.getUuid());
 
 		if (featureDTO.getProperties() != null) {
-			b.getProperties().setActivityId(a.get_parent());
+			b.getProperties().setActivityId(a.get_source().getProperties().getActivityId());
 		}
 
 		b.get_meta().setScore(a.get_score());

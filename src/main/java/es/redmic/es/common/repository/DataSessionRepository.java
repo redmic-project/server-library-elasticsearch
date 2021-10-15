@@ -9,9 +9,9 @@ package es.redmic.es.common.repository;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -44,7 +44,7 @@ import es.redmic.models.es.common.model.ReferencesES;
 public class DataSessionRepository<TModel extends BaseES<?>> {
 
 	private static String[] INDEX = { "data" };
-	private static String[] TYPE = { "session" };
+	private static String TYPE = "session";
 
 	@Autowired
 	ElasticPersistenceUtils<TModel> elasticPersistenceUtils;
@@ -62,7 +62,7 @@ public class DataSessionRepository<TModel extends BaseES<?>> {
 	 * Función para alamacenar el dato antes de ser modificado, añadido o borrado
 	 * para el control de los mismos. Para ello se rellena una serie de metadatos
 	 * que nos permite tener un control de los cambios.
-	 * 
+	 *
 	 * @param toIndex
 	 *            dato antes de ser modificado, añadido o borrado.
 	 * @param action
@@ -70,15 +70,15 @@ public class DataSessionRepository<TModel extends BaseES<?>> {
 	 */
 
 	@SuppressWarnings("unchecked")
-	public void saveDataSession(TModel modelToIndex, String action, String index[], String type[]) {
+	public void saveDataSession(TModel modelToIndex, String action, String index[], String type) {
 
-		if (index == null || index.length < 1 || type == null || type.length < 1)
+		if (index == null || index.length < 1 || type == null)
 			return;
 
 		String userId = userService.getUserId();
 
 		DataSession session = new DataSession();
-		session.setPath("/" + index[0] + "/" + type[0] + "/" + modelToIndex.getId());
+		session.setPath("/" + index[0] + "/" + type + "/" + modelToIndex.getId());
 		session.setUpdate(new DateTime());
 		session.setContact(userId);
 		session.setData(objectMapper.convertValue(modelToIndex, Map.class));
@@ -92,7 +92,7 @@ public class DataSessionRepository<TModel extends BaseES<?>> {
 	 * modificados, añadidos o borrados, para el control de los mismos. Para ello se
 	 * rellena una serie de metadatos que nos permite tener un control de los
 	 * cambios.
-	 * 
+	 *
 	 * @param referencesESList
 	 *            listado de referencias de datos antes de ser modificados, añadidos
 	 *            o borrados.
@@ -106,19 +106,19 @@ public class DataSessionRepository<TModel extends BaseES<?>> {
 
 	@SuppressWarnings("unchecked")
 	public void saveDataSession(List<ReferencesES<TModel>> referencesESList, String action, String[] index,
-			String[] type) {
+			String type) {
 
-		if (index == null || index.length < 1 || type == null || type.length < 1 || referencesESList == null
+		if (index == null || index.length < 1 || type == null || referencesESList == null
 				|| referencesESList.size() < 1)
 			return;
 
 		String userId = userService.getUserId();
-		List<IndexRequest> listIndexes = new ArrayList<IndexRequest>();
+		List<IndexRequest> listIndexes = new ArrayList<>();
 
 		for (int i = 0; i < referencesESList.size(); i++) {
 
 			DataSession session = new DataSession();
-			session.setPath("/" + index[0] + "/" + type[0] + "/" + referencesESList.get(i).getOldModel().getId());
+			session.setPath("/" + index[0] + "/" + type + "/" + referencesESList.get(i).getOldModel().getId());
 			session.setUpdate(new DateTime());
 			session.setContact(userId);
 			session.setData(objectMapper.convertValue(referencesESList.get(i).getOldModel(), Map.class));
@@ -126,25 +126,24 @@ public class DataSessionRepository<TModel extends BaseES<?>> {
 
 			IndexRequest indexRequest = new IndexRequest();
 			indexRequest.index(INDEX[0]);
-			indexRequest.type(TYPE[0]);
+			indexRequest.type(TYPE);
 			indexRequest.source(objectMapper.convertValue(session, Map.class));
 			listIndexes.add(indexRequest);
 		}
-		if (listIndexes.size() > 0)
+		if (!listIndexes.isEmpty())
 			elasticPersistenceUtils.indexByBulk(listIndexes);
 	}
 
 	/**
 	 * Función que hace persitentes los datos y metadatos asociados en el control de
 	 * los datos.
-	 * 
+	 *
 	 * @param session
 	 *            dto a almacenar en dataSession.
 	 */
 	@SuppressWarnings("unchecked")
 	private void persist(DataSession session) {
 
-		ESProvider.getClient().prepareIndex(INDEX[0], TYPE[0]).setSource(objectMapper.convertValue(session, Map.class))
-				.execute().actionGet();
+		elasticPersistenceUtils.save(INDEX[0], TYPE, objectMapper.convertValue(session, Map.class));
 	}
 }

@@ -9,9 +9,9 @@ package es.redmic.es.geodata.isolines.mapper;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -65,7 +65,7 @@ public class IsolinesPropertiesESMapper extends CustomMapper<GeoDataProperties, 
 
 		if (a.getSamplingPlace().getClassification() != null)
 			b.setLineType(mapperFacade.convert(a.getSamplingPlace().getClassification(), classificationListType,
-					lineTypeBaseDTOType, null));
+					lineTypeBaseDTOType, null, null));
 
 		if (a.getMeasurements().size() == 1) {
 			Measurement measurement = a.getMeasurements().get(0);
@@ -96,7 +96,7 @@ public class IsolinesPropertiesESMapper extends CustomMapper<GeoDataProperties, 
 			a.setSamplingPlace(new SamplingPlace());
 
 		a.getSamplingPlace().setClassification(
-				mapperFacade.convert(b.getLineType(), lineTypeBaseDTOType, classificationListType, null));
+				mapperFacade.convert(b.getLineType(), lineTypeBaseDTOType, classificationListType, null, null));
 
 		Measurement measurement = mapperFacade.map(b, Measurement.class);
 

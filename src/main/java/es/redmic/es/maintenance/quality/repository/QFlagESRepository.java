@@ -9,9 +9,9 @@ package es.redmic.es.maintenance.quality.repository;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,14 +22,13 @@ package es.redmic.es.maintenance.quality.repository;
 
 import org.springframework.stereotype.Repository;
 
-import es.redmic.es.data.common.repository.RWDataESRepository;
 import es.redmic.models.es.maintenance.quality.model.QFlag;
 
 @Repository
-public class QFlagESRepository extends RWDataESRepository<QFlag> {
+public class QFlagESRepository extends BaseFlagESRepository<QFlag> {
 
 	private static String[] INDEX = { "quality-domains" };
-	private static String[] TYPE = { "qflag" };
+	private static String TYPE = "qflag";
 
 	public QFlagESRepository() {
 		super(INDEX, TYPE);

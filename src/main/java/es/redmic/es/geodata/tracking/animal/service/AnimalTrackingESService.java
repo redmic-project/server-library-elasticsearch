@@ -9,9 +9,9 @@ package es.redmic.es.geodata.tracking.animal.service;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,7 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.vividsolutions.jts.geom.Point;
+import org.locationtech.jts.geom.Point;
 
 import es.redmic.es.geodata.common.service.GeoPresenceESService;
 import es.redmic.es.geodata.tracking.animal.repository.AnimalTrackingESRepository;
@@ -41,21 +41,21 @@ import es.redmic.models.es.maintenance.device.model.DeviceCompact;
 
 @Service
 public class AnimalTrackingESService extends GeoPresenceESService<AnimalTrackingDTO, GeoPointData> {
-	
+
 	@Autowired
 	@Qualifier("RWTaxonDistributionService")
 	RWTaxonDistributionService taxonDistributionService;
 
 	AnimalTrackingESRepository repository;
-	
+
 	/*Índica si las referencias a actualizar son de tipo anidadas*/
 	private static Boolean isNestedProperty = false;
-	
+
 	/*Path de elastic para buscar por animal*/
 	private String animalPropertyPath = "properties.collect.animal.id";
 	/*Clase del modelo indexado en la referencia*/
 	private static Class<AnimalCompact> animalClassInReference = AnimalCompact.class;
-	
+
 	/*Path de elastic para buscar por animal*/
 	private String devicePropertyPath = "properties.inTrack.device.id";
 	/*Clase del modelo indexado en la referencia*/
@@ -66,7 +66,7 @@ public class AnimalTrackingESService extends GeoPresenceESService<AnimalTracking
 		super(repository);
 		this.repository = repository;
 	}
-	
+
 	/**
 	 * Función para rellenar el modelo de elastic a apartir del dto.
 	 *
@@ -75,32 +75,32 @@ public class AnimalTrackingESService extends GeoPresenceESService<AnimalTracking
 	 *
 	 * @return Modelo que se va a indexar en elastic.
 	 */
-	
+
 	@Override
 	public GeoPointData mapper(AnimalTrackingDTO dtoToIndex) {
-		
+
 		return orikaMapper.getMapperFacade().map(dtoToIndex, GeoPointData.class);
 	}
-	
+
 	/**
 	 * Función para modificar las referencias de animal en animalTracking en caso de ser necesario.
-	 * 
+	 *
 	 * @param reference clase que encapsula el modelo de animal antes y después de ser modificado.
 	 */
 
 	public void updateAnimal(ReferencesES<Animal> reference) {
-		
+
 		updateReferenceByScript(reference, animalClassInReference, animalPropertyPath, isNestedProperty);
 	}
-	
+
 	/**
 	 * Función para modificar las referencias de device en animalTracking en caso de ser necesario.
-	 * 
+	 *
 	 * @param reference clase que encapsula el modelo de device antes y después de ser modificado.
 	 */
 
 	public void updateDevice(ReferencesES<Device> reference) {
-		
+
 		updateReferenceByScript(reference, deviceClassInReference, devicePropertyPath, isNestedProperty);
 	}
 
@@ -108,14 +108,14 @@ public class AnimalTrackingESService extends GeoPresenceESService<AnimalTracking
 	 * Función que debe estar definida en los servicios específicos.
 	 * Se usa para realizar acciones en otros servicios después de modificar.
 	 */
-	
+
 	@Override
 	protected void postUpdate(ReferencesES<GeoPointData> reference) {
 		taxonDistributionService.updateAnimalTracking(reference);
 	}
 
 	/*
-	 *  Función que debe estar definida en los servicios específicos. 
+	 *  Función que debe estar definida en los servicios específicos.
 	 *  Se usa para realizar acciones en otros servicios después de añadir.
 	 */
 	@SuppressWarnings("unchecked")
@@ -133,7 +133,7 @@ public class AnimalTrackingESService extends GeoPresenceESService<AnimalTracking
 		taxonDistributionService.deleteAnimalTracking((Feature<GeoDataProperties, Point>) model);
 	}
 
-	
+
 	/*
 	 * Función que debe estar definida en los servicios específicos.
 	 * Se usa para realizar acciones en otros servicios después de borrar.

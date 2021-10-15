@@ -9,9 +9,9 @@ package es.redmic.es.geodata.common.service;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,7 +22,7 @@ package es.redmic.es.geodata.common.service;
 
 import java.util.List;
 
-import es.redmic.models.es.common.query.dto.DataQueryDTO;
+import es.redmic.models.es.common.query.dto.GeoDataQueryDTO;
 import es.redmic.models.es.common.query.dto.MgetDTO;
 import es.redmic.models.es.geojson.common.dto.GeoJSONFeatureCollectionDTO;
 import es.redmic.models.es.geojson.common.dto.MetaFeatureDTO;
@@ -32,8 +32,8 @@ public interface IRGeoDataESService<TDTO extends MetaFeatureDTO<?,?>, TModel ext
 
 	public TDTO get(String id, String parentId);
 	public TDTO searchById(String id);
-	public GeoJSONFeatureCollectionDTO find(DataQueryDTO query, String parentId);
-	public GeoJSONFeatureCollectionDTO find(DataQueryDTO query);
-	public List<String> suggest(String parentId, DataQueryDTO queryDTO);
+	public GeoJSONFeatureCollectionDTO find(GeoDataQueryDTO query, String parentId);
+	public GeoJSONFeatureCollectionDTO find(GeoDataQueryDTO query);
+	public List<String> suggest(String parentId, GeoDataQueryDTO queryDTO);
 	public GeoJSONFeatureCollectionDTO mget(MgetDTO dto, String parentId);
 }

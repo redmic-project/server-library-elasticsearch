@@ -9,9 +9,9 @@ package es.redmic.es.geodata.common.converter;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -30,6 +30,7 @@ import es.redmic.models.es.geojson.common.dto.CategoryDTO;
 import es.redmic.models.es.geojson.common.dto.CategoryListDTO;
 import es.redmic.models.es.geojson.common.model.Aggregations;
 import ma.glasnost.orika.CustomConverter;
+import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.metadata.Type;
 
 @Component
@@ -37,7 +38,7 @@ public class CategoryListConverter extends CustomConverter<Aggregations, Categor
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public CategoryListDTO convert(Aggregations source, Type<? extends CategoryListDTO> destinationType) {
+	public CategoryListDTO convert(Aggregations source, Type<? extends CategoryListDTO> destinationType, MappingContext mappingContext) {
 
 		CategoryListDTO categories = new CategoryListDTO();
 

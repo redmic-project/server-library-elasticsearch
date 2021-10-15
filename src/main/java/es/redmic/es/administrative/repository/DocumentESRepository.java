@@ -9,9 +9,9 @@ package es.redmic.es.administrative.repository;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,44 +22,26 @@ package es.redmic.es.administrative.repository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-
-import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexRequest;
-import org.elasticsearch.action.index.IndexResponse;
-import org.elasticsearch.action.support.WriteRequest.RefreshPolicy;
-import org.elasticsearch.action.update.UpdateRequest;
-import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.rest.RestStatus;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import es.redmic.es.common.utils.ElasticPersistenceUtils;
-import es.redmic.es.data.common.repository.RWDataESRepository;
+import es.redmic.es.data.common.repository.AdministrativeCommonESRepository;
 import es.redmic.exception.data.ItemNotFoundException;
-import es.redmic.exception.elasticsearch.ESUpdateException;
 import es.redmic.models.es.administrative.model.Document;
 import es.redmic.models.es.common.query.dto.DataQueryDTO;
 import es.redmic.models.es.data.common.model.DataHitWrapper;
 import es.redmic.models.es.data.common.model.DataSearchWrapper;
 
 @Repository
-public class DocumentESRepository extends RWDataESRepository<Document> {
-
-	@Autowired
-	ElasticPersistenceUtils<Document> elasticPersistenceUtils;
+public class DocumentESRepository extends AdministrativeCommonESRepository<Document> {
 
 	private static String[] INDEX = { "document-es", "document-en", "document-it", "document-de", "document-fr",
 			"document-pt" };
-	private static String[] TYPE = { "document" };
+	private static String TYPE = "_doc";
 
 	private static String BASE_INDEX = "document-";
-
-	private final Logger LOGGER = LoggerFactory.getLogger(DocumentESRepository.class);
 
 	public DocumentESRepository() {
 		super(INDEX, TYPE);
@@ -72,32 +54,27 @@ public class DocumentESRepository extends RWDataESRepository<Document> {
 
 		String mainIndex = BASE_INDEX + modelToIndex.getLanguage();
 
-		IndexResponse result = ESProvider.getClient().prepareIndex(mainIndex, TYPE[0])
-				.setRefreshPolicy(RefreshPolicy.IMMEDIATE).setSource(convertTModelToSource(modelToIndex))
-				.setId(modelToIndex.getId().toString()).execute().actionGet();
+		Document result = elasticPersistenceUtils.save(mainIndex, getType(), modelToIndex, modelToIndex.getId().toString());
 
-		return (Document) findById(result.getId()).get_source();
+		return (Document) findById(result.getId().toString()).get_source();
 	}
 
 	@Override
 	public List<Document> save(List<Document> modelToIndexList) {
 
-		List<IndexRequest> indexRequestList = new ArrayList<IndexRequest>();
+		List<IndexRequest> indexRequestList = new ArrayList<>();
 
 		for (Document modelToIndex : modelToIndexList) {
 
 			String mainIndex = BASE_INDEX + modelToIndex.getLanguage();
 
-			IndexRequest indexRequest = new IndexRequest();
-			indexRequest.index(mainIndex);
-			indexRequest.type(TYPE[0]);
-			indexRequest.source(convertTModelToSource(modelToIndex));
-			indexRequest.id((modelToIndex.getId() != null) ? modelToIndex.getId().toString() : null);
+			IndexRequest indexRequest = elasticPersistenceUtils.getIndexRequest(
+				mainIndex, getType(), modelToIndex, (modelToIndex.getId() != null) ? modelToIndex.getId().toString() : null);
 			indexRequestList.add(indexRequest);
 		}
 
-		if (indexRequestList.size() == 0)
-			return null;
+		if (indexRequestList.isEmpty())
+			return new ArrayList<>();
 
 		elasticPersistenceUtils.indexByBulk(indexRequestList);
 
@@ -125,21 +102,7 @@ public class DocumentESRepository extends RWDataESRepository<Document> {
 
 		String mainIndex = BASE_INDEX + modelToIndex.getLanguage();
 
-		UpdateRequest updateRequest = new UpdateRequest();
-		updateRequest.setRefreshPolicy(RefreshPolicy.IMMEDIATE);
-		updateRequest.index(mainIndex);
-		updateRequest.type(TYPE[0]);
-		updateRequest.id(modelToIndex.getId().toString());
-		updateRequest.doc(convertTModelToSource(modelToIndex));
-		updateRequest.fetchSource(true);
-		UpdateResponse result;
-		try {
-			result = ESProvider.getClient().update(updateRequest).get();
-		} catch (InterruptedException | ExecutionException e) {
-			LOGGER.debug("Error al modificar un registro con updateResponse");
-			throw new ESUpdateException(e);
-		}
-		return objectMapper.convertValue(result.getGetResult().getSource(), Document.class);
+		return elasticPersistenceUtils.update(mainIndex, getType(), modelToIndex, modelToIndex.getId().toString(), typeOfTModel);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -150,14 +113,7 @@ public class DocumentESRepository extends RWDataESRepository<Document> {
 
 		String mainIndex = BASE_INDEX + item.get_source().getLanguage();
 
-		// @formatter:off
-
-		DeleteResponse result = ESProvider.getClient().prepareDelete(mainIndex, getType()[0], id)
-				.setRefreshPolicy(RefreshPolicy.IMMEDIATE).execute().actionGet();
-
-		// @formatter:on
-
-		return result.status().equals(RestStatus.OK);
+		return elasticPersistenceUtils.delete(mainIndex, getType(), id);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -168,7 +124,7 @@ public class DocumentESRepository extends RWDataESRepository<Document> {
 			queryBuilder = QueryBuilders.matchAllQuery();
 
 		return (DataSearchWrapper<Document>) findBy(
-				QueryBuilders.boolQuery().must(queryBuilder).filter(QueryBuilders.idsQuery(TYPE).addIds(ids)));
+				QueryBuilders.boolQuery().must(queryBuilder).filter(QueryBuilders.idsQuery(getType()).addIds(ids)));
 	}
 
 	@Override

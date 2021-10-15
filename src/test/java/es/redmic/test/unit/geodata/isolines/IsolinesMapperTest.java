@@ -9,9 +9,9 @@ package es.redmic.test.unit.geodata.isolines;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,8 +24,6 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.json.JSONException;
 import org.junit.Before;
@@ -33,12 +31,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
+import es.redmic.es.geodata.common.converter.DataDefinitionConverter;
 import es.redmic.es.geodata.geofixedstation.mapper.DataDefinitionESMapper;
 import es.redmic.es.geodata.geofixedstation.mapper.MeasurementESMapper;
 import es.redmic.es.geodata.isolines.converter.LineTypeClassificationESConverter;
@@ -48,7 +47,6 @@ import es.redmic.es.maintenance.device.service.DeviceESService;
 import es.redmic.es.maintenance.line.service.LineTypeESService;
 import es.redmic.es.maintenance.parameter.service.ParameterESService;
 import es.redmic.es.maintenance.parameter.service.UnitESService;
-import es.redmic.es.series.common.converter.DataDefinitionConverter;
 import es.redmic.models.es.common.DataPrefixType;
 import es.redmic.models.es.geojson.common.model.GeoMultiLineStringData;
 import es.redmic.models.es.geojson.isolines.dto.IsolinesDTO;
@@ -125,13 +123,11 @@ public class IsolinesMapperTest extends MapperTestUtil {
 	@Test
 	public void mapperDtoToModel() throws JsonParseException, JsonMappingException, IOException, JSONException {
 
-		Map<Object, Object> globalProperties = new HashMap<Object, Object>();
-
 		IsolinesDTO dtoIn = (IsolinesDTO) getBean(dtoInPath, IsolinesDTO.class);
 
-		globalProperties.put("uuid", dtoIn.getUuid());
-		globalProperties.put("geoDataPrefix", DataPrefixType.ISOLINES);
-		MappingContext context = new MappingContext(globalProperties);
+		MappingContext context = factory.getMappingContext();
+		context.setProperty("uuid", dtoIn.getUuid());
+		context.setProperty("geoDataPrefix", DataPrefixType.ISOLINES);
 
 		GeoMultiLineStringData modelOut = factory.getMapperFacade().map(dtoIn, GeoMultiLineStringData.class, context);
 

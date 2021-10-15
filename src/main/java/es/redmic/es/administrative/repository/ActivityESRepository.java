@@ -1,5 +1,7 @@
 package es.redmic.es.administrative.repository;
 
+import java.util.List;
+
 /*-
  * #%L
  * ElasticSearch
@@ -9,9 +11,9 @@ package es.redmic.es.administrative.repository;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,11 +28,13 @@ import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.TermsQueryBuilder;
 import org.elasticsearch.join.query.JoinQueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import es.redmic.es.common.service.UserUtilsServiceItfc;
+import es.redmic.es.geodata.common.repository.SpeciesGeoESRepository;
 import es.redmic.models.es.administrative.model.Activity;
 import es.redmic.models.es.common.DataPrefixType;
 import es.redmic.models.es.common.query.dto.DataQueryDTO;
@@ -40,22 +44,33 @@ import es.redmic.models.es.data.common.model.DataSearchWrapper;
 public class ActivityESRepository extends ActivityCommonESRepository<Activity> {
 
 	private static String[] INDEX = { "activity" };
-	private static String[] TYPE = { "activity" };
+	private static String TYPE = "_doc";
 
 	protected static String CHILDREN_NAME = "geodata";
 
+	private static QueryBuilder INTERNAL_QUERY = QueryBuilders.termQuery("rank.id", 3);
+
 	@Autowired
 	UserUtilsServiceItfc userService;
+
+	@Autowired
+	SpeciesGeoESRepository speciesGeoRepository;
 
 	public ActivityESRepository() {
 		super(INDEX, TYPE);
 	}
 
+	@Override
+	public QueryBuilder getInternalQuery() {
+		return INTERNAL_QUERY;
+	}
+
 	@SuppressWarnings("unchecked")
 	public DataSearchWrapper<Activity> findByGrandParent(String programId) {
 
-		QueryBuilder query = QueryBuilders.boolQuery().must(QueryBuilders.termQuery("path.split", programId))
-				.must(QueryBuilders.termQuery("rank.id", 3));
+		QueryBuilder query = QueryBuilders.boolQuery()
+			.must(INTERNAL_QUERY)
+			.must(QueryBuilders.termQuery("path.split", programId));
 
 		return (DataSearchWrapper<Activity>) findBy(QueryBuilders.boolQuery().must(query));
 	}
@@ -63,7 +78,9 @@ public class ActivityESRepository extends ActivityCommonESRepository<Activity> {
 	@SuppressWarnings("unchecked")
 	public DataSearchWrapper<Activity> findByParent(String projectId) {
 
-		QueryBuilder query = QueryBuilders.boolQuery().must(QueryBuilders.termQuery("path.split", projectId));
+		QueryBuilder query = QueryBuilders.boolQuery()
+			.must(INTERNAL_QUERY)
+			.must(QueryBuilders.termQuery("path.split", projectId));
 
 		return (DataSearchWrapper<Activity>) findBy(QueryBuilders.boolQuery().must(query));
 	}
@@ -73,13 +90,9 @@ public class ActivityESRepository extends ActivityCommonESRepository<Activity> {
 
 		QueryBuilder queryBuilder = getOrInitializeQuery(query, getInternalQuery(), getTermQuery(query.getTerms()));
 
-		BoolQueryBuilder filterBuilder = QueryBuilders.boolQuery()
-				.must(JoinQueryBuilders.hasChildQuery(CHILDREN_NAME, QueryBuilders.boolQuery()
-						.should(QueryBuilders.termQuery("properties.collect.taxon.path.split", speciesId))
-						.should(QueryBuilders.termQuery("properties.collect.taxon.validAs.path.split", speciesId))
-						.should(QueryBuilders.termQuery(
-								"properties.collect.misidentification.goodIdentification.path.split", speciesId)),
-						ScoreMode.Avg));
+		List<String> activities = speciesGeoRepository.getActivitiesBySpecies(speciesId);
+
+		TermsQueryBuilder filterBuilder = QueryBuilders.termsQuery("id", activities);
 
 		return (DataSearchWrapper<Activity>) findBy(QueryBuilders.boolQuery().must(queryBuilder).filter(filterBuilder));
 	}
@@ -89,7 +102,9 @@ public class ActivityESRepository extends ActivityCommonESRepository<Activity> {
 
 		QueryBuilder queryBuilder = getOrInitializeQuery(query, getInternalQuery(), getTermQuery(query.getTerms()));
 
-		BoolQueryBuilder filterBuilder = QueryBuilders.boolQuery().must(QueryBuilders.nestedQuery("organisations",
+		BoolQueryBuilder filterBuilder = QueryBuilders.boolQuery()
+			.must(INTERNAL_QUERY)
+			.must(QueryBuilders.nestedQuery("organisations",
 				QueryBuilders.termQuery("organisations.organisation.id", organisationId), ScoreMode.Avg));
 
 		return (DataSearchWrapper<Activity>) findBy(QueryBuilders.boolQuery().must(queryBuilder).filter(filterBuilder));
@@ -100,7 +115,9 @@ public class ActivityESRepository extends ActivityCommonESRepository<Activity> {
 
 		QueryBuilder queryBuilder = getOrInitializeQuery(query, getInternalQuery(), getTermQuery(query.getTerms()));
 
-		BoolQueryBuilder filterBuilder = QueryBuilders.boolQuery().must(QueryBuilders.nestedQuery("platforms",
+		BoolQueryBuilder filterBuilder = QueryBuilders.boolQuery()
+			.must(INTERNAL_QUERY)
+			.must(QueryBuilders.nestedQuery("platforms",
 				QueryBuilders.termQuery("platforms.platform.id", platformId), ScoreMode.Avg));
 
 		return (DataSearchWrapper<Activity>) findBy(QueryBuilders.boolQuery().must(queryBuilder).filter(filterBuilder));
@@ -111,7 +128,9 @@ public class ActivityESRepository extends ActivityCommonESRepository<Activity> {
 
 		QueryBuilder queryBuilder = getOrInitializeQuery(query, getInternalQuery(), getTermQuery(query.getTerms()));
 
-		BoolQueryBuilder filterBuilder = QueryBuilders.boolQuery().must(QueryBuilders.nestedQuery("documents",
+		BoolQueryBuilder filterBuilder = QueryBuilders.boolQuery()
+			.must(INTERNAL_QUERY)
+			.must(QueryBuilders.nestedQuery("documents",
 				QueryBuilders.termQuery("documents.document.id", documentId), ScoreMode.Avg));
 
 		return (DataSearchWrapper<Activity>) findBy(QueryBuilders.boolQuery().must(queryBuilder).filter(filterBuilder));
@@ -122,7 +141,9 @@ public class ActivityESRepository extends ActivityCommonESRepository<Activity> {
 
 		QueryBuilder queryBuilder = getOrInitializeQuery(query, getInternalQuery(), getTermQuery(query.getTerms()));
 
-		BoolQueryBuilder filterBuilder = QueryBuilders.boolQuery().must(QueryBuilders.nestedQuery("contacts",
+		BoolQueryBuilder filterBuilder = QueryBuilders.boolQuery()
+			.must(INTERNAL_QUERY)
+			.must(QueryBuilders.nestedQuery("contacts",
 				QueryBuilders.termQuery("contacts.contact.id", contactId), ScoreMode.Avg));
 
 		return (DataSearchWrapper<Activity>) findBy(QueryBuilders.boolQuery().must(queryBuilder).filter(filterBuilder));

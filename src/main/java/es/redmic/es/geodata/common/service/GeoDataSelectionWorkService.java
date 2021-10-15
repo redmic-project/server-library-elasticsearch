@@ -9,9 +9,9 @@ package es.redmic.es.geodata.common.service;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,35 +24,15 @@ import java.util.List;
 import java.util.UUID;
 
 import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import es.redmic.es.common.repository.SelectionWorkRepository;
 import es.redmic.es.common.service.SelectionWorkService;
 import es.redmic.exception.elasticsearch.ESSelectionWorkException;
 import es.redmic.models.es.common.dto.SelectionWorkDTO;
 import es.redmic.models.es.common.model.Selection;
+import es.redmic.es.common.utils.ElasticSearchUtils;
 
 @Service
 public class GeoDataSelectionWorkService extends SelectionWorkService {
-
-	@Autowired
-	SelectionWorkRepository repository;
-
-	private String selectScript = "update-selections-ids";
-
-	private String deselectScript = "rm-selections-ids";
-
-	private String clearScript = "clear-selections-ids";
-
-	public enum Actions {
-		select, deselect, selectAll, reverse
-	}
-
-	@Autowired
-	protected ObjectMapper objectMapper;
 
 	public GeoDataSelectionWorkService() {
 	}
@@ -66,19 +46,19 @@ public class GeoDataSelectionWorkService extends SelectionWorkService {
 		if (model.getId() != null) {
 
 			List<String> result = null;
-			String script = clearScript;
+			String script = ElasticSearchUtils.getScriptFile(clearScriptPath);
 			if (dto.getAction().equals(Actions.select.toString())) {
 				result = model.getIds();
-				script = selectScript;
+				script = ElasticSearchUtils.getScriptFile(selectScriptPath);
 			} else if (dto.getAction().equals(Actions.deselect.toString())) {
 				result = model.getIds();
-				script = deselectScript;
+				script = ElasticSearchUtils.getScriptFile(deselectScriptPath);
 			}
 			// else clearSelection by default (save [])
 			model.setIds(result);
 			model.setName(dto.getAction());
 
-			dto = repository.updateSelection(model, script);
+			dto = repository.updateSelection(model, script, true);
 			dto.setAction(model.getName());
 			if (dto.getAction().equals(Actions.deselect.toString()))
 				dto.setIds(model.getIds());
@@ -107,6 +87,7 @@ public class GeoDataSelectionWorkService extends SelectionWorkService {
 		return dto;
 	}
 
+	@Override
 	public SelectionWorkDTO get(String id) {
 		try {
 			return objectMapper.convertValue(repository.findById(id).get_source(), SelectionWorkDTO.class);

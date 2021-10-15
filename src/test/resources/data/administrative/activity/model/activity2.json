@@ -9,10 +9,34 @@
 	},
 	"code": "VDOC-00697",
 	"endDate": "2014-10-06T09:00:00.000+00:00",
+	"parent": {
+		"id": 12,
+		"path": "root.1.12",
+		"name": "Banco de datos de especies marinas de Canarias (DIADEMA)"
+	},
+	"grandparent": {
+		"id": 1,
+		"path": "root.1",
+		"name": "Banco de datos de especies marinas de la Macaronesia"
+	},
+	"licence": "licence",
+	"normative": "normative",
+	"spatialExtension": "bbox()",
+	"starred": false,
+	"themeInspire": {
+		"id": 1,
+		"name": "name",
+		"name_en": "name_en",
+		"code": "code"
+	},
 	"resources": [{
 		"id": 1,
-		"name": "Dataset",
-		"description": "Descarga de dataset en CKAN",
+		"resourceType": {
+			"id":1,
+			"name": "CKAN",
+			"name_en": "CKAN",
+			"description": "Descarga de dataset en CKAN"
+		},
 		"urlResource": "https://ckan.redmic.es"
 	}],
 	"accessibility": {

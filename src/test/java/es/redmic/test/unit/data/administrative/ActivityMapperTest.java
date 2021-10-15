@@ -9,9 +9,9 @@ package es.redmic.test.unit.data.administrative;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,16 +25,16 @@ import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+
 import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import es.redmic.es.administrative.mapper.ActivityESMapper;
 import es.redmic.es.administrative.repository.ActivityBaseESRepository;
@@ -48,6 +48,7 @@ import es.redmic.es.common.objectFactory.ModelESFactory;
 import es.redmic.es.data.common.mapper.DataCollectionMapper;
 import es.redmic.es.data.common.mapper.DataItemMapper;
 import es.redmic.es.maintenance.domain.administrative.mapper.ActivityDocumentESMapper;
+import es.redmic.es.maintenance.domain.administrative.mapper.ActivityResourceESMapper;
 import es.redmic.es.maintenance.domain.administrative.mapper.ContactOrganisationRoleESMapper;
 import es.redmic.es.maintenance.domain.administrative.mapper.OrganisationRoleESMapper;
 import es.redmic.es.maintenance.domain.administrative.mapper.PlatformContactRoleESMapper;
@@ -56,17 +57,23 @@ import es.redmic.es.maintenance.domain.administrative.service.ActivityRankESServ
 import es.redmic.es.maintenance.domain.administrative.service.ActivityTypeESService;
 import es.redmic.es.maintenance.domain.administrative.service.ContactRoleESService;
 import es.redmic.es.maintenance.domain.administrative.service.OrganisationRoleESService;
+import es.redmic.es.maintenance.domain.administrative.service.ResourceTypeESService;
 import es.redmic.es.maintenance.domain.administrative.service.ScopeESService;
+import es.redmic.es.maintenance.domain.administrative.service.ThemeInspireESService;
 import es.redmic.models.es.administrative.dto.ActivityDTO;
 import es.redmic.models.es.administrative.model.Activity;
+import es.redmic.models.es.administrative.model.ActivityResource;
 import es.redmic.models.es.administrative.model.Contact;
 import es.redmic.models.es.administrative.model.Document;
 import es.redmic.models.es.administrative.model.Organisation;
 import es.redmic.models.es.administrative.model.Platform;
+import es.redmic.models.es.administrative.model.Program;
 import es.redmic.models.es.administrative.model.Project;
 import es.redmic.models.es.common.model.BaseES;
 import es.redmic.models.es.common.model.DomainES;
 import es.redmic.models.es.maintenance.administrative.model.ActivityType;
+import es.redmic.models.es.maintenance.administrative.model.ResourceType;
+import es.redmic.models.es.maintenance.administrative.model.ThemeInspire;
 import es.redmic.test.unit.geodata.common.MapperTestUtil;
 import ma.glasnost.orika.metadata.TypeFactory;
 
@@ -112,6 +119,12 @@ public class ActivityMapperTest extends MapperTestUtil {
 	@Mock
 	ActivityRankESService rankESService;
 
+	@Mock
+	ThemeInspireESService themeInspireESService;
+
+	@Mock
+	ResourceTypeESService resourceTypeESService;
+
 	@InjectMocks
 	ActivityESMapper mapper;
 
@@ -126,6 +139,9 @@ public class ActivityMapperTest extends MapperTestUtil {
 
 	@InjectMocks
 	ActivityDocumentESMapper activityDocumentESMapper;
+
+	@InjectMocks
+	ActivityResourceESMapper activityResourceESMapper;
 
 	String modelOutPath = "/data/administrative/activity/model/activity2.json",
 			dtoInPath = "/data/administrative/activity/dto/activity.json",
@@ -147,14 +163,15 @@ public class ActivityMapperTest extends MapperTestUtil {
 		factory.addMapper(platformContactRoleESMapper);
 		factory.addMapper(contactOrganisationRoleESMapper);
 		factory.addMapper(organisationRoleESMapper);
+		factory.addMapper(activityResourceESMapper);
 		factory.addMapper(new DataCollectionMapper());
 		factory.addMapper(new DataItemMapper());
 
 		Project project = (Project) getBean(projectModel, Project.class);
 		when(projectESService.findById(anyString())).thenReturn(project);
 
-		// Program program = (Program) getBean(programModel, Program.class);
-		// when(programESService.findById(anyString())).thenReturn(program);
+		Program program = (Program) getBean(programModel, Program.class);
+		when(programESService.findById(anyString())).thenReturn(program);
 
 		Organisation organisation = (Organisation) getBean(organisationModel, Organisation.class);
 		when(organisationESService.findById(anyString())).thenReturn(organisation);
@@ -171,12 +188,30 @@ public class ActivityMapperTest extends MapperTestUtil {
 		ActivityType activityType = (ActivityType) getBean(activityTypeModel, ActivityType.class);
 		when(activityTypeESService.findById(anyString())).thenReturn(activityType);
 
+		ThemeInspire themeInspire = new ThemeInspire();
+		themeInspire.setId(1L);
+		themeInspire.setName("name");
+		themeInspire.setName_en("name_en");
+		themeInspire.setCode("code");
+
+		ActivityResource resource = new ActivityResource();
+		resource.setId(1L);
+		resource.setUrlResource("https://ckan.redmic.es");
+		ResourceType resourceType = new ResourceType();
+		resourceType.setId(1L);
+		resourceType.setName("CKAN");
+		resourceType.setName_en("CKAN");
+		resourceType.setDescription("Descarga de dataset en CKAN");
+		resource.setResourceType(resourceType);
+
 		DomainES domain = (DomainES) getBean(domainModel, DomainES.class);
 		when(accessibilityESService.findById(anyString())).thenReturn(domain);
 		when(scopeESService.findById(anyString())).thenReturn(domain);
 		when(contactRoleESService.findById(anyString())).thenReturn(domain);
 		when(organisationRoleESService.findById(anyString())).thenReturn(domain);
 		when(rankESService.findById(anyString())).thenReturn(domain);
+		when(themeInspireESService.findById(anyString())).thenReturn(themeInspire);
+		when(resourceTypeESService.findById(anyString())).thenReturn(resourceType);
 	}
 
 	@Test

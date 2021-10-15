@@ -9,9 +9,9 @@ package es.redmic.es.data.common.repository;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,11 +31,11 @@ import es.redmic.es.common.repository.IProcessItemFunction;
 import es.redmic.models.es.common.model.BaseES;
 
 public class DataItemsProcessingFunction<TModel extends BaseES<?>> implements IProcessItemFunction<TModel> {
-	
-	List<TModel> items = new ArrayList<TModel>();
+
+	List<TModel> items = new ArrayList<>();
 	Class<TModel> typeOfTModel;
 	protected ObjectMapper objectMapper;
-	
+
 	public DataItemsProcessingFunction(Class<TModel> typeOfTModel, ObjectMapper objectMapper) {
 		this.typeOfTModel = typeOfTModel;
 		this.objectMapper = objectMapper;
@@ -46,10 +46,10 @@ public class DataItemsProcessingFunction<TModel extends BaseES<?>> implements IP
 		TModel item = mapper(hit);
 		items.add(item);
 	}
-	
+
 	private TModel mapper(SearchHit hit) {
-		
-		return objectMapper.convertValue(hit.getSource(), this.typeOfTModel);
+
+		return objectMapper.convertValue(hit.getSourceAsMap(), this.typeOfTModel);
 	}
 
 	@Override

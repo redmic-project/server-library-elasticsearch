@@ -9,9 +9,9 @@ package es.redmic.es.geodata.infrastructure.mapper;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -55,7 +55,7 @@ public class InfrastructurePropertiesESMapper extends CustomMapper<GeoDataProper
 
 		if (a.getSite().getClassification() != null)
 			b.setInfrastructureType(mapperFacade.convert(a.getSite().getClassification(), classificationListType,
-					infrastructureTypeBaseDTOType, null));
+					infrastructureTypeBaseDTOType, null, null));
 
 		InnerHits inner_hits = (InnerHits) context.getProperty("inner_hits");
 
@@ -81,7 +81,7 @@ public class InfrastructurePropertiesESMapper extends CustomMapper<GeoDataProper
 		Site site = mapperFacade.map(b, Site.class);
 
 		site.setClassification(mapperFacade.convert(b.getInfrastructureType(), infrastructureTypeBaseDTOType,
-				classificationListType, null));
+				classificationListType, null, null));
 
 		a.setSite(site);
 		a.setUpdated(b.getUpdated());

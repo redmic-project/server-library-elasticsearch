@@ -9,9 +9,9 @@ package es.redmic.test.unit.data.administrative;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,7 +31,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -52,7 +52,7 @@ import ma.glasnost.orika.metadata.TypeFactory;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DeviceMapperTest extends MapperTestUtil {
-	
+
 	@Mock
 	DeviceTypeESService deviceTypeESService;
 
@@ -61,7 +61,7 @@ public class DeviceMapperTest extends MapperTestUtil {
 
 	@Mock
 	DocumentESService documentESService;
-	
+
 	@InjectMocks
 	DeviceESMapper mapper;
 
@@ -70,26 +70,26 @@ public class DeviceMapperTest extends MapperTestUtil {
 			deviceTypeModel = "/data/maintenance/model/domain.json",
 			platformModel = "/data/administrative/platform/model/platform.json",
 			documentModel = "/data/administrative/document/model/document.json";
-	
+
 	@Before
 	public void setupTest() throws IOException {
-		
+
 		factory.addObjectFactory(new ModelESFactory(), TypeFactory.<BaseES<?>>valueOf(BaseES.class));
 		factory.addMapper(mapper);
-		
-		DomainES deviceType = (DomainES) getBean(deviceTypeModel, DomainES.class);	
+
+		DomainES deviceType = (DomainES) getBean(deviceTypeModel, DomainES.class);
 		when(deviceTypeESService.findById(anyString())).thenReturn(deviceType);
-		
-		Platform platform = (Platform) getBean(platformModel, Platform.class);	
+
+		Platform platform = (Platform) getBean(platformModel, Platform.class);
 		when(platformESService.findById(anyString())).thenReturn(platform);
-		
-		Document document = (Document) getBean(documentModel, Document.class);	
+
+		Document document = (Document) getBean(documentModel, Document.class);
 		when(documentESService.findById(anyString())).thenReturn(document);
 	}
-	
+
 	@Test
 	public void mapperDtoToModel() throws JsonParseException, JsonMappingException, IOException, JSONException {
-		
+
 		mapperDtoToModel(dtoInPath, modelOutPath, DeviceDTO.class, Device.class);
 	}
 }

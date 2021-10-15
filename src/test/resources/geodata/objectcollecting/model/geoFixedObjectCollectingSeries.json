@@ -8,6 +8,7 @@
 		"coordinates": [[100.0, 0.0], [101.0, 1.0]]
 	},
 	"properties": {
+		"activityId": "3",
 		"geodataRelations": null,
 		"length": null,
 		"area": null,

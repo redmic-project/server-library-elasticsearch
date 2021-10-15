@@ -9,9 +9,9 @@ package es.redmic.es.common.queryFactory.geodata;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,6 +21,7 @@ package es.redmic.es.common.queryFactory.geodata;
  */
 
 import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -30,20 +31,20 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.join.query.JoinQueryBuilders;
 
 import es.redmic.models.es.common.DataPrefixType;
-import es.redmic.models.es.common.query.dto.DataQueryDTO;
+import es.redmic.models.es.common.query.dto.GeoDataQueryDTO;
 
-public abstract class IsolinesQueryUtils extends DataQueryUtils {
+public abstract class IsolinesQueryUtils extends GeoDataQueryUtils {
 
-	public final static BoolQueryBuilder INTERNAL_QUERY = QueryBuilders.boolQuery()
+	public static final BoolQueryBuilder INTERNAL_QUERY = QueryBuilders.boolQuery()
 			.must(QueryBuilders.termQuery("properties.samplingPlace.id", DataPrefixType.ISOLINES));
 
-	protected final static String CHILDREN_NAME = "timeseries";
+	protected static final String CHILDREN_NAME = "timeseries";
 
-	public static BoolQueryBuilder getQuery(DataQueryDTO queryDTO, QueryBuilder internalQuery,
+	public static BoolQueryBuilder getQuery(GeoDataQueryDTO queryDTO, QueryBuilder internalQuery,
 			QueryBuilder partialQuery) {
 
-		BoolQueryBuilder query = getOrInitializeBaseQuery(getGeoDataQuery(queryDTO, internalQuery, partialQuery)),
-				queryOnChildren = getQueryOnChildren(queryDTO);
+		BoolQueryBuilder query = getOrInitializeBaseQuery(getGeoDataQuery(queryDTO, internalQuery, partialQuery));
+		BoolQueryBuilder queryOnChildren = getQueryOnChildren(queryDTO);
 
 		query.must(JoinQueryBuilders
 				.hasChildQuery(CHILDREN_NAME,
@@ -53,7 +54,7 @@ public abstract class IsolinesQueryUtils extends DataQueryUtils {
 		return getResultQuery(query);
 	}
 
-	private static BoolQueryBuilder getQueryOnChildren(DataQueryDTO queryDTO) {
+	private static BoolQueryBuilder getQueryOnChildren(GeoDataQueryDTO queryDTO) {
 
 		BoolQueryBuilder queryOnChildren = QueryBuilders.boolQuery();
 
@@ -64,13 +65,10 @@ public abstract class IsolinesQueryUtils extends DataQueryUtils {
 		return queryOnChildren;
 	}
 
-	@SuppressWarnings("serial")
-	public static HashSet<String> getFieldsExcludedOnQuery() {
+	public static Set<String> getFieldsExcludedOnQuery() {
 
-		return new HashSet<String>() {
-			{
-				add(DATELIMIT_QUERY_FIELD);
-			}
-		};
+		HashSet<String> fieldsExcludedOnQuery = new HashSet<>();
+		fieldsExcludedOnQuery.add(DATELIMIT_QUERY_FIELD);
+		return fieldsExcludedOnQuery;
 	}
 }

@@ -9,9 +9,9 @@ package es.redmic.es.common.utils;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,6 +21,9 @@ package es.redmic.es.common.utils;
  */
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,37 +31,37 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.annotation.PostConstruct;
-
+import org.apache.commons.io.IOUtils;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.get.MultiGetItemResponse;
 import org.elasticsearch.action.get.MultiGetResponse;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.xcontent.ToXContentObject;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
-import org.elasticsearch.common.xcontent.XContentHelper;
-import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.BaseAggregationBuilder;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms.Order;
+import org.elasticsearch.search.aggregations.BucketOrder;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import es.redmic.exception.custom.ResourceNotFoundException;
 import es.redmic.exception.elasticsearch.ESParseException;
 import es.redmic.models.es.common.query.dto.AggsPropertiesDTO;
 import es.redmic.models.es.common.query.dto.SortDTO;
@@ -66,19 +69,7 @@ import es.redmic.models.es.common.query.dto.SortDTO;
 @Component
 public class ElasticSearchUtils {
 
-	protected final static String SCRIPT_ENGINE = "groovy";
 	protected final static String SUGGESTSUFFIX = ".suggest";
-
-	@Autowired
-	ObjectMapper jacksonMapper;
-
-	// mapper estático para usarlos en las funciones estáticas de utils
-	static ObjectMapper jMapper;
-
-	@PostConstruct
-	public void initStaticMapper() {
-		jMapper = jacksonMapper;
-	}
 
 	/*
 	 * Obtiene los nombres de los campos de una clase
@@ -86,7 +77,7 @@ public class ElasticSearchUtils {
 
 	public static List<String> getFieldsName(Class<?> resultClass) {
 
-		List<String> fieldsName = new ArrayList<String>();
+		List<String> fieldsName = new ArrayList<>();
 
 		while (resultClass != null && resultClass.getDeclaredFields() != null) {
 			Field[] fields = resultClass.getDeclaredFields();
@@ -97,16 +88,16 @@ public class ElasticSearchUtils {
 		return fieldsName;
 	}
 
-	public static List<?> parseMGetHit(MultiGetResponse multiResponse, JavaType resultClass) {
+	public static List<?> parseMGetHit(MultiGetResponse multiResponse, JavaType resultClass, ObjectMapper mapper) {
 
 		MultiGetItemResponse[] responseList = multiResponse.getResponses();
-		List<Object> result = new ArrayList<Object>();
+		List<Object> result = new ArrayList<>();
 		int responseSize = responseList.length;
 		for (int i = 0; i < responseSize; i++) {
 			MultiGetItemResponse item = responseList[i];
 			GetResponse response = item.getResponse();
 			if (response != null && response.isExists()) {
-				result.add(jMapper.convertValue(getResponsetoObject(response), resultClass));
+				result.add(mapper.convertValue(getResponsetoObject(response), resultClass));
 			}
 		}
 		return result;
@@ -114,13 +105,13 @@ public class ElasticSearchUtils {
 
 	/**
 	 * Retorna solamente los campos de highlight
-	 * 
+	 *
 	 * @param response
 	 *            un SearchResponse que contenga hightlight
 	 * @return lista de sugerencias
 	 */
 	public static List<String> createHighlightResponse(SearchResponse response) {
-		List<String> highlightResponse = new ArrayList<String>();
+		List<String> highlightResponse = new ArrayList<>();
 		SearchHits hits = response.getHits();
 		for (SearchHit hit : hits.getHits()) {
 			Map<String, HighlightField> highlightFields = hit.getHighlightFields();
@@ -133,14 +124,14 @@ public class ElasticSearchUtils {
 		}
 		return highlightResponse;
 	}
-	
+
 	/*
 	 * Pasa la respuesta map
 	 */
 	public static Map<String, Object> getResponsetoObject(GetResponse response) {
 
-		Map<String, Object> result = new HashMap<String, Object>();
-		
+		Map<String, Object> result = new HashMap<>();
+
 		result.put("_index", response.getIndex());
 		result.put("_type", response.getType());
 		result.put("_id", response.getId());
@@ -148,14 +139,19 @@ public class ElasticSearchUtils {
 		result.put("_version", response.getVersion());
 		result.put("highlight", null);
 		result.put("_source", response.getSourceAsMap());
-		
+
 		return result;
 	}
 
 	/*
 	 * Pasa la respuesta map
 	 */
-	public static Map<String, Object> searchResponsetoObject(SearchResponse response) {
+	@SuppressWarnings("unchecked")
+	public static Map<String, Object> searchResponsetoObject(SearchResponse response, ObjectMapper mapper) {
+
+		if (response == null || !response.status().equals(RestStatus.OK) || response.getHits().getTotalHits() < 0) {
+			return new HashMap<>();
+		}
 
 		XContentBuilder builder;
 		try {
@@ -163,9 +159,9 @@ public class ElasticSearchUtils {
 			builder.startObject();
 			response.innerToXContent(builder, ToXContentObject.EMPTY_PARAMS);
 			builder.endObject();
-		
-			return XContentHelper.convertToMap(builder.bytes(), true, XContentType.JSON).v2();
-			
+
+			return mapper.readValue(Strings.toString(builder), Map.class);
+
 		} catch (IOException e) {
 			throw new ESParseException(e);
 		}
@@ -200,39 +196,40 @@ public class ElasticSearchUtils {
 	public static List<BaseAggregationBuilder> getAggs(List<AggsPropertiesDTO> aggs) {
 
 		// Añade los aggs si los tiene
-		if (aggs != null) {
-			List<BaseAggregationBuilder> terms = new ArrayList<BaseAggregationBuilder>();
-			for (AggsPropertiesDTO item : aggs) {
-				if (item.getField() != null) {
+		if (aggs == null) {
+			return new ArrayList<>();
+		}
 
-					TermsAggregationBuilder term = AggregationBuilders.terms(item.getTerm()).field(item.getField());
+		List<BaseAggregationBuilder> terms = new ArrayList<>();
+		for (AggsPropertiesDTO item : aggs) {
+			if (item.getField() != null) {
 
-					if (item.getMinCount() != 1)
-						term.minDocCount(item.getMinCount());
+				TermsAggregationBuilder term = AggregationBuilders.terms(item.getTerm()).field(item.getField());
 
-					term.order(Order.term(true));
+				if (item.getMinCount() != 1)
+					term.minDocCount(item.getMinCount());
 
-					if (item.getSize() != null)
-						term.size(item.getSize());
+				term.order(BucketOrder.key(true));
 
-					if (item.getNested() != null) {
-						terms.add(AggregationBuilders.nested(item.getTerm(), item.getNested()).subAggregation(term));
-					} else {
-						terms.add(term);
-					}
+				if (item.getSize() != null)
+					term.size(item.getSize());
+
+				if (item.getNested() != null) {
+					terms.add(AggregationBuilders.nested(item.getTerm(), item.getNested()).subAggregation(term));
+				} else {
+					terms.add(term);
 				}
 			}
-			return terms;
 		}
-		return null;
+		return terms;
 	}
 
 	public static List<SortBuilder<?>> getSorts(List<SortDTO> sorts) {
 
-		List<SortBuilder<?>> sortBuilders = new ArrayList<SortBuilder<?>>();
+		List<SortBuilder<?>> sortBuilders = new ArrayList<>();
 
 		if (sorts == null || sorts.size() == 0)
-			return null;
+			return sortBuilders;
 
 		for (int i = 0; i < sorts.size(); i++)
 			sortBuilders.add(SortBuilders.fieldSort(sorts.get(i).getField())
@@ -260,7 +257,7 @@ public class ElasticSearchUtils {
 
 		if (!fields.contains("uuid"))
 			fields.add("uuid");
-		
+
 		if (!fields.contains("path"))
 			fields.add("path");
 
@@ -270,7 +267,7 @@ public class ElasticSearchUtils {
 	/**
 	 * Añade a un listado de campos el sufijo .suggest que son los campos en
 	 * ElasticSearch donde se han mapeado las sugerencias
-	 * 
+	 *
 	 * @param fields
 	 *            Listado de campos donde se van a buscar sugerencias
 	 * @return Listado de campos modificados con sufijo suggest
@@ -287,5 +284,17 @@ public class ElasticSearchUtils {
 		}
 
 		return suggestFields;
+	}
+
+	public static String getScriptFile(String mappingFilePath) {
+
+		try {
+			InputStream resource = new ClassPathResource(mappingFilePath).getInputStream();
+
+			return IOUtils.toString(resource, Charset.forName(StandardCharsets.UTF_8.name()));
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new ResourceNotFoundException(e);
+		}
 	}
 }

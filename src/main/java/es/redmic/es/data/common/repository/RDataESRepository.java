@@ -1,5 +1,7 @@
 package es.redmic.es.data.common.repository;
 
+import java.util.Arrays;
+
 /*-
  * #%L
  * ElasticSearch
@@ -9,9 +11,9 @@ package es.redmic.es.data.common.repository;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -44,10 +46,10 @@ import es.redmic.models.es.data.common.model.DataSearchWrapper;
 public abstract class RDataESRepository<TModel extends BaseES<?>> extends RBaseESRepository<TModel>
 		implements IRDataESRepository<TModel> {
 
-	public RDataESRepository() {
+	protected RDataESRepository() {
 	}
 
-	public RDataESRepository(String[] index, String[] type) {
+	protected RDataESRepository(String[] index, String type) {
 		super(index, type);
 	}
 
@@ -109,6 +111,11 @@ public abstract class RDataESRepository<TModel extends BaseES<?>> extends RBaseE
 
 	public SimpleQueryDTO createSimpleQueryDTOFromTextQueryParams(String[] fields, String text, Integer from,
 			Integer size) {
+		return createSimpleQueryDTOFromTextQueryParams(fields, text, from, size, null);
+	}
+
+	public SimpleQueryDTO createSimpleQueryDTOFromTextQueryParams(String[] fields, String text, Integer from,
+			Integer size, String[] returnFields) {
 
 		SimpleQueryDTO queryDTO = new SimpleQueryDTO();
 
@@ -126,6 +133,9 @@ public abstract class RDataESRepository<TModel extends BaseES<?>> extends RBaseE
 			queryDTO.setFrom(from);
 		if (size != null)
 			queryDTO.setSize(size);
+
+		if (returnFields != null)
+			queryDTO.setReturnFields(Arrays.asList(returnFields));
 
 		return queryDTO;
 	}

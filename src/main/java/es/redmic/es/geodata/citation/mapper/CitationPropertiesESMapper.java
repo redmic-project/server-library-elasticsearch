@@ -9,9 +9,9 @@ package es.redmic.es.geodata.citation.mapper;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -62,13 +62,13 @@ public class CitationPropertiesESMapper extends CustomMapper<GeoDataProperties, 
 
 		b.setRemark(a.getCollect().getRemark());
 		b.setCollectorName(a.getCollect().getCollectorName());
-		
+
 		if (a.getCollect().getValue() != null)
 			b.setSpecimenCount(a.getCollect().getValue().longValue());
 
 		b.setStartDate(a.getCollect().getStartDate());
 		b.setEndDate(a.getCollect().getEndDate());
-		
+
 		b.setUpdated(a.getUpdated());
 
 		b.setTaxon((TaxonDTO) mapperFacade.map(a.getCollect().getTaxon(), TaxonDTO.class));
@@ -88,24 +88,24 @@ public class CitationPropertiesESMapper extends CustomMapper<GeoDataProperties, 
 		collect.setRadius(b.getRadius());
 		collect.setRemark(b.getRemark());
 		collect.setCollectorName(b.getCollectorName());
-		
+
 		if (b.getSpecimenCount() != null)
 			collect.setValue(b.getSpecimenCount().doubleValue());
-		
+
 		collect.setStartDate(b.getStartDate());
 		collect.setEndDate(b.getEndDate());;
-		
+
 		collect.setTaxon((TaxonValid) mapperFacade.map(mapperFacade.newObject(b.getTaxon(), DataMapperUtils.getBaseType(),
 				DataMapperUtils.getObjectFactoryContext(taxonService)), TaxonValid.class));
-		
+
 		if (b.getMisidentification() != null)
 			collect.setMisidentification((MisidentificationCompact) mapperFacade.map(mapperFacade.newObject(b.getMisidentification(),
 					DataMapperUtils.getBaseType(), DataMapperUtils.getObjectFactoryContext(misidentificationService)), MisidentificationCompact.class));
-		
+
 		if (b.getSpeciesConfidence() != null)
 			collect.setConfidence((DomainES) mapperFacade.newObject(b.getSpeciesConfidence(), DataMapperUtils.getBaseType(),
 					DataMapperUtils.getObjectFactoryContext(confidenceService)));
-	
+
 		if (b.getConfidence() != null)
 			collect.setLocalityConfidence((DomainES) mapperFacade.newObject(b.getConfidence(), DataMapperUtils.getBaseType(),
 					DataMapperUtils.getObjectFactoryContext(confidenceService)));

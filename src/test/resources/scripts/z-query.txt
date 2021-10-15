@@ -1,0 +1,36 @@
+def valuePropery = "z";
+def deviationProperty = "deviation";
+
+if (doc[params.basePath + "." + valuePropery].empty)
+	return false;
+
+def value = doc[params.basePath + "." + valuePropery].value;
+def deviation = doc[params.basePath + "." + deviationProperty].value;
+
+if (deviation == null)
+	deviation = 0;
+
+def lowerLimit = value-deviation;
+def upperLimit = value+deviation;
+
+// Límites de query a null, no se permite query
+if (params.minValue == null && params.maxValue == null)
+	return false;
+// Límites de query not null, se tiene en cuenta la desviación
+if (params.minValue != null && params.maxValue != null) {
+	if (value >= params.minValue && value <= params.maxValue)
+		return true;
+	if (upperLimit >= params.maxValue && lowerLimit <= params.minValue)
+		return true;
+	if (upperLimit <= params.maxValue && upperLimit >= params.minValue)
+		return true;
+	if (lowerLimit <= params.maxValue && lowerLimit >= params.minValue)
+		return true;
+	return false;
+}
+// Algún límite de query a null
+if (params.maxValue != null && upperLimit <= params.maxValue)
+	return true;
+if (params.minValue != null && lowerLimit >= params.minValue)
+	return true;
+return false;

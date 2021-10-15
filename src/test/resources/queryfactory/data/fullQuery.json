@@ -2,995 +2,169 @@
   "bool" : {
     "must" : [
       {
-        "has_child" : {
-          "query" : {
-            "bool" : {
-              "must" : [
-                {
-                  "bool" : {
-                    "should" : [
-                      {
-                        "bool" : {
-                          "must" : [
-                            {
-                              "range" : {
-                                "properties.collect.startDate" : {
-                                  "from" : "2015-03-17T00:00:00.000Z",
-                                  "to" : null,
-                                  "include_lower" : true,
-                                  "include_upper" : true,
-                                  "boost" : 1.0
-                                }
-                              }
-                            },
-                            {
-                              "range" : {
-                                "properties.collect.endDate" : {
-                                  "from" : null,
-                                  "to" : "2015-04-17T00:00:00.000Z",
-                                  "include_lower" : true,
-                                  "include_upper" : true,
-                                  "boost" : 1.0
-                                }
-                              }
-                            }
-                          ],
-                          "disable_coord" : false,
-                          "adjust_pure_negative" : true,
-                          "boost" : 1.0
-                        }
-                      },
-                      {
-                        "range" : {
-                          "properties.inTrack.date" : {
-                            "from" : "2015-03-17T00:00:00.000Z",
-                            "to" : "2015-04-17T00:00:00.000Z",
-                            "include_lower" : true,
-                            "include_upper" : true,
-                            "boost" : 1.0
-                          }
-                        }
-                      },
-                      {
-                        "range" : {
-                          "properties.site.date" : {
-                            "from" : "2015-03-17T00:00:00.000Z",
-                            "to" : "2015-04-17T00:00:00.000Z",
-                            "include_lower" : true,
-                            "include_upper" : true,
-                            "boost" : 1.0
-                          }
-                        }
-                      },
-                      {
-                        "has_child" : {
-                          "query" : {
-                            "bool" : {
-                              "must" : [
-                                {
-                                  "range" : {
-                                    "date" : {
-                                      "from" : "2015-03-17T00:00:00.000Z",
-                                      "to" : "2015-04-17T00:00:00.000Z",
-                                      "include_lower" : true,
-                                      "include_upper" : true,
-                                      "boost" : 1.0
-                                    }
-                                  }
-                                },
-                                {
-                                  "terms" : {
-                                    "qFlag" : [
-                                      "1"
-                                    ],
-                                    "boost" : 1.0
-                                  }
-                                },
-                                {
-                                  "terms" : {
-                                    "vFlag" : [
-                                      "U"
-                                    ],
-                                    "boost" : 1.0
-                                  }
-                                },
-                                {
-                                  "bool" : {
-                                    "must" : [
-                                      {
-                                        "exists" : {
-                                          "field" : "z",
-                                          "boost" : 1.0
-                                        }
-                                      },
-                                      {
-                                        "script" : {
-                                          "script" : {
-                                            "file" : "search-by-z-range",
-                                            "lang" : "groovy",
-                                            "params" : {
-                                              "zMin" : -5000.0,
-                                              "zMax" : 5000.0,
-                                              "basePath" : null
-                                            }
-                                          },
-                                          "boost" : 1.0
-                                        }
-                                      }
-                                    ],
-                                    "disable_coord" : false,
-                                    "adjust_pure_negative" : true,
-                                    "boost" : 1.0
-                                  }
-                                }
-                              ],
-                              "disable_coord" : false,
-                              "adjust_pure_negative" : true,
-                              "boost" : 1.0
-                            }
-                          },
-                          "type" : "timeseries",
-                          "score_mode" : "avg",
-                          "min_children" : 0,
-                          "max_children" : 2147483647,
-                          "ignore_unmapped" : false,
-                          "boost" : 1.0
-                        }
-                      },
-                      {
-                        "has_child" : {
-                          "query" : {
-                            "bool" : {
-                              "must" : [
-                                {
-                                  "range" : {
-                                    "date" : {
-                                      "from" : "2015-03-17T00:00:00.000Z",
-                                      "to" : "2015-04-17T00:00:00.000Z",
-                                      "include_lower" : true,
-                                      "include_upper" : true,
-                                      "boost" : 1.0
-                                    }
-                                  }
-                                },
-                                {
-                                  "terms" : {
-                                    "qFlag" : [
-                                      "1"
-                                    ],
-                                    "boost" : 1.0
-                                  }
-                                },
-                                {
-                                  "terms" : {
-                                    "vFlag" : [
-                                      "U"
-                                    ],
-                                    "boost" : 1.0
-                                  }
-                                },
-                                {
-                                  "bool" : {
-                                    "must" : [
-                                      {
-                                        "exists" : {
-                                          "field" : "z",
-                                          "boost" : 1.0
-                                        }
-                                      },
-                                      {
-                                        "script" : {
-                                          "script" : {
-                                            "file" : "search-by-z-range",
-                                            "lang" : "groovy",
-                                            "params" : {
-                                              "zMin" : -5000.0,
-                                              "zMax" : 5000.0,
-                                              "basePath" : null
-                                            }
-                                          },
-                                          "boost" : 1.0
-                                        }
-                                      }
-                                    ],
-                                    "disable_coord" : false,
-                                    "adjust_pure_negative" : true,
-                                    "boost" : 1.0
-                                  }
-                                }
-                              ],
-                              "disable_coord" : false,
-                              "adjust_pure_negative" : true,
-                              "boost" : 1.0
-                            }
-                          },
-                          "type" : "collecting",
-                          "score_mode" : "avg",
-                          "min_children" : 0,
-                          "max_children" : 2147483647,
-                          "ignore_unmapped" : false,
-                          "boost" : 1.0
-                        }
-                      }
-                    ],
-                    "disable_coord" : false,
-                    "adjust_pure_negative" : true,
-                    "boost" : 1.0
-                  }
-                },
-                {
-                  "bool" : {
-                    "should" : [
-                      {
-                        "terms" : {
-                          "properties.inTrack.qFlag" : [
-                            "1"
-                          ],
-                          "boost" : 1.0
-                        }
-                      },
-                      {
-                        "terms" : {
-                          "properties.collect.qFlag" : [
-                            "1"
-                          ],
-                          "boost" : 1.0
-                        }
-                      },
-                      {
-                        "has_child" : {
-                          "query" : {
-                            "bool" : {
-                              "must" : [
-                                {
-                                  "range" : {
-                                    "date" : {
-                                      "from" : "2015-03-17T00:00:00.000Z",
-                                      "to" : "2015-04-17T00:00:00.000Z",
-                                      "include_lower" : true,
-                                      "include_upper" : true,
-                                      "boost" : 1.0
-                                    }
-                                  }
-                                },
-                                {
-                                  "terms" : {
-                                    "qFlag" : [
-                                      "1"
-                                    ],
-                                    "boost" : 1.0
-                                  }
-                                },
-                                {
-                                  "terms" : {
-                                    "vFlag" : [
-                                      "U"
-                                    ],
-                                    "boost" : 1.0
-                                  }
-                                },
-                                {
-                                  "bool" : {
-                                    "must" : [
-                                      {
-                                        "exists" : {
-                                          "field" : "z",
-                                          "boost" : 1.0
-                                        }
-                                      },
-                                      {
-                                        "script" : {
-                                          "script" : {
-                                            "file" : "search-by-z-range",
-                                            "lang" : "groovy",
-                                            "params" : {
-                                              "zMin" : -5000.0,
-                                              "zMax" : 5000.0,
-                                              "basePath" : null
-                                            }
-                                          },
-                                          "boost" : 1.0
-                                        }
-                                      }
-                                    ],
-                                    "disable_coord" : false,
-                                    "adjust_pure_negative" : true,
-                                    "boost" : 1.0
-                                  }
-                                }
-                              ],
-                              "disable_coord" : false,
-                              "adjust_pure_negative" : true,
-                              "boost" : 1.0
-                            }
-                          },
-                          "type" : "timeseries",
-                          "score_mode" : "avg",
-                          "min_children" : 0,
-                          "max_children" : 2147483647,
-                          "ignore_unmapped" : false,
-                          "boost" : 1.0
-                        }
-                      },
-                      {
-                        "has_child" : {
-                          "query" : {
-                            "bool" : {
-                              "must" : [
-                                {
-                                  "range" : {
-                                    "date" : {
-                                      "from" : "2015-03-17T00:00:00.000Z",
-                                      "to" : "2015-04-17T00:00:00.000Z",
-                                      "include_lower" : true,
-                                      "include_upper" : true,
-                                      "boost" : 1.0
-                                    }
-                                  }
-                                },
-                                {
-                                  "terms" : {
-                                    "qFlag" : [
-                                      "1"
-                                    ],
-                                    "boost" : 1.0
-                                  }
-                                },
-                                {
-                                  "terms" : {
-                                    "vFlag" : [
-                                      "U"
-                                    ],
-                                    "boost" : 1.0
-                                  }
-                                },
-                                {
-                                  "bool" : {
-                                    "must" : [
-                                      {
-                                        "exists" : {
-                                          "field" : "z",
-                                          "boost" : 1.0
-                                        }
-                                      },
-                                      {
-                                        "script" : {
-                                          "script" : {
-                                            "file" : "search-by-z-range",
-                                            "lang" : "groovy",
-                                            "params" : {
-                                              "zMin" : -5000.0,
-                                              "zMax" : 5000.0,
-                                              "basePath" : null
-                                            }
-                                          },
-                                          "boost" : 1.0
-                                        }
-                                      }
-                                    ],
-                                    "disable_coord" : false,
-                                    "adjust_pure_negative" : true,
-                                    "boost" : 1.0
-                                  }
-                                }
-                              ],
-                              "disable_coord" : false,
-                              "adjust_pure_negative" : true,
-                              "boost" : 1.0
-                            }
-                          },
-                          "type" : "collecting",
-                          "score_mode" : "avg",
-                          "min_children" : 0,
-                          "max_children" : 2147483647,
-                          "ignore_unmapped" : false,
-                          "boost" : 1.0
-                        }
-                      }
-                    ],
-                    "disable_coord" : false,
-                    "adjust_pure_negative" : true,
-                    "boost" : 1.0
-                  }
-                },
-                {
-                  "bool" : {
-                    "should" : [
-                      {
-                        "terms" : {
-                          "properties.inTrack.vFlag" : [
-                            "U"
-                          ],
-                          "boost" : 1.0
-                        }
-                      },
-                      {
-                        "terms" : {
-                          "properties.collect.vFlag" : [
-                            "U"
-                          ],
-                          "boost" : 1.0
-                        }
-                      },
-                      {
-                        "has_child" : {
-                          "query" : {
-                            "bool" : {
-                              "must" : [
-                                {
-                                  "range" : {
-                                    "date" : {
-                                      "from" : "2015-03-17T00:00:00.000Z",
-                                      "to" : "2015-04-17T00:00:00.000Z",
-                                      "include_lower" : true,
-                                      "include_upper" : true,
-                                      "boost" : 1.0
-                                    }
-                                  }
-                                },
-                                {
-                                  "terms" : {
-                                    "qFlag" : [
-                                      "1"
-                                    ],
-                                    "boost" : 1.0
-                                  }
-                                },
-                                {
-                                  "terms" : {
-                                    "vFlag" : [
-                                      "U"
-                                    ],
-                                    "boost" : 1.0
-                                  }
-                                },
-                                {
-                                  "bool" : {
-                                    "must" : [
-                                      {
-                                        "exists" : {
-                                          "field" : "z",
-                                          "boost" : 1.0
-                                        }
-                                      },
-                                      {
-                                        "script" : {
-                                          "script" : {
-                                            "file" : "search-by-z-range",
-                                            "lang" : "groovy",
-                                            "params" : {
-                                              "zMin" : -5000.0,
-                                              "zMax" : 5000.0,
-                                              "basePath" : null
-                                            }
-                                          },
-                                          "boost" : 1.0
-                                        }
-                                      }
-                                    ],
-                                    "disable_coord" : false,
-                                    "adjust_pure_negative" : true,
-                                    "boost" : 1.0
-                                  }
-                                }
-                              ],
-                              "disable_coord" : false,
-                              "adjust_pure_negative" : true,
-                              "boost" : 1.0
-                            }
-                          },
-                          "type" : "timeseries",
-                          "score_mode" : "avg",
-                          "min_children" : 0,
-                          "max_children" : 2147483647,
-                          "ignore_unmapped" : false,
-                          "boost" : 1.0
-                        }
-                      },
-                      {
-                        "has_child" : {
-                          "query" : {
-                            "bool" : {
-                              "must" : [
-                                {
-                                  "range" : {
-                                    "date" : {
-                                      "from" : "2015-03-17T00:00:00.000Z",
-                                      "to" : "2015-04-17T00:00:00.000Z",
-                                      "include_lower" : true,
-                                      "include_upper" : true,
-                                      "boost" : 1.0
-                                    }
-                                  }
-                                },
-                                {
-                                  "terms" : {
-                                    "qFlag" : [
-                                      "1"
-                                    ],
-                                    "boost" : 1.0
-                                  }
-                                },
-                                {
-                                  "terms" : {
-                                    "vFlag" : [
-                                      "U"
-                                    ],
-                                    "boost" : 1.0
-                                  }
-                                },
-                                {
-                                  "bool" : {
-                                    "must" : [
-                                      {
-                                        "exists" : {
-                                          "field" : "z",
-                                          "boost" : 1.0
-                                        }
-                                      },
-                                      {
-                                        "script" : {
-                                          "script" : {
-                                            "file" : "search-by-z-range",
-                                            "lang" : "groovy",
-                                            "params" : {
-                                              "zMin" : -5000.0,
-                                              "zMax" : 5000.0,
-                                              "basePath" : null
-                                            }
-                                          },
-                                          "boost" : 1.0
-                                        }
-                                      }
-                                    ],
-                                    "disable_coord" : false,
-                                    "adjust_pure_negative" : true,
-                                    "boost" : 1.0
-                                  }
-                                }
-                              ],
-                              "disable_coord" : false,
-                              "adjust_pure_negative" : true,
-                              "boost" : 1.0
-                            }
-                          },
-                          "type" : "collecting",
-                          "score_mode" : "avg",
-                          "min_children" : 0,
-                          "max_children" : 2147483647,
-                          "ignore_unmapped" : false,
-                          "boost" : 1.0
-                        }
-                      }
-                    ],
-                    "disable_coord" : false,
-                    "adjust_pure_negative" : true,
-                    "boost" : 1.0
-                  }
-                },
-                {
-                  "bool" : {
-                    "should" : [
-                      {
-                        "bool" : {
-                          "must" : [
-                            {
-                              "exists" : {
-                                "field" : "properties.inTrack.z",
-                                "boost" : 1.0
-                              }
-                            },
-                            {
-                              "script" : {
-                                "script" : {
-                                  "file" : "search-by-z-range",
-                                  "lang" : "groovy",
-                                  "params" : {
-                                    "zMin" : -5000.0,
-                                    "zMax" : 5000.0,
-                                    "basePath" : "properties.inTrack"
-                                  }
-                                },
-                                "boost" : 1.0
-                              }
-                            }
-                          ],
-                          "disable_coord" : false,
-                          "adjust_pure_negative" : true,
-                          "boost" : 1.0
-                        }
-                      },
-                      {
-                        "bool" : {
-                          "must" : [
-                            {
-                              "exists" : {
-                                "field" : "properties.collect.z",
-                                "boost" : 1.0
-                              }
-                            },
-                            {
-                              "script" : {
-                                "script" : {
-                                  "file" : "search-by-z-range",
-                                  "lang" : "groovy",
-                                  "params" : {
-                                    "zMin" : -5000.0,
-                                    "zMax" : 5000.0,
-                                    "basePath" : "properties.collect"
-                                  }
-                                },
-                                "boost" : 1.0
-                              }
-                            }
-                          ],
-                          "disable_coord" : false,
-                          "adjust_pure_negative" : true,
-                          "boost" : 1.0
-                        }
-                      },
-                      {
-                        "bool" : {
-                          "must" : [
-                            {
-                              "exists" : {
-                                "field" : "properties.site.z",
-                                "boost" : 1.0
-                              }
-                            },
-                            {
-                              "script" : {
-                                "script" : {
-                                  "file" : "search-by-z-range",
-                                  "lang" : "groovy",
-                                  "params" : {
-                                    "zMin" : -5000.0,
-                                    "zMax" : 5000.0,
-                                    "basePath" : "properties.site"
-                                  }
-                                },
-                                "boost" : 1.0
-                              }
-                            }
-                          ],
-                          "disable_coord" : false,
-                          "adjust_pure_negative" : true,
-                          "boost" : 1.0
-                        }
-                      },
-                      {
-                        "bool" : {
-                          "must" : [
-                            {
-                              "nested" : {
-                                "query" : {
-                                  "exists" : {
-                                    "field" : "properties.measurements.dataDefinition.z",
-                                    "boost" : 1.0
-                                  }
-                                },
-                                "path" : "properties.measurements",
-                                "ignore_unmapped" : false,
-                                "score_mode" : "avg",
-                                "boost" : 1.0
-                              }
-                            },
-                            {
-                              "script" : {
-                                "script" : {
-                                  "file" : "search-nested-by-z-range",
-                                  "lang" : "groovy",
-                                  "params" : {
-                                    "zMin" : -5000.0,
-                                    "zMax" : 5000.0,
-                                    "basePath" : "dataDefinition",
-                                    "nestedPath" : "properties.measurements"
-                                  }
-                                },
-                                "boost" : 1.0
-                              }
-                            }
-                          ],
-                          "disable_coord" : false,
-                          "adjust_pure_negative" : true,
-                          "boost" : 1.0
-                        }
-                      },
-                      {
-                        "has_child" : {
-                          "query" : {
-                            "bool" : {
-                              "must" : [
-                                {
-                                  "range" : {
-                                    "date" : {
-                                      "from" : "2015-03-17T00:00:00.000Z",
-                                      "to" : "2015-04-17T00:00:00.000Z",
-                                      "include_lower" : true,
-                                      "include_upper" : true,
-                                      "boost" : 1.0
-                                    }
-                                  }
-                                },
-                                {
-                                  "terms" : {
-                                    "qFlag" : [
-                                      "1"
-                                    ],
-                                    "boost" : 1.0
-                                  }
-                                },
-                                {
-                                  "terms" : {
-                                    "vFlag" : [
-                                      "U"
-                                    ],
-                                    "boost" : 1.0
-                                  }
-                                },
-                                {
-                                  "bool" : {
-                                    "must" : [
-                                      {
-                                        "exists" : {
-                                          "field" : "z",
-                                          "boost" : 1.0
-                                        }
-                                      },
-                                      {
-                                        "script" : {
-                                          "script" : {
-                                            "file" : "search-by-z-range",
-                                            "lang" : "groovy",
-                                            "params" : {
-                                              "zMin" : -5000.0,
-                                              "zMax" : 5000.0,
-                                              "basePath" : null
-                                            }
-                                          },
-                                          "boost" : 1.0
-                                        }
-                                      }
-                                    ],
-                                    "disable_coord" : false,
-                                    "adjust_pure_negative" : true,
-                                    "boost" : 1.0
-                                  }
-                                }
-                              ],
-                              "disable_coord" : false,
-                              "adjust_pure_negative" : true,
-                              "boost" : 1.0
-                            }
-                          },
-                          "type" : "timeseries",
-                          "score_mode" : "avg",
-                          "min_children" : 0,
-                          "max_children" : 2147483647,
-                          "ignore_unmapped" : false,
-                          "boost" : 1.0
-                        }
-                      },
-                      {
-                        "has_child" : {
-                          "query" : {
-                            "bool" : {
-                              "must" : [
-                                {
-                                  "range" : {
-                                    "date" : {
-                                      "from" : "2015-03-17T00:00:00.000Z",
-                                      "to" : "2015-04-17T00:00:00.000Z",
-                                      "include_lower" : true,
-                                      "include_upper" : true,
-                                      "boost" : 1.0
-                                    }
-                                  }
-                                },
-                                {
-                                  "terms" : {
-                                    "qFlag" : [
-                                      "1"
-                                    ],
-                                    "boost" : 1.0
-                                  }
-                                },
-                                {
-                                  "terms" : {
-                                    "vFlag" : [
-                                      "U"
-                                    ],
-                                    "boost" : 1.0
-                                  }
-                                },
-                                {
-                                  "bool" : {
-                                    "must" : [
-                                      {
-                                        "exists" : {
-                                          "field" : "z",
-                                          "boost" : 1.0
-                                        }
-                                      },
-                                      {
-                                        "script" : {
-                                          "script" : {
-                                            "file" : "search-by-z-range",
-                                            "lang" : "groovy",
-                                            "params" : {
-                                              "zMin" : -5000.0,
-                                              "zMax" : 5000.0,
-                                              "basePath" : null
-                                            }
-                                          },
-                                          "boost" : 1.0
-                                        }
-                                      }
-                                    ],
-                                    "disable_coord" : false,
-                                    "adjust_pure_negative" : true,
-                                    "boost" : 1.0
-                                  }
-                                }
-                              ],
-                              "disable_coord" : false,
-                              "adjust_pure_negative" : true,
-                              "boost" : 1.0
-                            }
-                          },
-                          "type" : "collecting",
-                          "score_mode" : "avg",
-                          "min_children" : 0,
-                          "max_children" : 2147483647,
-                          "ignore_unmapped" : false,
-                          "boost" : 1.0
-                        }
-                      }
-                    ],
-                    "disable_coord" : false,
-                    "adjust_pure_negative" : true,
-                    "boost" : 1.0
-                  }
-                },
-                {
-                  "geo_shape" : {
-                    "geometry" : {
-                      "shape" : {
-                        "type" : "envelope",
-                        "coordinates" : [
-                          [
-                            -180.0,
-                            90.0
-                          ],
-                          [
-                            -170.0,
-                            80.0
-                          ]
-                        ]
-                      },
-                      "relation" : "intersects"
-                    },
-                    "ignore_unmapped" : false,
-                    "boost" : 1.0
-                  }
-                },
-                {
-                  "bool" : {
-                    "should" : [
-                      {
-                        "has_child" : {
-                          "query" : {
-                            "bool" : {
-                              "must" : [
-                                {
-                                  "bool" : {
-                                    "must" : [
-                                      {
-                                        "match" : {
-                                          "value" : {
-                                            "query" : 0.0,
-                                            "operator" : "OR",
-                                            "prefix_length" : 0,
-                                            "max_expansions" : 50,
-                                            "fuzzy_transpositions" : true,
-                                            "lenient" : false,
-                                            "zero_terms_query" : "NONE",
-                                            "boost" : 1.0
-                                          }
-                                        }
-                                      }
-                                    ],
-                                    "disable_coord" : false,
-                                    "adjust_pure_negative" : true,
-                                    "boost" : 1.0
-                                  }
-                                }
-                              ],
-                              "disable_coord" : false,
-                              "adjust_pure_negative" : true,
-                              "boost" : 1.0
-                            }
-                          },
-                          "type" : "timeseries",
-                          "score_mode" : "avg",
-                          "min_children" : 0,
-                          "max_children" : 2147483647,
-                          "ignore_unmapped" : false,
-                          "boost" : 1.0
-                        }
-                      },
-                      {
-                        "has_child" : {
-                          "query" : {
-                            "bool" : {
-                              "must" : [
-                                {
-                                  "bool" : {
-                                    "must" : [
-                                      {
-                                        "match" : {
-                                          "value" : {
-                                            "query" : 0.0,
-                                            "operator" : "OR",
-                                            "prefix_length" : 0,
-                                            "max_expansions" : 50,
-                                            "fuzzy_transpositions" : true,
-                                            "lenient" : false,
-                                            "zero_terms_query" : "NONE",
-                                            "boost" : 1.0
-                                          }
-                                        }
-                                      }
-                                    ],
-                                    "disable_coord" : false,
-                                    "adjust_pure_negative" : true,
-                                    "boost" : 1.0
-                                  }
-                                }
-                              ],
-                              "disable_coord" : false,
-                              "adjust_pure_negative" : true,
-                              "boost" : 1.0
-                            }
-                          },
-                          "type" : "collecting",
-                          "score_mode" : "avg",
-                          "min_children" : 0,
-                          "max_children" : 2147483647,
-                          "ignore_unmapped" : false,
-                          "boost" : 1.0
-                        }
-                      }
-                    ],
-                    "disable_coord" : false,
-                    "adjust_pure_negative" : true,
-                    "boost" : 1.0
-                  }
-                }
-              ],
-              "disable_coord" : false,
-              "adjust_pure_negative" : true,
-              "boost" : 1.0
-            }
-          },
-          "type" : "geodata",
-          "score_mode" : "avg",
-          "min_children" : 0,
-          "max_children" : 2147483647,
-          "ignore_unmapped" : false,
-          "boost" : 1.0
-        }
-      },
-      {
         "terms" : {
           "accessibility.id" : [
             1
           ],
           "boost" : 1.0
         }
+      },
+      {
+        "bool" : {
+          "must" : [
+            {
+              "bool" : {
+                "should" : [
+                  {
+                    "bool" : {
+                      "must" : [
+                        {
+                          "range" : {
+                            "startDate" : {
+                              "from" : "2015-03-17T00:00:00.000Z",
+                              "to" : null,
+                              "include_lower" : true,
+                              "include_upper" : true,
+                              "boost" : 1.0
+                            }
+                          }
+                        },
+                        {
+                          "range" : {
+                            "startDate" : {
+                              "from" : null,
+                              "to" : "2015-04-17T00:00:00.000Z",
+                              "include_lower" : true,
+                              "include_upper" : true,
+                              "boost" : 1.0
+                            }
+                          }
+                        }
+                      ],
+                      "adjust_pure_negative" : true,
+                      "boost" : 1.0
+                    }
+                  },
+                  {
+                    "bool" : {
+                      "must" : [
+                        {
+                          "range" : {
+                            "endDate" : {
+                              "from" : "2015-03-17T00:00:00.000Z",
+                              "to" : null,
+                              "include_lower" : true,
+                              "include_upper" : true,
+                              "boost" : 1.0
+                            }
+                          }
+                        },
+                        {
+                          "range" : {
+                            "endDate" : {
+                              "from" : null,
+                              "to" : "2015-04-17T00:00:00.000Z",
+                              "include_lower" : true,
+                              "include_upper" : true,
+                              "boost" : 1.0
+                            }
+                          }
+                        }
+                      ],
+                      "adjust_pure_negative" : true,
+                      "boost" : 1.0
+                    }
+                  },
+                  {
+                    "bool" : {
+                      "must" : [
+                        {
+                          "range" : {
+                            "startDate" : {
+                              "from" : null,
+                              "to" : "2015-03-17T00:00:00.000Z",
+                              "include_lower" : true,
+                              "include_upper" : true,
+                              "boost" : 1.0
+                            }
+                          }
+                        },
+                        {
+                          "range" : {
+                            "endDate" : {
+                              "from" : "2015-04-17T00:00:00.000Z",
+                              "to" : null,
+                              "include_lower" : true,
+                              "include_upper" : true,
+                              "boost" : 1.0
+                            }
+                          }
+                        }
+                      ],
+                      "adjust_pure_negative" : true,
+                      "boost" : 1.0
+                    }
+                  },
+                  {
+                    "bool" : {
+                      "must" : [
+                        {
+                          "range" : {
+                            "startDate" : {
+                              "from" : null,
+                              "to" : "2015-04-17T00:00:00.000Z",
+                              "include_lower" : true,
+                              "include_upper" : true,
+                              "boost" : 1.0
+                            }
+                          }
+                        }
+                      ],
+                      "must_not" : [
+                        {
+                          "exists" : {
+                            "field" : "endDate",
+                            "boost" : 1.0
+                          }
+                        }
+                      ],
+                      "adjust_pure_negative" : true,
+                      "boost" : 1.0
+                    }
+                  }
+                ],
+                "adjust_pure_negative" : true,
+                "boost" : 1.0
+              }
+            }
+          ],
+          "adjust_pure_negative" : true,
+          "boost" : 1.0
+        }
+      },
+      {
+        "geo_shape" : {
+          "spatialExtension" : {
+            "shape" : {
+              "type" : "envelope",
+              "coordinates" : [
+                [
+                  -180.0,
+                  90.0
+                ],
+                [
+                  -170.0,
+                  80.0
+                ]
+              ]
+            },
+            "relation" : "intersects"
+          },
+          "ignore_unmapped" : false,
+          "boost" : 1.0
+        }
       }
     ],
-    "disable_coord" : false,
     "adjust_pure_negative" : true,
     "boost" : 1.0
   }

@@ -9,9 +9,9 @@ package es.redmic.test.unit.queryFactory.geodata;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,22 +26,23 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.json.JSONException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import es.redmic.es.common.queryFactory.geodata.TrackingQueryUtils;
 import es.redmic.test.unit.queryFactory.common.BaseQueryTest;
+import es.redmic.test.unit.queryFactory.common.GeoDataQueryTest;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TrackingQueryTest extends BaseQueryTest {
+public class TrackingQueryTest extends GeoDataQueryTest {
 
 	protected String parentId = "239";
 
 	@Test
 	public void getQuery_ReturnInternalQuery_IfIsDefaultQueryDTO() throws IOException, JSONException {
 
-		BoolQueryBuilder query = TrackingQueryUtils.getQuery(dataQueryDTO, TrackingQueryUtils.INTERNAL_QUERY,
-				TrackingQueryUtils.getHierarchicalQuery(dataQueryDTO, parentId));
+		BoolQueryBuilder query = TrackingQueryUtils.getQuery(geoDataQueryDTO, TrackingQueryUtils.INTERNAL_QUERY,
+				TrackingQueryUtils.getHierarchicalQuery(geoDataQueryDTO, parentId));
 
 		String queryExpected = getExpectedQuery("/queryfactory/geodata/tracking/internalQuery.json");
 
@@ -53,8 +54,8 @@ public class TrackingQueryTest extends BaseQueryTest {
 
 		createZRangeQuery();
 
-		BoolQueryBuilder query = TrackingQueryUtils.getQuery(dataQueryDTO, TrackingQueryUtils.INTERNAL_QUERY,
-				TrackingQueryUtils.getHierarchicalQuery(dataQueryDTO, parentId));
+		BoolQueryBuilder query = TrackingQueryUtils.getQuery(geoDataQueryDTO, TrackingQueryUtils.INTERNAL_QUERY,
+				TrackingQueryUtils.getHierarchicalQuery(geoDataQueryDTO, parentId));
 
 		String queryExpected = getExpectedQuery("/queryfactory/geodata/tracking/zRangeQuery.json");
 
@@ -66,8 +67,8 @@ public class TrackingQueryTest extends BaseQueryTest {
 
 		createDateLimitsQuery();
 
-		BoolQueryBuilder query = TrackingQueryUtils.getQuery(dataQueryDTO, TrackingQueryUtils.INTERNAL_QUERY,
-				TrackingQueryUtils.getHierarchicalQuery(dataQueryDTO, parentId));
+		BoolQueryBuilder query = TrackingQueryUtils.getQuery(geoDataQueryDTO, TrackingQueryUtils.INTERNAL_QUERY,
+				TrackingQueryUtils.getHierarchicalQuery(geoDataQueryDTO, parentId));
 
 		String queryExpected = getExpectedQuery("/queryfactory/geodata/tracking/dateLimitsQuery.json");
 
@@ -79,8 +80,8 @@ public class TrackingQueryTest extends BaseQueryTest {
 
 		createFlagsQuery();
 
-		BoolQueryBuilder query = TrackingQueryUtils.getQuery(dataQueryDTO, TrackingQueryUtils.INTERNAL_QUERY,
-				TrackingQueryUtils.getHierarchicalQuery(dataQueryDTO, parentId));
+		BoolQueryBuilder query = TrackingQueryUtils.getQuery(geoDataQueryDTO, TrackingQueryUtils.INTERNAL_QUERY,
+				TrackingQueryUtils.getHierarchicalQuery(geoDataQueryDTO, parentId));
 
 		String queryExpected = getExpectedQuery("/queryfactory/geodata/tracking/flagsQuery.json");
 
@@ -92,8 +93,8 @@ public class TrackingQueryTest extends BaseQueryTest {
 
 		createPrecisionQuery();
 
-		BoolQueryBuilder query = TrackingQueryUtils.getQuery(dataQueryDTO, TrackingQueryUtils.INTERNAL_QUERY,
-				TrackingQueryUtils.getHierarchicalQuery(dataQueryDTO, parentId));
+		BoolQueryBuilder query = TrackingQueryUtils.getQuery(geoDataQueryDTO, TrackingQueryUtils.INTERNAL_QUERY,
+				TrackingQueryUtils.getHierarchicalQuery(geoDataQueryDTO, parentId));
 
 		String queryExpected = getExpectedQuery("/queryfactory/geodata/tracking/precisionQuery.json");
 

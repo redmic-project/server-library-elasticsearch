@@ -9,9 +9,9 @@ package es.redmic.es.geodata.geofixedstation.service;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,9 +19,6 @@ package es.redmic.es.geodata.geofixedstation.service;
  * limitations under the License.
  * #L%
  */
-
-import java.util.HashMap;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,19 +39,19 @@ import ma.glasnost.orika.MappingContext;
 
 @Service
 public class GeoFixedTimeSeriesESService extends GeoFixedBaseESService<GeoFixedTimeSeriesDTO, GeoPointData> {
-	
+
 	/* Path de elastic para buscar por contact */
 	private String contactPropertyPath = "properties.measurements.dataDefinition.contact.id";
 	/* Clase del modelo indexado en la referencia */
 	private static Class<ContactCompact> contactClassInReference = ContactCompact.class;
 
-	
+
 	/* Path de elastic para buscar por contact */
 	private String devicePropertyPath = "properties.measurements.dataDefinition.device.id";
 	/* Clase del modelo indexado en la referencia */
 	private static Class<DeviceCompact> deviceClassInReference = DeviceCompact.class;
 
-	
+
 	/* Path de elastic para buscar por parameter */
 	private String parameterPropertyPath = "properties.measurements.parameter.id";
 	/* Clase del modelo indexado en la referencia */
@@ -74,17 +71,17 @@ public class GeoFixedTimeSeriesESService extends GeoFixedBaseESService<GeoFixedT
 	 * Profundidad de anidamiento de campos en data definition de measurement
 	 */
 	private int nestingDepthOfDataDefinitionProperty = 3;
-	
+
 	/*
 	 * Profundidad de anidamiento de campos en measurement
 	 */
 	private int nestingDepthOfMeasurementProperty = 2;
-	
+
 	@Autowired
 	public GeoFixedTimeSeriesESService(GeoFixedTimeSeriesESRepository repository) {
 		super(repository);
 	}
-	
+
 	/**
 	 * Función que debe estar definida en los servicios específicos.
 	 * Se usa para rellenar el modelo de elastic a apartir del dto.
@@ -96,21 +93,21 @@ public class GeoFixedTimeSeriesESService extends GeoFixedBaseESService<GeoFixedT
 	 */
 	@Override
 	public GeoPointData mapper(GeoFixedTimeSeriesDTO dtoToIndex) {
-		
-		Map<Object, Object> globalProperties = new HashMap<Object, Object>();
-		globalProperties.put("uuid", dtoToIndex.getUuid());
-		globalProperties.put("geoDataPrefix", DataPrefixType.FIXED_TIMESERIES);
-		MappingContext context = new MappingContext(globalProperties);
+
+		MappingContext context = orikaMapper.getMappingContext();
+		context.setProperty("uuid", dtoToIndex.getUuid());
+		context.setProperty("geoDataPrefix", DataPrefixType.FIXED_TIMESERIES);
+
 		GeoPointData model = orikaMapper.getMapperFacade().map(dtoToIndex, GeoPointData.class, context);
 		if (dtoToIndex.getProperties() != null)
-			model.set_parentId(dtoToIndex.getProperties().getActivityId());
+			model.getProperties().setActivityId(dtoToIndex.getProperties().getActivityId());
 		return model;
 	}
-	
+
 	/**
 	 * Función para modificar las referencias de contact en surveyparams en caso
 	 * de ser necesario.
-	 * 
+	 *
 	 * @param reference
 	 *            clase que encapsula el modelo de contact antes y después de
 	 *            ser modificado.
@@ -124,7 +121,7 @@ public class GeoFixedTimeSeriesESService extends GeoFixedBaseESService<GeoFixedT
 	/**
 	 * Función para modificar las referencias de device en surveyparams en caso
 	 * de ser necesario.
-	 * 
+	 *
 	 * @param reference
 	 *            clase que encapsula el modelo de device antes y después de ser
 	 *            modificado.
@@ -138,7 +135,7 @@ public class GeoFixedTimeSeriesESService extends GeoFixedBaseESService<GeoFixedT
 	/**
 	 * Función para modificar las referencias de parameter en surveyparams en
 	 * caso de ser necesario.
-	 * 
+	 *
 	 * @param reference
 	 *            clase que encapsula el modelo de parameter antes y después de
 	 *            ser modificado.
@@ -152,7 +149,7 @@ public class GeoFixedTimeSeriesESService extends GeoFixedBaseESService<GeoFixedT
 	/**
 	 * Función para modificar las referencias de unit en surveyparams en caso de
 	 * ser necesario.
-	 * 
+	 *
 	 * @param reference
 	 *            clase que encapsula el modelo de unit antes y después de ser
 	 *            modificado.
@@ -166,7 +163,7 @@ public class GeoFixedTimeSeriesESService extends GeoFixedBaseESService<GeoFixedT
 	/**
 	 * Función para modificar las referencias de contactRole en surveyparams en
 	 * caso de ser necesario.
-	 * 
+	 *
 	 * @param reference
 	 *            clase que encapsula el modelo de contactRole antes y después
 	 *            de ser modificado.

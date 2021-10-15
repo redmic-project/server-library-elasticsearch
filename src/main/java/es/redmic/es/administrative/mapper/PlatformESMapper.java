@@ -9,9 +9,9 @@ package es.redmic.es.administrative.mapper;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -49,10 +49,12 @@ public class PlatformESMapper extends CustomMapper<Platform, PlatformDTO> {
 	@Override
 	public void mapAtoB(Platform a, PlatformDTO b, MappingContext context) {
 
-		b.setPlatformType(mapperFacade.map(a.getPlatformType(), PlatformTypeDTO.class));
+		if (a.getPlatformType() != null)
+			b.setPlatformType(mapperFacade.map(a.getPlatformType(), PlatformTypeDTO.class));
 		if (a.getOrganisation() != null)
 			b.setOrganisation(mapperFacade.map(b.getOrganisation(), OrganisationDTO.class));
-		b.setContacts(mapperFacade.mapAsList(a.getContacts(), ContactOrganisationRoleDTO.class));
+		if (a.getContacts() != null)
+			b.setContacts(mapperFacade.mapAsList(a.getContacts(), ContactOrganisationRoleDTO.class));
 	}
 
 	@Override

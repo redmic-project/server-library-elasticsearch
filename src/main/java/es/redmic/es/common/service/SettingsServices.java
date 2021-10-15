@@ -9,9 +9,9 @@ package es.redmic.es.common.service;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -39,7 +39,7 @@ public class SettingsServices<TModel extends Settings, TDTO extends SettingsDTO>
 	protected SettingsRepository<TModel, TDTO> repository;
 
 	@Autowired(required = false)
-	protected UserUtilsServiceItfc userService;
+	protected UserUtilsServiceItfc _userService;
 
 	public SettingsServices() {
 	}
@@ -51,12 +51,12 @@ public class SettingsServices<TModel extends Settings, TDTO extends SettingsDTO>
 
 	public JSONCollectionDTO findAll(DataQueryDTO dto, String service) {
 
-		if (userService == null) {
+		if (_userService == null) {
 			LOGGER.debug("Imposible obtener la configuración. Usuario no válido");
 			throw new NotAllowedException();
 
 		}
-		String userId = String.valueOf(userService.getUserId());
+		String userId = String.valueOf(_userService.getUserId());
 		DataSearchWrapper<?> result = repository.findByUserAndSearch(userId, service, dto);
 		return orikaMapper.getMapperFacade().map(result.getHits(), JSONCollectionDTO.class, getMappingContext());
 	}

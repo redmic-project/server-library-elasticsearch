@@ -9,9 +9,9 @@ package es.redmic.es.common.repository;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,16 +24,15 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
-import es.redmic.es.data.common.repository.RWDataESRepository;
 import es.redmic.models.es.common.dto.BaseDTO;
 import es.redmic.models.es.common.model.BaseES;
 import es.redmic.models.es.common.query.dto.DataQueryDTO;
 import es.redmic.models.es.common.query.dto.TextQueryDTO;
 import es.redmic.models.es.data.common.model.DataSearchWrapper;
 
-public class SettingsRepository<TModel extends BaseES<?>, TDTO extends BaseDTO<?>> extends RWDataESRepository<TModel> {
+public class SettingsRepository<TModel extends BaseES<?>, TDTO extends BaseDTO<?>> extends SettingsBaseRepository<TModel> {
 
-	public SettingsRepository(String[] index, String[] type) {
+	public SettingsRepository(String[] index, String type) {
 		super(index, type);
 	}
 
