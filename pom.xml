@@ -13,13 +13,13 @@
 	<groupId>es.redmic.lib</groupId>
 	<artifactId>elasticsearch</artifactId>
 	<packaging>jar</packaging>
-	<version>0.8.0-feature-refactoring</version>
+	<version>0.9.0</version>
 	<name>ElasticSearch</name>
 	<description>ElasticSearch library </description>
 
 	<properties>
 		<!-- REDMIC -->
-		<redmic.models.version>0.12.0-feature-refactoring</redmic.models.version>
+		<redmic.models.version>0.13.0</redmic.models.version>
 		<redmic.exceptions.version>0.10.0</redmic.exceptions.version>
 		<redmic.utils.version>0.10.0-feature-changeJtsVersion</redmic.utils.version>
 
