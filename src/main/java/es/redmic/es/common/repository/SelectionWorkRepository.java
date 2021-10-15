@@ -9,9 +9,9 @@ package es.redmic.es.common.repository;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,20 +31,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import es.redmic.es.common.utils.ElasticPersistenceUtils;
-import es.redmic.es.data.common.repository.RWDataESRepository;
 import es.redmic.models.es.common.dto.SelectionWorkDTO;
 import es.redmic.models.es.common.model.Selection;
 import es.redmic.models.es.data.common.model.DataHitWrapper;
 import es.redmic.models.es.data.common.model.DataSearchWrapper;
 
 @Repository
-public class SelectionWorkRepository extends RWDataESRepository<Selection> {
+public class SelectionWorkRepository extends SettingsBaseRepository<Selection> {
 
 	@Autowired
 	ElasticPersistenceUtils<Selection> elasticPersistenceUtils;
 
-	public static String[] INDEX = { "user" };
-	public static String[] TYPE = { "selectionWork" };
+	public static String[] INDEX = { "selectionwork" };
+	public static String TYPE = "_doc";
 
 	public SelectionWorkRepository() {
 		super(INDEX, TYPE);
@@ -69,10 +68,10 @@ public class SelectionWorkRepository extends RWDataESRepository<Selection> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public SelectionWorkDTO updateSelection(Selection model, String script) {
+	public SelectionWorkDTO updateSelection(Selection model, String script, Boolean inline) {
 
 		List<UpdateResponse> updateResponse = elasticPersistenceUtils.updateByBulk(elasticPersistenceUtils
-				.getUpdateScript(INDEX, TYPE, model.getId(), objectMapper.convertValue(model, Map.class), script));
+				.getUpdateScript(INDEX, TYPE, model.getId(), objectMapper.convertValue(model, Map.class), script, inline));
 
 		return objectMapper.convertValue(updateResponse.get(0).getGetResult().getSource(), SelectionWorkDTO.class);
 

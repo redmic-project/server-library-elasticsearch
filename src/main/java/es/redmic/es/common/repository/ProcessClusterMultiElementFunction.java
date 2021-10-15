@@ -9,9 +9,9 @@ package es.redmic.es.common.repository;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,10 +24,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.elasticsearch.search.SearchHit;
+import org.locationtech.jts.geom.Point;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vividsolutions.jts.geom.Point;
 
 import es.redmic.models.es.geojson.common.model.GeoHitWrapper;
 import es.redmic.models.es.geojson.common.model.GeoPointData;
@@ -61,7 +61,7 @@ public class ProcessClusterMultiElementFunction
 	public void process(SearchHit hit) {
 		proccesFeature(mapper(hit));
 	}
-	
+
 	private void proccesFeature(GeoPointData feature) {
 		String uuid = getElementUuid(feature);
 		if (!uuid.equals(elementUuid)) {
@@ -86,22 +86,22 @@ public class ProcessClusterMultiElementFunction
 	}
 
 	private GeoPointData mapper(SearchHit hit) {
-		GeoPointData data = objectMapper.convertValue(hit.getSource(), GeoPointData.class);
+		GeoPointData data = objectMapper.convertValue(hit.getSourceAsMap(), GeoPointData.class);
 		GeoHitWrapper<GeoDataProperties, Point> item = new GeoHitWrapper<GeoDataProperties, Point>();
 		item.set_source(data);
 		item.set_id(hit.getId());
 		item.set_version(hit.getVersion());
-		
+
 		return (GeoPointData) item.get_source();
 	}
 
 	public boolean checkPointBelongsToCluster(Point cluster, Point point, int zoomLevel) {
 
-		Double distanceInMeters = GeometryUtils.getDistanceInMeters(cluster.getCoordinate(), 
+		Double distanceInMeters = GeometryUtils.getDistanceInMeters(cluster.getCoordinate(),
 									point.getCoordinate(), crs);
 
 		Double meterByPixel = GeometryUtils.getMeterByPixel(zoomLevel, point.getCoordinate().y);
-		
+
 		Double pixels = distanceInMeters / meterByPixel;
 
 		return !(pixels > MIN_PIXELS_TO_CLUSTER);
@@ -111,7 +111,7 @@ public class ProcessClusterMultiElementFunction
 	public List<?> getResults() {
 		return clustersByElements;
 	}
-	
+
 	private String getElementUuid(final GeoPointData feature) {
 
 		String uuid = null;

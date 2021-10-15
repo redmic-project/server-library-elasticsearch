@@ -4,14 +4,14 @@ package es.redmic.test.unit.geodata.es2dto;
  * #%L
  * ElasticSearch
  * %%
- * Copyright (C) 2019 REDMIC Project / Server
+ * Copyright (C) 2019 - 2021 REDMIC Project / Server
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,20 +20,20 @@ package es.redmic.test.unit.geodata.es2dto;
  * #L%
  */
 
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.io.IOException;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.locationtech.jts.geom.Geometry;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.vividsolutions.jts.geom.Geometry;
 
 import es.redmic.es.geodata.area.mapper.AreaESMapper;
 import es.redmic.es.geodata.area.mapper.AreaPropertiesESMapper;
@@ -56,7 +56,6 @@ import es.redmic.es.geodata.isolines.mapper.IsolinesPropertiesESMapper;
 import es.redmic.es.geodata.tracking.animal.mapper.AnimalTrackingESMapper;
 import es.redmic.es.geodata.tracking.animal.mapper.AnimalTrackingPropertiesESMapper;
 import es.redmic.es.maintenance.area.mapper.AreaClassificationESMapper;
-import es.redmic.es.series.common.mapper.SeriesItemMapper;
 import es.redmic.models.es.geojson.common.model.GeoHitWrapper;
 import es.redmic.models.es.geojson.properties.model.GeoDataProperties;
 import es.redmic.test.utils.ConfigMapper;
@@ -77,27 +76,28 @@ public class SearchWrapperMapperTest extends GeoFeatureDataTestUtil {
 
 		// @formatter:off
 		factory.addConverter(new CustomIdConverter());
+
 		factory.addMapper(new FeatureCollectionMapper());
 		factory.addMapper(new FeatureMapper());
 		factory.addMapper(new AnimalTrackingPropertiesESMapper());
 		factory.addMapper(new AnimalTrackingESMapper());
+
 		factory.addMapper(new CitationPropertiesESMapper());
 		factory.addMapper(new CitationESMapper());
+
 		factory.addMapper(new SiteESMapper());
 		factory.addMapper(new DataDefinitionESMapper());
 		factory.addMapper(new MeasurementESMapper());
 		factory.addMapper(new FixedSurveySeriesPropertiesESMapper());
-		
+
 		factory.addConverter(new InfrastructureTypeClassificationESConverter());
 		factory.addMapper(new InfrastructurePropertiesESMapper());
 		factory.addMapper(new InfrastructureESMapper());
-	
-		factory.addMapper(new SeriesItemMapper());
-		
+
 		factory.addConverter(new LineTypeClassificationESConverter());
 		factory.addMapper(new IsolinesPropertiesESMapper());
 		factory.addMapper(new IsolinesESMapper());
-		
+
 		factory.addMapper(new AreaClassificationESMapper());
 		factory.addMapper(new AreaESMapper());
 		// @formatter:on

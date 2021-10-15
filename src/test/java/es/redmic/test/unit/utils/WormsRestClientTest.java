@@ -9,9 +9,9 @@ package es.redmic.test.unit.utils;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -39,7 +39,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -163,7 +163,7 @@ public class WormsRestClientTest extends JsonToBeanTestUtil {
 		wTaxon.setAphia(1066);
 		wTaxon.setScientificName("Crustacea");
 
-		Mockito.when(taxonESService.findByAphia(Matchers.anyInt())).thenReturn(wTaxon);
+		Mockito.when(taxonESService.findByAphia(ArgumentMatchers.anyInt())).thenReturn(wTaxon);
 
 		WormsClassificationDTO classification = (WormsClassificationDTO) getBean("/worms/classification.json",
 				WormsClassificationDTO.class);
@@ -200,7 +200,7 @@ public class WormsRestClientTest extends JsonToBeanTestUtil {
 	@Test(expected = ESInsertException.class)
 	public void wormsToRedmic_ThrowException_WhenTaxonWithAphiaIsInRedmic() throws Exception {
 
-		Mockito.when(taxonESService.findByAphia(Matchers.anyInt())).thenReturn(new TaxonDTO());
+		Mockito.when(taxonESService.findByAphia(ArgumentMatchers.anyInt())).thenReturn(new TaxonDTO());
 
 		Whitebox.invokeMethod(service, "wormsToRedmic", 1);
 	}
@@ -208,10 +208,11 @@ public class WormsRestClientTest extends JsonToBeanTestUtil {
 	@Test(expected = ESInsertException.class)
 	public void wormsToRedmic_ThrowException_WhenTaxonIsInRedmic() throws Exception {
 
-		Mockito.when(taxonESService.findByAphia(Matchers.anyInt())).thenReturn(null);
+		Mockito.when(taxonESService.findByAphia(ArgumentMatchers.anyInt())).thenReturn(null);
 
-		Mockito.when(taxonESService.findByScientificNameRankStatusAndParent(Matchers.anyString(), Matchers.anyString(),
-				Matchers.anyString(), Matchers.anyInt())).thenReturn(new TaxonDTO());
+		Mockito.when(taxonESService.findByScientificNameRankStatusAndParent(ArgumentMatchers.anyString(),
+			ArgumentMatchers.anyString(), ArgumentMatchers.anyString(), ArgumentMatchers.anyInt()))
+				.thenReturn(new TaxonDTO());
 
 		Whitebox.invokeMethod(service, "wormsToRedmic", 622230);
 	}
@@ -219,10 +220,10 @@ public class WormsRestClientTest extends JsonToBeanTestUtil {
 	@Test
 	public void wormsToRedmic_NoSaveParent_WhenTaxonIsKingdom() throws Exception {
 
-		Mockito.when(taxonESService.findByAphia(Matchers.anyInt())).thenReturn(null);
+		Mockito.when(taxonESService.findByAphia(ArgumentMatchers.anyInt())).thenReturn(null);
 
-		Mockito.when(taxonESService.findByScientificNameRankStatusAndParent(Matchers.anyString(), Matchers.anyString(),
-				Matchers.anyString(), Matchers.anyInt())).thenReturn(null);
+		Mockito.when(taxonESService.findByScientificNameRankStatusAndParent(ArgumentMatchers.anyString(),
+			ArgumentMatchers.anyString(), ArgumentMatchers.anyString(), ArgumentMatchers.anyInt())).thenReturn(null);
 
 		TaxonDTO taxon = Whitebox.invokeMethod(service, "wormsToRedmic", 2);
 
@@ -234,10 +235,10 @@ public class WormsRestClientTest extends JsonToBeanTestUtil {
 	@Test
 	public void wormsToRedmic_ReturnTaxonDTO_WhenRankOriginalTaxonIsInRedmic() throws Exception {
 
-		Mockito.when(taxonESService.findByAphia(Matchers.anyInt())).thenReturn(null);
+		Mockito.when(taxonESService.findByAphia(ArgumentMatchers.anyInt())).thenReturn(null);
 
-		Mockito.when(taxonESService.findByScientificNameRankStatusAndParent(Matchers.anyString(), Matchers.anyString(),
-				Matchers.anyString(), Matchers.anyInt())).thenReturn(null);
+		Mockito.when(taxonESService.findByScientificNameRankStatusAndParent(ArgumentMatchers.anyString(),
+			ArgumentMatchers.anyString(), ArgumentMatchers.anyString(), ArgumentMatchers.anyInt())).thenReturn(null);
 
 		TaxonDTO taxon = Whitebox.invokeMethod(service, "wormsToRedmic", 148687);
 
@@ -254,8 +255,8 @@ public class WormsRestClientTest extends JsonToBeanTestUtil {
 		Mockito.when(taxonESService.findByAphia(aphia)).thenReturn(null);
 		Mockito.when(taxonESService.findByAphia(1071)).thenReturn(new TaxonDTO());
 
-		Mockito.when(taxonESService.findByScientificNameRankStatusAndParent(Matchers.anyString(), Matchers.anyString(),
-				Matchers.anyString(), Matchers.anyInt())).thenReturn(null);
+		Mockito.when(taxonESService.findByScientificNameRankStatusAndParent(ArgumentMatchers.anyString(),
+			ArgumentMatchers.anyString(), ArgumentMatchers.anyString(), ArgumentMatchers.anyInt())).thenReturn(null);
 
 		Whitebox.invokeMethod(service, "saveTaxonFromWorms", aphia);
 
@@ -272,8 +273,8 @@ public class WormsRestClientTest extends JsonToBeanTestUtil {
 		Mockito.when(taxonESService.findByAphia(aphia)).thenReturn(null);
 		Mockito.when(taxonESService.findByAphia(1071)).thenReturn(null);
 
-		Mockito.when(taxonESService.findByScientificNameRankStatusAndParent(Matchers.anyString(), Matchers.anyString(),
-				Matchers.anyString(), Matchers.anyInt())).thenReturn(null);
+		Mockito.when(taxonESService.findByScientificNameRankStatusAndParent(ArgumentMatchers.anyString(),
+			ArgumentMatchers.anyString(), ArgumentMatchers.anyString(), ArgumentMatchers.anyInt())).thenReturn(null);
 
 		Whitebox.invokeMethod(service, "saveTaxonFromWorms", aphia);
 

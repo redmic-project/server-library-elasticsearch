@@ -9,9 +9,9 @@ package es.redmic.test.unit.data.administrative;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,7 +31,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -50,13 +50,13 @@ import ma.glasnost.orika.metadata.TypeFactory;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OrganisationMapperTest extends MapperTestUtil {
-	
+
 	@Mock
 	OrganisationTypeESService organisationTypeESService;
 
 	@Mock
 	CountryESService countryESService;
-	
+
 	@InjectMocks
 	OrganisationESMapper mapper;
 
@@ -64,23 +64,23 @@ public class OrganisationMapperTest extends MapperTestUtil {
 			dtoInPath = "/data/administrative/organisation/dto/organisation.json",
 			organisationTypeModel = "/data/maintenance/model/domain.json",
 			countryModel = "/data/maintenance/country/model/country.json";
-	
+
 	@Before
 	public void setupTest() throws IOException {
-		
+
 		factory.addObjectFactory(new ModelESFactory(), TypeFactory.<BaseES<?>>valueOf(BaseES.class));
 		factory.addMapper(mapper);
-		
-		DomainES organisationType = (DomainES) getBean(organisationTypeModel, DomainES.class);	
+
+		DomainES organisationType = (DomainES) getBean(organisationTypeModel, DomainES.class);
 		when(organisationTypeESService.findById(anyString())).thenReturn(organisationType);
-		
-		Country country = (Country) getBean(countryModel, Country.class);	
+
+		Country country = (Country) getBean(countryModel, Country.class);
 		when(countryESService.findById(anyString())).thenReturn(country);
 	}
-	
+
 	@Test
 	public void mapperDtoToModel() throws JsonParseException, JsonMappingException, IOException, JSONException {
-		
+
 		mapperDtoToModel(dtoInPath, modelOutPath, OrganisationDTO.class, Organisation.class);
 	}
 }

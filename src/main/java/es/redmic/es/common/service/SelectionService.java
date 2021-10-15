@@ -9,9 +9,9 @@ package es.redmic.es.common.service;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,8 +25,6 @@ import java.util.UUID;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import es.redmic.es.common.repository.SelectionRepository;
 import es.redmic.es.common.repository.SelectionWorkRepository;
@@ -42,15 +40,12 @@ public class SelectionService extends SettingsServices<Selection, SelectionDTO> 
 	@Autowired
 	SelectionWorkRepository selectionWorkRepository;
 
-	SelectionRepository repository;
-
-	@Autowired
-	protected ObjectMapper objectMapper;
+	SelectionRepository _repository;
 
 	@Autowired
 	public SelectionService(SelectionRepository repository) {
 		super(repository);
-		this.repository = repository;
+		this._repository = repository;
 	}
 
 	@Override
@@ -74,10 +69,10 @@ public class SelectionService extends SettingsServices<Selection, SelectionDTO> 
 		model.setDate(new DateTime().toDateTimeISO());
 
 		if (model.getId() != null) {
-			return repository.update(model);
+			return _repository.update(model);
 		} else {
 			model.setId(UUID.randomUUID().toString());
-			return repository.save(model);
+			return _repository.save(model);
 		}
 	}
 

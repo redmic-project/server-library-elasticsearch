@@ -9,9 +9,9 @@ package es.redmic.es.data.common.service;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -94,7 +94,7 @@ public abstract class RDataESService<TModel extends BaseES<?>, TDTO extends Base
 
 	/**
 	 * Función para obtener sugerencias.
-	 * 
+	 *
 	 * @param queryDTO
 	 *            Query que hay que aplicar filtrar las sugerencias. Además que
 	 *            los campos necesarios para obtenerlas (searchFields: campos
@@ -111,13 +111,13 @@ public abstract class RDataESService<TModel extends BaseES<?>, TDTO extends Base
 
 	/**
 	 * Función para obtener sugerencias.
-	 * 
+	 *
 	 * @param queryDTO
 	 *            Query que hay que aplicar filtrar las sugerencias. Además que
 	 *            los campos necesarios para obtenerlas (searchFields: campos
 	 *            por los que buscar, text: string introducido porel usuario,
 	 *            size: número de elementos que se va a devolver.
-	 * 
+	 *
 	 * @param serviceQuery
 	 *            Query definida en el servicio
 	 * @return lista de sugerencias encontradas.
@@ -166,6 +166,11 @@ public abstract class RDataESService<TModel extends BaseES<?>, TDTO extends Base
 	public SimpleQueryDTO createSimpleQueryDTOFromTextQueryParams(String[] fields, String text, Integer from,
 			Integer size) {
 		return repository.createSimpleQueryDTOFromTextQueryParams(fields, text, from, size);
+	}
+
+	public SimpleQueryDTO createSimpleQueryDTOFromTextQueryParams(String[] fields, String text, Integer from,
+			Integer size, String[] returnFields) {
+		return repository.createSimpleQueryDTOFromTextQueryParams(fields, text, from, size, returnFields);
 	}
 
 	public SimpleQueryDTO createSimpleQueryDTOFromSuggestQueryParams(String[] fields, String text, Integer size) {

@@ -9,9 +9,9 @@ package es.redmic.es.common.queryFactory;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,14 +29,13 @@ import es.redmic.es.common.queryFactory.data.ProjectQueryUtils;
 import es.redmic.es.common.queryFactory.geodata.AnimalTrackingQueryUtils;
 import es.redmic.es.common.queryFactory.geodata.AreaQueryUtils;
 import es.redmic.es.common.queryFactory.geodata.CitationQueryUtils;
-import es.redmic.es.common.queryFactory.geodata.DataQueryUtils;
+import es.redmic.es.common.queryFactory.geodata.GeoDataQueryUtils;
 import es.redmic.es.common.queryFactory.geodata.GeoFixedObjectCollectingSeriesQueryUtils;
 import es.redmic.es.common.queryFactory.geodata.GeoFixedTimeSeriesQueryUtils;
 import es.redmic.es.common.queryFactory.geodata.InfrastructureQueryUtils;
 import es.redmic.es.common.queryFactory.geodata.IsolinesQueryUtils;
 import es.redmic.es.common.queryFactory.geodata.PlatformTrackingQueryUtils;
 import es.redmic.es.common.queryFactory.geodata.TrackingQueryUtils;
-import es.redmic.es.common.queryFactory.series.SeriesQueryUtils;
 import es.redmic.models.es.common.DataPrefixType;
 
 public enum QueryType {
@@ -52,7 +51,6 @@ public enum QueryType {
 	INFRASTRUCTURE(DataPrefixType.INFRASTRUCTURE),
 	ISOLINES(DataPrefixType.ISOLINES),
 	AREA(DataPrefixType.AREA),
-	TOPONYM(DataPrefixType.TOPONYM),
 	TIMESERIES(DataPrefixType.TIMESERIES),
 	COLLECTINGSERIES(DataPrefixType.COLLECTINGSERIES),
 	ACTIVITY(DataPrefixType.ACTIVITY),
@@ -80,13 +78,10 @@ public enum QueryType {
 		utils.put(QueryType.INFRASTRUCTURE, InfrastructureQueryUtils.class);
 		utils.put(QueryType.ISOLINES, IsolinesQueryUtils.class);
 		utils.put(QueryType.AREA, AreaQueryUtils.class);
-		utils.put(QueryType.TOPONYM, DataQueryUtils.class);
-		utils.put(QueryType.TIMESERIES, SeriesQueryUtils.class);
-		utils.put(QueryType.COLLECTINGSERIES, SeriesQueryUtils.class);
 		utils.put(QueryType.ACTIVITY, ActivityQueryUtils.class);
 		utils.put(QueryType.PROJECT, ProjectQueryUtils.class);
 		utils.put(QueryType.PROGRAM, ProgramQueryUtils.class);
-		utils.put(QueryType.LAYERS, DataQueryUtils.class);
+		utils.put(QueryType.LAYERS, GeoDataQueryUtils.class);
 		utils.put(QueryType.OTHER, BaseQueryUtils.class);
 	}
 

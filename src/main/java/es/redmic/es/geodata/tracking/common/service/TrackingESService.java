@@ -9,9 +9,9 @@ package es.redmic.es.geodata.tracking.common.service;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,9 +19,6 @@ package es.redmic.es.geodata.tracking.common.service;
  * limitations under the License.
  * #L%
  */
-
-import java.util.HashMap;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,7 +32,7 @@ import es.redmic.models.es.common.dto.AggregationsDTO;
 import es.redmic.models.es.common.dto.JSONCollectionDTO;
 import es.redmic.models.es.common.dto.UuidDTO;
 import es.redmic.models.es.common.query.dto.AggsPropertiesDTO;
-import es.redmic.models.es.common.query.dto.DataQueryDTO;
+import es.redmic.models.es.common.query.dto.GeoDataQueryDTO;
 import es.redmic.models.es.geojson.common.dto.GeoJSONFeatureCollectionDTO;
 import es.redmic.models.es.geojson.common.model.GeoPointData;
 import es.redmic.models.es.geojson.common.model.GeoSearchWrapper;
@@ -82,7 +79,7 @@ public class TrackingESService extends RGeoDataESService<ElementTrackingDTO, Geo
 	 * dada.
 	 */
 
-	public JSONCollectionDTO getElementsByActivity(String activityId, DataQueryDTO query) {
+	public JSONCollectionDTO getElementsByActivity(String activityId, GeoDataQueryDTO query) {
 
 		query.setSize(0);
 		// añade identificador para que se cree la agregación correspondinte en
@@ -93,7 +90,7 @@ public class TrackingESService extends RGeoDataESService<ElementTrackingDTO, Geo
 
 		// Obtenemos List de data en las agregaciones
 		ElementListDTO dtoOut = orikaMapper.getMapperFacade().convert(response.getAggregations(), ElementListDTO.class,
-				null);
+				null, null);
 
 		JSONCollectionDTO collection = new JSONCollectionDTO();
 		collection.setData(dtoOut);
@@ -101,7 +98,7 @@ public class TrackingESService extends RGeoDataESService<ElementTrackingDTO, Geo
 		return collection;
 	}
 
-	public GeoJSONFeatureCollectionDTO getTrackingPointsInLineStringCluster(String activityId, DataQueryDTO queryDTO,
+	public GeoJSONFeatureCollectionDTO getTrackingPointsInLineStringCluster(String activityId, GeoDataQueryDTO queryDTO,
 			String uuid) {
 
 		GeoJSONFeatureCollectionDTO clusterCollection = repository.getTrackingPointsInLineStringCluster(activityId,
@@ -110,7 +107,7 @@ public class TrackingESService extends RGeoDataESService<ElementTrackingDTO, Geo
 		return clusterCollection;
 	}
 
-	public GeoJSONFeatureCollectionDTO getTrackingPointsInLineStringCluster(String activityId, DataQueryDTO queryDTO) {
+	public GeoJSONFeatureCollectionDTO getTrackingPointsInLineStringCluster(String activityId, GeoDataQueryDTO queryDTO) {
 
 		GeoJSONFeatureCollectionDTO clusterCollection = repository.getTrackingPointsInLineStringCluster(activityId,
 				queryDTO);
@@ -121,7 +118,7 @@ public class TrackingESService extends RGeoDataESService<ElementTrackingDTO, Geo
 	/*
 	 * Devuelve todos los puntos de un track para un elemento dado
 	 */
-	public GeoJSONFeatureCollectionDTO find(String activityId, String uuid, DataQueryDTO queryDTO) {
+	public GeoJSONFeatureCollectionDTO find(String activityId, String uuid, GeoDataQueryDTO queryDTO) {
 
 		GeoSearchWrapper<?, ?> result = repository.find(activityId, uuid, queryDTO);
 
@@ -139,9 +136,9 @@ public class TrackingESService extends RGeoDataESService<ElementTrackingDTO, Geo
 	@Override
 	protected MappingContext getMappingContext() {
 
-		Map<Object, Object> globalProperties = new HashMap<Object, Object>();
-		globalProperties.put("targetTypeDto", ElementTrackingDTO.class);
+		MappingContext context = orikaMapper.getMappingContext();
+		context.setProperty("targetTypeDto", ElementTrackingDTO.class);
 
-		return new MappingContext(globalProperties);
+		return context;
 	}
 }

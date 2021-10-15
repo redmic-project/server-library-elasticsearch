@@ -1,0 +1,110 @@
+{
+	"size": 10000,
+	"query": {
+		"bool": {
+			"filter": [{
+				"bool": {
+					"must": [{
+						"nested": {
+							"query": {
+								"bool": {
+									"should": [{
+										"terms": {
+											"properties.taxons.path": ["root.1.13.148.19923.455.1570.4833.14618"],
+											"boost": 1.0
+										}
+									}, {
+										"terms": {
+											"properties.taxons.equivalent": ["root.1.13.148.19923.455.1570.4833.14618"],
+											"boost": 1.0
+										}
+									}, {
+										"nested": {
+											"query": {
+												"bool": {
+													"must": [{
+														"terms": {
+															"properties.taxons.registers.misidentification": ["root.1.13.148.19923.455.1570.4833.14618"],
+															"boost": 1.0
+														}
+													}],
+													"adjust_pure_negative": true,
+													"boost": 1.0
+												}
+											},
+											"path": "properties.taxons.registers",
+											"ignore_unmapped": false,
+											"score_mode": "avg",
+											"boost": 1.0
+										}
+									}],
+									"adjust_pure_negative": true,
+									"boost": 1.0
+								}
+							},
+							"path": "properties.taxons",
+							"ignore_unmapped": false,
+							"score_mode": "avg",
+							"boost": 1.0
+						}
+					}, {
+						"nested": {
+							"query": {
+								"bool": {
+									"must": [{
+										"terms": {
+											"properties.taxons.registers.confidence": [4],
+											"boost": 1.0
+										}
+									}],
+									"adjust_pure_negative": true,
+									"boost": 1.0
+								}
+							},
+							"path": "properties.taxons.registers",
+							"ignore_unmapped": false,
+							"score_mode": "avg",
+							"boost": 1.0
+						}
+					}, {
+						"geo_shape": {
+							"geometry": {
+								"shape": {
+									"type": "envelope",
+									"coordinates": [
+										[-18.63104248046875, 30.0421142578125],
+										[-12.80181884765625, 27.806396484375]
+									]
+								},
+								"relation": "intersects"
+							},
+							"ignore_unmapped": false,
+							"boost": 1.0
+						}
+					}],
+					"adjust_pure_negative": true,
+					"boost": 1.0
+				}
+			}],
+			"adjust_pure_negative": true,
+			"boost": 1.0
+		}
+	},
+	"_source": {
+		"includes": ["*"],
+		"excludes": []
+	},
+	"script_fields": {
+		"taxons": {
+			"script": {
+				"source": "boolean filterByConfidence(def confidence, def params) {\n\tparams.confidences.contains(confidence);\n}\nboolean filterByPathTaxon(def pathTaxon, def params) {\n\tparams.taxons.contains(pathTaxon);\n}\n\nboolean filterByMisidentification(def taxon, def params) {\n\n\tfor (reg in taxon.registers) {\n\t\tif (params.taxons.contains(reg.misidentification))\n\t\t\treturn true;\n\t}\n\treturn false;\n}\n\ndef getRegisters(def taxon, def params) {\n\treturn [\"registers\": taxon.registers.findAll(reg -> filterByConfidence(reg.confidence, params))];\n}\n\nvoid checkRegister(def result, def taxon, def params) {\n\tif (filterByPathTaxon(taxon.path, params) || filterByPathTaxon(taxon.equivalent, params) || filterByMisidentification(taxon, params)) {\n\t\t\tdef taxonRegisters = getRegisters(taxon, params);\n\n\t\t\tif (taxonRegisters.registers.size() > 0) {\n\t\t\t\tresult['registerCount'] += taxon.registers.size();\n\t\t\t\tresult['taxonCount'] ++;\n\t\t\t}\n\t}\n}\n\nMap result = new HashMap();\n\nresult['registerCount'] = 0;\nresult['taxonCount'] = 0;\n\nfor (tax in params._source.properties.taxons) {\n\tcheckRegister(result, tax, params);\n}\n\nreturn result;\n",
+				"lang": "painless",
+				"params": {
+					"confidences": [4],
+					"taxons": ["root.1.13.148.19923.455.1570.4833.14618"]
+				}
+			},
+			"ignore_failure": false
+		}
+	}
+}

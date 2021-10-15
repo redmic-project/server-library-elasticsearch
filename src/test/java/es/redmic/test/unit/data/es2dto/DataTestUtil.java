@@ -52,8 +52,6 @@ import es.redmic.models.es.administrative.taxonomy.dto.TaxonDTO;
 import es.redmic.models.es.administrative.taxonomy.model.Animal;
 import es.redmic.models.es.administrative.taxonomy.model.Species;
 import es.redmic.models.es.administrative.taxonomy.model.Taxon;
-import es.redmic.models.es.atlas.dto.LayerDTO;
-import es.redmic.models.es.atlas.model.LayerModel;
 import es.redmic.models.es.common.dto.JSONCollectionDTO;
 import es.redmic.models.es.common.model.DomainES;
 import es.redmic.models.es.data.common.model.DataSearchWrapper;
@@ -203,12 +201,6 @@ public abstract class DataTestUtil extends JsonToBeanTestUtil {
 				.setDataIn("/data/maintenance/classification/model/searchWrapperClassificationTypeWithColourModel.json")
 				.setDataOut("/data/maintenance/classification/dto/searchWrapperClassificationTypeWithColourDTO.json")
 				.setInClass(ThematicType.class).setOutClass(ThematicTypeDTO.class));
-
-		//
-
-		config.add(new ConfigMapper().setDataIn("/data/atlas/layer/model/searchWrapperLayerModel.json")
-				.setDataOut("/data/atlas/layer/dto/searchWrapperLayerDTO.json").setInClass(LayerModel.class)
-				.setOutClass(LayerDTO.class));
 
 		return config;
 	}

@@ -9,9 +9,9 @@ package es.redmic.es.administrative.mapper;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,6 +29,7 @@ import es.redmic.es.maintenance.domain.administrative.service.ActivityRankESServ
 import es.redmic.es.maintenance.domain.administrative.service.ProjectGroupESService;
 import es.redmic.models.es.administrative.dto.ActivityBaseDTO;
 import es.redmic.models.es.administrative.dto.ProjectDTO;
+import es.redmic.models.es.administrative.model.ActivityCompact;
 import es.redmic.models.es.administrative.model.Program;
 import es.redmic.models.es.administrative.model.Project;
 import es.redmic.models.es.common.dto.DomainDTO;
@@ -54,7 +55,7 @@ public class ProjectESMapper extends ActivityBaseESMapper<Project, ProjectDTO> {
 	public void mapAtoB(Project a, ProjectDTO b, MappingContext context) {
 
 		b.setProjectGroup(mapperFacade.map(a.getProjectGroup(), ProjectGroupDTO.class));
-		b.setParent(mapperFacade.map(getParent(a), ActivityBaseDTO.class));
+		b.setParent(mapperFacade.map(getParent(a.getPath()), ActivityBaseDTO.class));
 		super.mapAtoB(a, b, context);
 	}
 
@@ -69,12 +70,13 @@ public class ProjectESMapper extends ActivityBaseESMapper<Project, ProjectDTO> {
 		a.setProjectGroup((DomainES) mapperFacade.newObject(b.getProjectGroup(), DataMapperUtils.getBaseType(),
 				DataMapperUtils.getObjectFactoryContext(projectGroupESService)));
 		a.setPath(getPath(b));
+		a.setParent(mapperFacade.map(getParent(b.getPath()), ActivityCompact.class));
 		super.mapBtoA(b, a, context);
 	}
 
-	private Program getParent(Project project) {
+	private Program getParent(String path) {
 
-		String parentId = HierarchicalUtils.getParentId(project.getPath());
+		String parentId = HierarchicalUtils.getParentId(path);
 
 		if (parentId == null)
 			return null;

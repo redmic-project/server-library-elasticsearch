@@ -9,9 +9,9 @@ package es.redmic.es.common.service;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,6 +33,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import es.redmic.es.common.repository.SelectionWorkRepository;
 import es.redmic.es.common.utils.ElasticPersistenceUtils;
+import es.redmic.es.common.utils.ElasticSearchUtils;
 import es.redmic.es.data.common.service.RDataESService;
 import es.redmic.exception.elasticsearch.ESSelectionWorkException;
 import es.redmic.models.es.common.dto.SelectionWorkDTO;
@@ -46,17 +47,17 @@ public class SelectionWorkService implements ISelectionWorkService<SelectionWork
 	ElasticPersistenceUtils<Selection> elasticPersistenceUtils;
 
 	@Autowired
-	SelectionWorkRepository repository;
+	protected SelectionWorkRepository repository;
 
-	private String selectScript = "update-selections-ids";
+	protected String selectScriptPath = "/scripts/select.txt";
 
-	private String deselectScript = "rm-selections-ids";
+	protected String deselectScriptPath = "/scripts/deselect.txt";
 
-	private String selectAllScript = "all-selections-ids";
+	protected String selectAllScriptPath = "/scripts/select-all.txt";
 
-	private String reverseScript = "reverse-selections-ids";
+	protected String reverseScriptPath = "/scripts/reverse-selection.txt";
 
-	private String clearScript = "clear-selections-ids";
+	protected String clearScriptPath = "/scripts/clear-selection.txt";
 
 	public enum Actions {
 		select, deselect, selectAll, reverse
@@ -79,25 +80,25 @@ public class SelectionWorkService implements ISelectionWorkService<SelectionWork
 		if (model.getId() != null) {
 
 			List<String> result = null;
-			String script = clearScript;
+			String script = ElasticSearchUtils.getScriptFile(clearScriptPath);
 			if (dto.getAction().equals(Actions.select.toString())) {
 				result = model.getIds();
-				script = selectScript;
+				script = ElasticSearchUtils.getScriptFile(selectScriptPath);
 			} else if (dto.getAction().equals(Actions.deselect.toString())) {
 				result = model.getIds();
-				script = deselectScript;
+				script = ElasticSearchUtils.getScriptFile(deselectScriptPath);
 			} else if (dto.getAction().equals(Actions.selectAll.toString())) {
 				result = getAllIds(dto.getQuery(), service, dto.getIdProperty());
-				script = selectAllScript;
+				script = ElasticSearchUtils.getScriptFile(selectAllScriptPath);
 			} else if (dto.getAction().equals(Actions.reverse.toString())) {
 				result = getAllIds(dto.getQuery(), service, dto.getIdProperty());
-				script = reverseScript;
+				script = ElasticSearchUtils.getScriptFile(reverseScriptPath);
 			}
 			// else clearSelection by default (save [])
 			model.setIds(result);
 			model.setName(dto.getAction());
 
-			dto = repository.updateSelection(model, script);
+			dto = repository.updateSelection(model, script, true);
 			dto.setAction(model.getName());
 			if (dto.getAction().equals(Actions.deselect.toString()))
 				dto.setIds(model.getIds());

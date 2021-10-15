@@ -1,7 +1,6 @@
 {
 	"id": 12931,
 	"uuid": "sdsd323sdds_3ed",
-	"_parent": null,
 	"type": "Feature",
 	"geometry": {
 		"type": "MultiPolygon",
@@ -31,6 +30,7 @@
 	      ]
 	},
 	"properties": {
+		"activityId": "3",
 		"geodataRelations": ["ar-23"],
 		"length": null,
 		"area": null,

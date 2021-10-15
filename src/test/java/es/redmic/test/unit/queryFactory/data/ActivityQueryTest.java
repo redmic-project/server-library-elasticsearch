@@ -9,9 +9,9 @@ package es.redmic.test.unit.queryFactory.data;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,7 +28,7 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.json.JSONException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import es.redmic.es.common.queryFactory.data.ActivityQueryUtils;
@@ -82,50 +82,11 @@ public class ActivityQueryTest extends BaseQueryTest {
 	}
 
 	@Test
-	public void getQuery_ReturnFlagsQuery_IfQueryDTOHasFlagsQueryDTO() throws IOException, JSONException {
-
-		createFlagsQuery();
-
-		BoolQueryBuilder query = ActivityQueryUtils.getQuery(dataQueryDTO, null, null);
-
-		String queryExpected = getExpectedQuery("/queryfactory/data/flagsQuery.json");
-
-		JSONAssert.assertEquals(queryExpected, query.toString(), false);
-	}
-
-	@Test
-	public void getQuery_ReturnValueQuery_IfQueryDTOHasValueQueryDTO() throws IOException, JSONException {
-
-		createValueQuery();
-
-		BoolQueryBuilder query = ActivityQueryUtils.getQuery(dataQueryDTO, null, null);
-
-		String queryExpected = getExpectedQuery("/queryfactory/data/valueQuery.json");
-
-		JSONAssert.assertEquals(queryExpected, query.toString(), false);
-	}
-
-	@Test
-	public void getQuery_ReturnZRangeQuery_IfQueryDTOHasZRangeQueryDTO() throws IOException, JSONException {
-
-		createZRangeQuery();
-
-		BoolQueryBuilder query = ActivityQueryUtils.getQuery(dataQueryDTO, null, null);
-
-		String queryExpected = getExpectedQuery("/queryfactory/data/zRangeQuery.json");
-
-		JSONAssert.assertEquals(queryExpected, query.toString(), false);
-	}
-
-	@Test
 	public void getQuery_ReturnComplexQuery_IfQueryDTOIsFull() throws IOException, JSONException {
 
 		createAccessibilityQuery();
 		createBboxQuery();
 		createDateLimitsQuery();
-		createFlagsQuery();
-		createValueQuery();
-		createZRangeQuery();
 
 		BoolQueryBuilder query = ActivityQueryUtils.getQuery(dataQueryDTO, null, null);
 

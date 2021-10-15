@@ -9,9 +9,9 @@ package es.redmic.es.geodata.common.service;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -57,7 +57,7 @@ public abstract class RWGeoDataESService<TDTO extends MetaFeatureDTO<?, ?>, TMod
 	public TModel save(TModel modelToIndex) {
 
 		TModel modelResult = repository.save(modelToIndex);
-		modelResult.set_parentId(modelToIndex.get_parentId());
+		modelResult.getProperties().setActivityId(modelToIndex.getProperties().getActivityId());
 		transactSave(modelToIndex, modelResult);
 		return modelResult;
 	}
@@ -71,7 +71,7 @@ public abstract class RWGeoDataESService<TDTO extends MetaFeatureDTO<?, ?>, TMod
 			for (TModel modelToIndex : modelToIndexList) {
 
 				if (modelToIndex.getId().equals(modelResult.getId())) {
-					modelResult.set_parentId(modelToIndex.get_parentId());
+					modelResult.getProperties().setActivityId(modelToIndex.getProperties().getActivityId());
 					transactSave(modelToIndex, modelResult);
 					break;
 				}
@@ -82,11 +82,11 @@ public abstract class RWGeoDataESService<TDTO extends MetaFeatureDTO<?, ?>, TMod
 
 	public TModel update(TModel modelToIndex) {
 
-		TModel origin = findById(modelToIndex.getUuid(), modelToIndex.get_parentId());
+		TModel origin = findById(modelToIndex.getUuid(), modelToIndex.getProperties().getActivityId());
 		if (origin != null) {
 			TModel target = repository.update(modelToIndex);
-			target.set_parentId(modelToIndex.get_parentId());
-			origin.set_parentId(modelToIndex.get_parentId());
+			target.getProperties().setActivityId(modelToIndex.getProperties().getActivityId());
+			origin.getProperties().setActivityId(modelToIndex.getProperties().getActivityId());
 			transactUpdate(origin, target);
 			return target;
 		} else
@@ -105,7 +105,7 @@ public abstract class RWGeoDataESService<TDTO extends MetaFeatureDTO<?, ?>, TMod
 	/**
 	 * Función para modificar referencias vía script para propiedades anidadas.
 	 * Por defecto nestedProperty = true y nestingDepth = 1.
-	 * 
+	 *
 	 * @param reference
 	 *            Clase que encapsula el modelo a indexar antes y después de ser
 	 *            modificado.
@@ -123,7 +123,7 @@ public abstract class RWGeoDataESService<TDTO extends MetaFeatureDTO<?, ?>, TMod
 	/**
 	 * Función para modificar referencias vía script para propiedades anidadas.
 	 * Por defecto nestingDepth = 1.
-	 * 
+	 *
 	 * @param reference
 	 *            Clase que encapsula el modelo a indexar antes y después de ser
 	 *            modificado.
@@ -143,7 +143,7 @@ public abstract class RWGeoDataESService<TDTO extends MetaFeatureDTO<?, ?>, TMod
 
 	/**
 	 * Función para modificar referencias vía script para propiedades anidadas.
-	 * 
+	 *
 	 * @param reference
 	 *            Clase que encapsula el modelo a indexar antes y después de ser
 	 *            modificado.
@@ -176,7 +176,7 @@ public abstract class RWGeoDataESService<TDTO extends MetaFeatureDTO<?, ?>, TMod
 
 	/**
 	 * Función para eliminar referencias vía script para propiedades anidadas.
-	 * 
+	 *
 	 * @param id
 	 *            identificador de la referencia a ser modificada.
 	 * @param propertyPath
@@ -190,11 +190,11 @@ public abstract class RWGeoDataESService<TDTO extends MetaFeatureDTO<?, ?>, TMod
 	/*
 	 * public void deleteReferenceByScript(String id, String propertyPath,
 	 * String deleteReferencesScript, Boolean isNestedProperty) {
-	 * 
+	 *
 	 * List<ReferencesES<TModel>> updates =
 	 * repository.multipleDeleteByScript(id, propertyPath,
 	 * deleteReferencesScript, isNestedProperty);
-	 * 
+	 *
 	 * for (int i=0; i<updates.size(); i++) postUpdate(updates.get(i)); }
 	 */
 
@@ -255,9 +255,9 @@ public abstract class RWGeoDataESService<TDTO extends MetaFeatureDTO<?, ?>, TMod
 	/**
 	 * Función que transforma el dto de entrada al modelo que se va a guardar en
 	 * elastic Debe estar definida en el servicio principal
-	 * 
+	 *
 	 * Se trata de un método público para usar el mapper desde el exterior
-	 * 
+	 *
 	 * @param dtoToIndex
 	 *            Dto de entrada
 	 */
@@ -266,7 +266,7 @@ public abstract class RWGeoDataESService<TDTO extends MetaFeatureDTO<?, ?>, TMod
 	/**
 	 * Función para realizar acciones después de modificar un elemento Debe
 	 * estar definida en el servicio principal
-	 * 
+	 *
 	 * @param reference
 	 *            clase que contiene entre otras cosas, el elemento antes y
 	 *            después de ser modificado
@@ -276,7 +276,7 @@ public abstract class RWGeoDataESService<TDTO extends MetaFeatureDTO<?, ?>, TMod
 	/**
 	 * Función para realizar acciones después de añadir un elemento Debe estar
 	 * definida en el servicio principal
-	 * 
+	 *
 	 * @param object
 	 *            Item que se va a guardar
 	 */
@@ -285,7 +285,7 @@ public abstract class RWGeoDataESService<TDTO extends MetaFeatureDTO<?, ?>, TMod
 	/**
 	 * Función para realizar acciones antes de borrar un elemento Debe estar
 	 * definida en el servicio principal
-	 * 
+	 *
 	 * @param object
 	 *            Item que se va a borrar
 	 */
@@ -294,7 +294,7 @@ public abstract class RWGeoDataESService<TDTO extends MetaFeatureDTO<?, ?>, TMod
 	/**
 	 * Función para realizar acciones después de borrar un elemento Debe estar
 	 * definida en el servicio principal
-	 * 
+	 *
 	 * @param id
 	 *            Identificador del elemento borrado
 	 */

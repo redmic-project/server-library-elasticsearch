@@ -9,9 +9,9 @@ package es.redmic.es.administrative.taxonomy.repository;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -34,11 +34,16 @@ import es.redmic.models.es.data.common.model.DataSearchWrapper;
 public abstract class HierarchicalTaxonomyESRepository<TModel extends Taxon, TDTO extends TaxonWithOutParentDTO>
 		extends HierarchicalESRepository<TModel, TDTO> {
 
-	private static String[] INDEX = { "taxons" };
-	private static String[] TYPE = { "taxon" };
+	private static String[] INDEX = { "taxon" };
+	private static String TYPE = "_doc";
 
-	public HierarchicalTaxonomyESRepository() {
+	protected HierarchicalTaxonomyESRepository() {
 		super(INDEX, TYPE);
+	}
+
+	@Override
+	protected String getMappingFilePath(String index, String type) {
+		return MAPPING_BASE_PATH + "taxon/" + getIndex()[0] + MAPPING_FILE_EXTENSION;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -58,7 +63,7 @@ public abstract class HierarchicalTaxonomyESRepository<TModel extends Taxon, TDT
 						.must(QueryBuilders.termQuery("status.name_en", status))
 						.must(QueryBuilders.termQuery("path.split", parentId))));
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public DataSearchWrapper<Taxon> findByScientificNameRankAndStatus(String scientificName, String rank,
 			String status) {
@@ -90,7 +95,7 @@ public abstract class HierarchicalTaxonomyESRepository<TModel extends Taxon, TDT
 	 * conjunto de términos, nos devuelve una query de elasticsearch. Debe estar
 	 * implementado en cada repositorio para darle una funcionalidad específica
 	 * y aquí estarán las funcionalidades que comparten todos los repositorios.
-	 * 
+	 *
 	 * @param terms
 	 *            Map de términos pasados por la query.
 	 * @param query

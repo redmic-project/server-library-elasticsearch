@@ -2,19 +2,11 @@
   "bool" : {
     "must" : [
       {
-        "has_parent" : {
-          "query" : {
-            "term" : {
-              "id" : {
-                "value" : "239",
-                "boost" : 1.0
-              }
-            }
-          },
-          "parent_type" : "activity",
-          "score" : true,
-          "ignore_unmapped" : false,
-          "boost" : 1.0
+        "term" : {
+          "properties.activityId" : {
+            "value" : "239",
+            "boost" : 1.0
+          }
         }
       },
       {
@@ -29,7 +21,6 @@
               }
             }
           ],
-          "disable_coord" : false,
           "adjust_pure_negative" : true,
           "boost" : 1.0
         }
@@ -54,8 +45,7 @@
             {
               "script" : {
                 "script" : {
-                  "file" : "search-nested-by-z-range",
-                  "lang" : "groovy",
+                  "id" : "search-nested-by-z-range",
                   "params" : {
                     "zMin" : -5000.0,
                     "zMax" : 5000.0,
@@ -67,13 +57,11 @@
               }
             }
           ],
-          "disable_coord" : false,
           "adjust_pure_negative" : true,
           "boost" : 1.0
         }
       }
     ],
-    "disable_coord" : false,
     "adjust_pure_negative" : true,
     "boost" : 1.0
   }

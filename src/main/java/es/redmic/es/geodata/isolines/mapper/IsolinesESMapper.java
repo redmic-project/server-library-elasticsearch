@@ -9,9 +9,9 @@ package es.redmic.es.geodata.isolines.mapper;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -40,19 +40,19 @@ public class IsolinesESMapper extends CustomMapper<GeoMultiLineStringData, Isoli
 
 		if (a.getProperties() != null) {
 			a.getProperties().getSamplingPlace().setId(DataMapperUtils.convertIdentifier(b.getId(), DataPrefixType.ISOLINES));
-			a.set_parentId(b.getProperties().getActivityId());
-			
+			a.getProperties().setActivityId(b.getProperties().getActivityId());
+
 			// Se mapea para poder obtenerlo en el servicio, pero no se indexa en este repositorio
-			
+
 			TimeSeries series = mapperFacade.map(b.getProperties(), TimeSeries.class);
-			
+
 			series.setId(b.getId());
 			series.set_parentId(b.getUuid());
 			series.set_grandparentId(b.getProperties().getActivityId());
-			
+
 			series.setZ(b.getProperties().getZ() != null ? b.getProperties().getZ() : b.getProperties().getDataDefinition().getZ());
 			series.setDeviation(b.getProperties().getDeviation() != null ? b.getProperties().getDeviation() : b.getProperties().getDataDefinition().getZ());
-			
+
 			a.getProperties().setSeries(Arrays.asList(series));
 		}
 	}

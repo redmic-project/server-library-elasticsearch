@@ -9,9 +9,9 @@ package es.redmic.es.geodata.tracking.common.repository;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -30,10 +30,10 @@ import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 
-import es.redmic.es.common.queryFactory.geodata.DataQueryUtils;
+import es.redmic.es.common.queryFactory.geodata.GeoDataQueryUtils;
 import es.redmic.es.common.repository.ProcessClusterMultiElementFunction;
 import es.redmic.es.geodata.common.repository.GeoPresenceESRepository;
-import es.redmic.models.es.common.query.dto.DataQueryDTO;
+import es.redmic.models.es.common.query.dto.GeoDataQueryDTO;
 import es.redmic.models.es.geojson.common.dto.GeoJSONFeatureCollectionDTO;
 import es.redmic.models.es.geojson.common.model.Feature;
 import es.redmic.models.es.geojson.properties.model.GeoDataProperties;
@@ -50,11 +50,11 @@ public abstract class ClusterTrackingESRepository<TModel extends Feature<GeoData
 		super();
 	}
 
-	public GeoJSONFeatureCollectionDTO getTrackingPointsInLineStringCluster(String parentId, DataQueryDTO queryDTO) {
+	public GeoJSONFeatureCollectionDTO getTrackingPointsInLineStringCluster(String parentId, GeoDataQueryDTO queryDTO) {
 		return getTrackingPointsInLineStringCluster(parentId, queryDTO, null);
 	}
 
-	public GeoJSONFeatureCollectionDTO getTrackingPointsInLineStringCluster(String parentId, DataQueryDTO queryDTO,
+	public GeoJSONFeatureCollectionDTO getTrackingPointsInLineStringCluster(String parentId, GeoDataQueryDTO queryDTO,
 			String uuid) {
 
 		int zoomLevel = 7;
@@ -63,13 +63,13 @@ public abstract class ClusterTrackingESRepository<TModel extends Feature<GeoData
 			zoomLevel = (int) queryDTO.getTerms().get("zoomLevel");
 
 		BoolQueryBuilder queryParent = QueryBuilders.boolQuery()
-				.must(DataQueryUtils.getQueryByParent(parentId));
-			
+				.must(GeoDataQueryUtils.getQueryByParent(parentId));
+
 		if (uuid != null && !uuid.isEmpty()) {
 			queryParent.must(QueryBuilders.boolQuery().should(QueryBuilders.termsQuery(PLATFORM_PATH, uuid))
 						.should(QueryBuilders.termsQuery(ANIMAL_PATH, uuid)));
 		}
-		
+
 		BoolQueryBuilder builder = QueryBuilders.boolQuery()
 				.filter(queryParent);
 
@@ -95,7 +95,7 @@ public abstract class ClusterTrackingESRepository<TModel extends Feature<GeoData
 	 * Función que devuelve una lista de ordenaciones. Debe estar implementado
 	 * en cada repositorio para darle una funcionalidad específica. Por defecto,
 	 * ordena por id.
-	 * 
+	 *
 	 * @return lista de ordenaciones de elasticsearch
 	 */
 	protected List<SortBuilder<?>> getSort() {

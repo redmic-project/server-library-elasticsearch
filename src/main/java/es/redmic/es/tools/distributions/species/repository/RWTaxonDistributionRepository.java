@@ -9,9 +9,9 @@ package es.redmic.es.tools.distributions.species.repository;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,8 +27,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.elasticsearch.action.get.GetResponse;
-import org.elasticsearch.action.index.IndexResponse;
-import org.elasticsearch.action.support.WriteRequest.RefreshPolicy;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -54,26 +52,23 @@ public class RWTaxonDistributionRepository extends RTaxonDistributionRepository 
 	public RWTaxonDistributionRepository() {
 	}
 
-	public RWTaxonDistributionRepository(String[] INDEX, String[] TYPE) {
+	public RWTaxonDistributionRepository(String[] INDEX, String TYPE) {
 		super(INDEX, TYPE);
 	}
 
-	// TODO: Igual que RW -> si se puede refactorizar
-	@SuppressWarnings("unchecked")
-	public IndexResponse save(Distribution toIndex) {
+	public Distribution save(Distribution toIndex) {
 
 		String id = String.valueOf(toIndex.getId());
 
-		return ESProvider.getClient().prepareIndex(INDEX[0], TYPE[0], id).setRefreshPolicy(RefreshPolicy.IMMEDIATE)
-				.setSource(objectMapper.convertValue(toIndex, Map.class)).execute().actionGet();
+		return elasticPersistenceUtils.save(getIndex(toIndex), getType(), toIndex, id);
 	}
 
 	@SuppressWarnings({ "unchecked" })
 	public void addRegister(TaxonDistribution dist, Distribution distributionProperties, String script) {
 
-		List<UpdateRequest> requestBuilder = new ArrayList<UpdateRequest>();
+		List<UpdateRequest> requestBuilder = new ArrayList<>();
 
-		Map<String, Object> fields = new HashMap<String, Object>();
+		Map<String, Object> fields = new HashMap<>();
 
 		String gridId = String.valueOf(distributionProperties.getId());
 		GetResponse response = findById(gridId);
@@ -81,7 +76,7 @@ public class RWTaxonDistributionRepository extends RTaxonDistributionRepository 
 		if (response != null && response.isExists()) {
 			fields.put("item", (Map<String, Object>) objectMapper.convertValue(dist, Map.class));
 			try {
-				requestBuilder.addAll(elasticPersistenceUtils.getUpdateScript(INDEX, TYPE, gridId, fields, script));
+				requestBuilder.addAll(elasticPersistenceUtils.getUpdateScript(getIndex(), getType(), gridId, fields, script));
 			} catch (Exception e) {
 				throw new ESUpdateException(e);
 			}
@@ -92,42 +87,42 @@ public class RWTaxonDistributionRepository extends RTaxonDistributionRepository 
 			save(distributionProperties);
 		}
 
-		if (requestBuilder.size() > 0)
+		if (!requestBuilder.isEmpty())
 			elasticPersistenceUtils.updateByBulk(requestBuilder);
 	}
 
 	@SuppressWarnings("unchecked")
 	public void updateRegister(String id, TaxonDistribution dist, String script) {
 
-		List<UpdateRequest> requestBuilder = new ArrayList<UpdateRequest>();
+		List<UpdateRequest> requestBuilder = new ArrayList<>();
 
-		Map<String, Object> fields = new HashMap<String, Object>();
+		Map<String, Object> fields = new HashMap<>();
 
 		fields.put("item", (Map<String, Object>) objectMapper.convertValue(dist, Map.class));
-		requestBuilder.addAll(elasticPersistenceUtils.getUpdateScript(INDEX, TYPE, id, fields, script));
+		requestBuilder.addAll(elasticPersistenceUtils.getUpdateScript(getIndex(), getType(), id, fields, script));
 
-		if (requestBuilder.size() > 0)
+		if (!requestBuilder.isEmpty())
 			elasticPersistenceUtils.updateByBulk(requestBuilder);
 	}
 
 	public void deleteRegister(String id, String script) {
 
-		List<UpdateRequest> requestBuilder = new ArrayList<UpdateRequest>();
+		List<UpdateRequest> requestBuilder = new ArrayList<>();
 
-		Map<String, Object> fields = new HashMap<String, Object>();
+		Map<String, Object> fields = new HashMap<>();
 		fields.put("item_id", id);
 
 		TaxonDistribution source = findByRegisterId(id);
 		if (source != null) {
 			try {
-				requestBuilder.addAll(elasticPersistenceUtils.getUpdateScript(INDEX, TYPE,
+				requestBuilder.addAll(elasticPersistenceUtils.getUpdateScript(getIndex(), getType(),
 						String.valueOf(source.getId()), fields, script));
 			} catch (Exception e) {
 				throw new ESUpdateException(e);
 			}
 		}
 
-		if (requestBuilder.size() > 0)
+		if (!requestBuilder.isEmpty())
 			elasticPersistenceUtils.updateByBulk(requestBuilder);
 	}
 }

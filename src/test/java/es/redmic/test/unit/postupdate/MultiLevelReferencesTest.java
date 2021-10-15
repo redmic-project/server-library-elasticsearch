@@ -9,9 +9,9 @@ package es.redmic.test.unit.postupdate;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -48,8 +48,6 @@ import es.redmic.es.administrative.taxonomy.repository.AnimalESRepository;
 import es.redmic.es.administrative.taxonomy.repository.SpeciesESRepository;
 import es.redmic.es.administrative.taxonomy.service.AnimalESService;
 import es.redmic.es.administrative.taxonomy.service.SpeciesESService;
-import es.redmic.es.atlas.repository.LayerESRepository;
-import es.redmic.es.atlas.service.LayerESService;
 import es.redmic.es.data.common.repository.RWDataESRepository;
 import es.redmic.es.geodata.citation.repository.CitationESRepository;
 import es.redmic.es.geodata.citation.service.CitationESService;
@@ -86,11 +84,6 @@ import es.redmic.es.maintenance.domain.administrative.taxonomy.service.OriginESS
 import es.redmic.es.maintenance.domain.administrative.taxonomy.service.PermanenceESService;
 import es.redmic.es.maintenance.domain.administrative.taxonomy.service.SpainProtectionESService;
 import es.redmic.es.maintenance.domain.administrative.taxonomy.service.TrophicRegimeESService;
-import es.redmic.es.series.common.repository.RWSeriesESRepository;
-import es.redmic.es.series.objectcollecting.repository.ObjectCollectingSeriesESRepository;
-import es.redmic.es.series.objectcollecting.service.ObjectCollectingSeriesESService;
-import es.redmic.models.es.administrative.model.Activity;
-import es.redmic.models.es.administrative.model.ActivityReferences;
 import es.redmic.models.es.administrative.model.Contact;
 import es.redmic.models.es.administrative.model.ContactCompact;
 import es.redmic.models.es.administrative.taxonomy.model.Animal;
@@ -128,9 +121,7 @@ public class MultiLevelReferencesTest extends ReferencesBaseTest {
 		config.add(new DomainReferencesConfig().setServiceClass(ConfidenceESService.class)
 				.setRepositoryClass(ConfidenceESRepository.class)
 				.addDependence("citationESService", CitationESService.class, CitationESRepository.class, DomainES.class,
-						"properties.collect.confidence.id")
-				.addDependence("objectCollectingSeriesESService", ObjectCollectingSeriesESService.class,
-						ObjectCollectingSeriesESRepository.class, DomainES.class, "confidence.id"));
+						"properties.collect.confidence.id"));
 
 		config.add(new DomainReferencesConfig().setServiceClass(DestinyESService.class)
 				.setRepositoryClass(DestinyESRepository.class).addDependence("animalESService", AnimalESService.class,
@@ -196,13 +187,6 @@ public class MultiLevelReferencesTest extends ReferencesBaseTest {
 
 		/* Complex domains and metaData nested */
 
-		config.add(new MetaDataReferencesConfig<Activity>().setServiceClass(ActivityESService.class)
-				.setRepositoryClass(ActivityESRepository.class).setModelClass(Activity.class)
-				.addDependence("layerESService", LayerESService.class, LayerESRepository.class,
-						ActivityReferences.class, "activities.id", 1, true)
-				.setDataInPath("/data/administrative/activity/model/activity.json")
-				.setDataInModifiedPath("/data/administrative/activity/model/activityModified.json"));
-
 		config.add(new MetaDataReferencesConfig<Contact>().setServiceClass(ContactESService.class)
 				.setRepositoryClass(ContactESRepository.class).setModelClass(Contact.class)
 				.addDependence("platformESService", PlatformESService.class, PlatformESRepository.class,
@@ -249,10 +233,6 @@ public class MultiLevelReferencesTest extends ReferencesBaseTest {
 
 		if (dependence.getRepository() instanceof RWDataESRepository) {
 			((RWDataESRepository<?>) verify(dependence.getRepository(), times(1))).multipleUpdateByScript(
-					referencesInfo.getReferencesUtil().getModelToIndex(), dependence.getPath(),
-					dependence.getNestingDepth(), dependence.getNestedProperty());
-		} else if (dependence.getRepository() instanceof RWSeriesESRepository) {
-			((RWSeriesESRepository<?>) verify(dependence.getRepository(), times(1))).multipleUpdateByScript(
 					referencesInfo.getReferencesUtil().getModelToIndex(), dependence.getPath(),
 					dependence.getNestingDepth(), dependence.getNestedProperty());
 		} else {

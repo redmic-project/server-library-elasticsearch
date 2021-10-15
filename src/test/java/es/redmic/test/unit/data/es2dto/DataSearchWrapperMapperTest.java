@@ -9,9 +9,9 @@ package es.redmic.test.unit.data.es2dto;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,8 +20,9 @@ package es.redmic.test.unit.data.es2dto;
  * #L%
  */
 
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.io.IOException;
 
@@ -47,12 +48,12 @@ import es.redmic.es.administrative.taxonomy.mapper.RecoveryESMapper;
 import es.redmic.es.administrative.taxonomy.mapper.SpeciesESMapper;
 import es.redmic.es.administrative.taxonomy.mapper.TaxonESMapper;
 import es.redmic.es.administrative.taxonomy.repository.TaxonESRepository;
-import es.redmic.es.atlas.mapper.LayerESMapper;
 import es.redmic.es.data.common.mapper.DataCollectionMapper;
 import es.redmic.es.data.common.mapper.DataItemMapper;
 import es.redmic.es.maintenance.device.mapper.CalibrationESMapper;
 import es.redmic.es.maintenance.device.mapper.DeviceESMapper;
 import es.redmic.es.maintenance.domain.administrative.mapper.ActivityDocumentESMapper;
+import es.redmic.es.maintenance.domain.administrative.mapper.ActivityResourceESMapper;
 import es.redmic.es.maintenance.domain.administrative.mapper.ActivityTypeESMapper;
 import es.redmic.es.maintenance.domain.administrative.mapper.ContactOrganisationRoleESMapper;
 import es.redmic.es.maintenance.domain.administrative.mapper.OrganisationRoleESMapper;
@@ -65,36 +66,35 @@ import es.redmic.models.es.administrative.model.Project;
 import es.redmic.models.es.administrative.taxonomy.model.Taxon;
 import es.redmic.models.es.data.common.model.DataHitWrapper;
 import es.redmic.test.utils.ConfigMapper;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(Parameterized.class)
 public class DataSearchWrapperMapperTest extends DataTestUtil {
 
 	@Mock
 	ProgramESService programESService;
-	
+
 	@InjectMocks
 	ProjectESMapper projectESMapper;
-	
+
 	@Mock
 	ProjectESService projectESService;
-	
+
 	@InjectMocks
 	ActivityESMapper activityESMapper;
-	
+
 	@Mock
 	TaxonESRepository taxonESRepository;
-	
+
 	@InjectMocks
 	TaxonESMapper taxonESMapper;
-	
+
 	@InjectMocks
 	SpeciesESMapper speciesESMapper;
-	
+
 	String taxonModel = "/data/administrative/taxonomy/taxon/model/parent.json",
 			projectParent = "/data/administrative/project/model/parent.json",
 			activityParent = "/data/administrative/activity/model/parent.json";
-	
+
 	public DataSearchWrapperMapperTest(ConfigMapper configTest) throws IOException {
 		super(configTest);
 
@@ -102,6 +102,7 @@ public class DataSearchWrapperMapperTest extends DataTestUtil {
 		factory.addMapper(new DataCollectionMapper());
 		factory.addMapper(new DataItemMapper());
 		factory.addMapper(new ActivityTypeESMapper());
+		factory.addMapper(new ActivityResourceESMapper());
 		factory.addMapper(new ContactOrganisationRoleESMapper());
 		factory.addMapper(new OrganisationRoleESMapper());
 		factory.addMapper(new PlatformContactRoleESMapper());
@@ -117,28 +118,27 @@ public class DataSearchWrapperMapperTest extends DataTestUtil {
 		factory.addMapper(new ActivityBaseESMapper<Program, ProgramDTO>());
 		factory.addMapper(new RecoveryESMapper());
 		factory.addMapper(new AnimalESMapper());
-		factory.addMapper(new LayerESMapper());
 		// @formatter:on
 	}
-	
+
 	/*
 	 * Añade mapper especiales a los cuales hay que inyectar dependencias
-	 * */
+	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Before
 	public void setupTest() throws IOException {
-		
+
 		initMocks(this);
-		
+
 		factory.addMapper(taxonESMapper);
 		factory.addMapper(speciesESMapper);
 		factory.addMapper(activityESMapper);
 		factory.addMapper(projectESMapper);
-		
+
 		JavaType typeTaxon = jacksonMapper.getTypeFactory().constructParametricType(DataHitWrapper.class, Taxon.class);
 		DataHitWrapper parent = (DataHitWrapper<?>) getBean(taxonModel, typeTaxon);
 		when(taxonESRepository.findById(anyString())).thenReturn(parent);
-		
+
 		when(projectESService.findById(anyString())).thenReturn((Project) getBean(activityParent, Project.class));
 		when(programESService.findById(anyString())).thenReturn((Program) getBean(projectParent, Program.class));
 	}
