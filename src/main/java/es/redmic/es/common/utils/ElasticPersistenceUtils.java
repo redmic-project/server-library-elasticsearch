@@ -143,7 +143,7 @@ public class ElasticPersistenceUtils<TModel extends BaseES<?>> {
 
 		UpdateRequest updateRequest = new UpdateRequest(index, type, id)
 				.doc(convertTModelToSource(model))
-				.fetchSource(false)
+				.fetchSource(true)
 				.setRefreshPolicy(RefreshPolicy.IMMEDIATE);
 
 		if (parentId != null) {
