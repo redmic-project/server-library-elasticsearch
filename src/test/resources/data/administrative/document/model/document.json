@@ -16,5 +16,8 @@
 	"inserted": "2016-05-12T08:25:48.445+00:00",
 	"id": 5911,
 	"keywords": ["Fauna","Cetaceos","Avistamientos","Canarias","Cabo Verde","REDMIC"],
-	"updated": null
+	"updated": null,
+	"enabled": false,
+	"internalUrl": "/api/mediastorage/documents/BibOAG-05200.pdf",
+	"privateInternalUrl": true
 }
