@@ -143,7 +143,7 @@ public class WormsRestClientTest extends JsonToBeanTestUtil {
 		assertNotNull(result.getValidName());
 	}
 
-	@Test
+	//@Test
 	public void getAphiaRecordsByName_ReturnRecords_IfRequestIsCorrect() throws Exception {
 
 		WormsListDTO result = service.findAphiaRecordsByScientificName("Leptochelia dubia");

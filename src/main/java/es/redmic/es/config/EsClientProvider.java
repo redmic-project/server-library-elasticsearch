@@ -110,7 +110,7 @@ public class EsClientProvider {
 	private HttpClientConfigCallback getHttpClientConfigCallback(CredentialsProvider credentialsProvider) {
 		return new HttpClientConfigCallback() {
 
-			private static final int KEEP_ALIVE_MS = 20 * 60 * 1000; // 20 minutes
+			private static final int KEEP_ALIVE_MS = 5 * 60 * 1000; // 5 minutes
 
 			@Override
 			public HttpAsyncClientBuilder customizeHttpClient(HttpAsyncClientBuilder httpClientBuilder) {

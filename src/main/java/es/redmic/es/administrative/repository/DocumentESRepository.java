@@ -22,9 +22,13 @@ package es.redmic.es.administrative.repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.join.query.JoinQueryBuilders;
 import org.springframework.stereotype.Repository;
 
 import es.redmic.es.data.common.repository.AdministrativeCommonESRepository;
@@ -125,6 +129,15 @@ public class DocumentESRepository extends AdministrativeCommonESRepository<Docum
 
 		return (DataSearchWrapper<Document>) findBy(
 				QueryBuilders.boolQuery().must(queryBuilder).filter(QueryBuilders.idsQuery(getType()).addIds(ids)));
+	}
+
+	@Override
+	public QueryBuilder getTermQuery(Map<String, Object> terms, BoolQueryBuilder query) {
+
+		if (terms.containsKey("only_enable") && terms.get("only_enable").equals(true)) {
+			query.must(QueryBuilders.termsQuery("enabled", true));
+		}
+		return super.getTermQuery(terms, query);
 	}
 
 	@Override

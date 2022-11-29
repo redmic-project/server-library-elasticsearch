@@ -31,6 +31,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 
 import ma.glasnost.orika.MappingContext;
 
@@ -40,6 +42,10 @@ public class JsonToBeanTestUtil {
 			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false).registerModule(new JtsModule());
 
 	public JsonToBeanTestUtil() {
+
+		SimpleFilterProvider filterProvider = new SimpleFilterProvider();
+		filterProvider.addFilter("InternalDocumentFilter", SimpleBeanPropertyFilter.serializeAll());
+		jacksonMapper.setFilterProvider(filterProvider);
 	}
 
 	protected String getJsonString(String filePath) throws IOException {
