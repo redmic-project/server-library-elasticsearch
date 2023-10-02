@@ -48,6 +48,10 @@
 				},
 				"urlResource": "https://ckan.redmic.es"
 			}],
+			"embeddedContents": [{
+				"id": 1,
+				"embeddedContent": "<iframe></iframe>"
+			}],
 			"accessibility": {
 				"id": 2,
 				"name": "Libre",
