@@ -52,7 +52,6 @@ public abstract class TrackingBaseESService extends RGeoDataESService<ElementTra
 	@Autowired
 	PlatformESService platformESService;
 
-	@Autowired
 	protected TrackingBaseESService(TrackingBaseESRepository repository) {
 		super(repository);
 		this.repository = repository;
