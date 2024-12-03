@@ -54,6 +54,10 @@
 							"id": 1
 						}
 					},
+					"taxonomy": {
+						"id": 13,
+						"scientificName": "Chordata"
+					},
 					"recoveries": [
 						{
 							"id": 1,
