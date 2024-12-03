@@ -24,9 +24,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.redmic.es.geodata.tracking.common.repository.TrackingESRepository;
+import es.redmic.models.es.geojson.common.model.GeoPointData;
+import es.redmic.models.es.geojson.tracking.common.ElementTrackingDTO;
 
 @Service
-public class TrackingESService extends TrackingBaseESService {
+public class TrackingESService extends TrackingBaseESService<ElementTrackingDTO, GeoPointData> {
 
 	@Autowired
 	public TrackingESService(TrackingESRepository repository) {

@@ -39,7 +39,7 @@ import es.redmic.models.es.geojson.tracking.common.ElementListDTO;
 import es.redmic.models.es.geojson.tracking.common.ElementTrackingDTO;
 import ma.glasnost.orika.MappingContext;
 
-public abstract class TrackingBaseESService extends RGeoDataESService<ElementTrackingDTO, GeoPointData> {
+public abstract class TrackingBaseESService<TDTO, TModel> extends RGeoDataESService<ElementTrackingDTO, GeoPointData> {
 
 	@Autowired
 	protected OrikaScanBeanESItfc orikaMapper;
