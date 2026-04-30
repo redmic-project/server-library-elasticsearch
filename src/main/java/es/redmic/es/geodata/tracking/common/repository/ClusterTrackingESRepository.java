@@ -29,6 +29,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
+import org.springframework.beans.factory.annotation.Value;
 
 import es.redmic.es.common.queryFactory.geodata.GeoDataQueryUtils;
 import es.redmic.es.common.repository.ProcessClusterMultiElementFunction;
@@ -41,6 +42,9 @@ import es.redmic.models.es.geojson.tracking.common.BaseTrackingClusterDTO;
 
 public abstract class ClusterTrackingESRepository<TModel extends Feature<GeoDataProperties, ?>>
 		extends GeoPresenceESRepository<TModel> {
+
+	@Value("${redmic.elasticsearch.MIN_PIXELS_TO_CLUSTER}")
+	private int minPixelsToCluster;
 
 	protected final static String BASE_PATH = "properties.inTrack", DATE_PATH = "properties.inTrack.date",
 			PLATFORM_PATH = "properties.inTrack.platform.uuid", ANIMAL_PATH = "properties.collect.animal.uuid",
@@ -82,7 +86,7 @@ public abstract class ClusterTrackingESRepository<TModel extends Feature<GeoData
 
 		@SuppressWarnings("unchecked")
 		List<BaseTrackingClusterDTO> result = (List<BaseTrackingClusterDTO>) scrollQueryReturnItems(queryBuilder,
-				new ProcessClusterMultiElementFunction(objectMapper, zoomLevel));
+				new ProcessClusterMultiElementFunction(objectMapper, zoomLevel, minPixelsToCluster));
 
 		GeoJSONFeatureCollectionDTO collection = new GeoJSONFeatureCollectionDTO();
 

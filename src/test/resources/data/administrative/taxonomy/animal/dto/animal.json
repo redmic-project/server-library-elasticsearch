@@ -17,6 +17,10 @@
 		"authorship": "Haeckel, 1874",
 		"id": 13
 	},
+	"taxonomy": {
+		"id": 13,
+		"scientificName": "Chordata"
+	},
 	"recoveries": [
 		{
 			"id": 1,

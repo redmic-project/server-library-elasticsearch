@@ -56,6 +56,10 @@ public abstract class GeoFixedBaseESRepository<TModel extends Feature<GeoDataPro
 		super();
 	}
 
+	public GeoFixedBaseESRepository(String[] index, String type) {
+		super(index, type);
+	}
+
 	@SuppressWarnings("unchecked")
 	public <T extends Geometry> GeoSearchWrapper<GeoDataProperties, T> findByDataDefinition(Long dataDefinitionId) {
 

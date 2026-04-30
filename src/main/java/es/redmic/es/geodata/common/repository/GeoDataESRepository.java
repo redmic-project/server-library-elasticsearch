@@ -32,6 +32,10 @@ public abstract class GeoDataESRepository<TModel extends Feature<?, ?>>
 		super(INDEX, TYPE);
 	}
 
+	protected GeoDataESRepository(String[] index, String type) {
+		super(index, type);
+	}
+
 	@Override
 	protected String getMappingFilePath(String index, String type) {
 		return MAPPING_BASE_PATH + "geodata/" + index + MAPPING_FILE_EXTENSION;
