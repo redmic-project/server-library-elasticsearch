@@ -13,7 +13,7 @@
 	<groupId>es.redmic.lib</groupId>
 	<artifactId>elasticsearch</artifactId>
 	<packaging>jar</packaging>
-	<version>0.11.0-feature-addPrivateProjectStructure</version>
+	<version>0.12.0</version>
 	<name>ElasticSearch</name>
 	<description>ElasticSearch library </description>
 
