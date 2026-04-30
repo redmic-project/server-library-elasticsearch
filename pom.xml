@@ -19,7 +19,7 @@
 
 	<properties>
 		<!-- REDMIC -->
-		<redmic.models.version>0.15.0-feature-addPrivateProjectStructure</redmic.models.version>
+		<redmic.models.version>0.16.0</redmic.models.version>
 		<redmic.exceptions.version>0.10.0</redmic.exceptions.version>
 		<redmic.utils.version>0.10.0-feature-changeJtsVersion</redmic.utils.version>
 
