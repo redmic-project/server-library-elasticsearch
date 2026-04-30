@@ -41,10 +41,10 @@ public class ProcessClusterMultiElementFunction
 		implements IProcessItemFunction<GeoHitWrapper<GeoDataProperties, Point>> {
 
 	int zoomLevel;
+	int minPixelsToCluster;
 	String elementUuid;
 
 	private static String CRS_NAME = "EPSG:4326";
-	private static int MIN_PIXELS_TO_CLUSTER = 8;
 
 	private CoordinateReferenceSystem crs = GeometryUtils.getCRS(CRS_NAME);
 
@@ -52,9 +52,10 @@ public class ProcessClusterMultiElementFunction
 
 	protected ObjectMapper objectMapper;
 
-	public ProcessClusterMultiElementFunction(ObjectMapper objectMapper, int zoomLevel) {
+	public ProcessClusterMultiElementFunction(ObjectMapper objectMapper, int zoomLevel, int minPixelsToCluster) {
 		this.objectMapper = objectMapper;
 		this.zoomLevel = zoomLevel;
+		this.minPixelsToCluster = minPixelsToCluster;
 	}
 
 	@Override
@@ -70,7 +71,7 @@ public class ProcessClusterMultiElementFunction
 		} else {
 			BaseTrackingClusterDTO cluster = clustersByElements.get(clustersByElements.size() - 1);
 
-			if (checkPointBelongsToCluster(cluster.getCentroid(), feature.getGeometry(), zoomLevel))
+			if (checkPointBelongsToCluster(cluster.getCentroid(), feature.getGeometry(), zoomLevel, minPixelsToCluster))
 				cluster.addPoinInCluster(feature);
 			else if (TrackingLinestringClusterDTO.class.isInstance(cluster)) {
 				((TrackingLinestringClusterDTO) cluster).addAxis(feature);
@@ -95,7 +96,7 @@ public class ProcessClusterMultiElementFunction
 		return (GeoPointData) item.get_source();
 	}
 
-	public boolean checkPointBelongsToCluster(Point cluster, Point point, int zoomLevel) {
+	public boolean checkPointBelongsToCluster(Point cluster, Point point, int zoomLevel, int minPixelsToCluster) {
 
 		Double distanceInMeters = GeometryUtils.getDistanceInMeters(cluster.getCoordinate(),
 									point.getCoordinate(), crs);
@@ -104,7 +105,7 @@ public class ProcessClusterMultiElementFunction
 
 		Double pixels = distanceInMeters / meterByPixel;
 
-		return !(pixels > MIN_PIXELS_TO_CLUSTER);
+		return !(pixels > minPixelsToCluster);
 	}
 
 	@Override

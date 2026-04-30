@@ -4,7 +4,7 @@
 		"max_score": null
 	},
 	"_aggs": {
-		
+
 	},
 	"data": [
 		{
@@ -30,6 +30,10 @@
 				"path": "root.1.13",
 				"authorship": "Haeckel, 1874",
 				"id": 13
+			},
+			"taxonomy": {
+				"id": 13,
+				"scientificName": "Chordata"
 			},
 			"recoveries": [
 				{

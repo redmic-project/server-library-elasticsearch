@@ -56,6 +56,7 @@ public class ProcessClusterMultiElementFunctionTest {
 
 	ObjectMapper objectMapper = new ObjectMapper();
 	int zoomLevel = 19;
+	int minPixelsToCluster = 8;
 
 	private static DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.ENGLISH);
 	static GeometryFactory geomFactory = new GeometryFactory();
@@ -136,7 +137,7 @@ public class ProcessClusterMultiElementFunctionTest {
 	@Test
 	public void should_returnListWithATrackingClusterDTO_when_processFirstPoint() throws Exception {
 
-		ProcessClusterMultiElementFunction process = new ProcessClusterMultiElementFunction(objectMapper, zoomLevel);
+		ProcessClusterMultiElementFunction process = new ProcessClusterMultiElementFunction(objectMapper, zoomLevel, minPixelsToCluster);
 
 		f1.getProperties().getInTrack().setPlatform(pl1);
 
@@ -152,7 +153,7 @@ public class ProcessClusterMultiElementFunctionTest {
 	@Test
 	public void should_returnListWithATrackingLinestringClusterDTO_when_processTwoPoint() throws Exception {
 
-		ProcessClusterMultiElementFunction process = new ProcessClusterMultiElementFunction(objectMapper, zoomLevel);
+		ProcessClusterMultiElementFunction process = new ProcessClusterMultiElementFunction(objectMapper, zoomLevel, minPixelsToCluster);
 
 		f1.getProperties().getInTrack().setPlatform(pl1);
 		f2.getProperties().getInTrack().setPlatform(pl1);
@@ -170,7 +171,7 @@ public class ProcessClusterMultiElementFunctionTest {
 	@Test
 	public void should_returnListWithTwoTrackingCluster_when_processDifferentPlatformPoints() throws Exception {
 
-		ProcessClusterMultiElementFunction process = new ProcessClusterMultiElementFunction(objectMapper, zoomLevel);
+		ProcessClusterMultiElementFunction process = new ProcessClusterMultiElementFunction(objectMapper, zoomLevel, minPixelsToCluster);
 
 		f1.getProperties().getInTrack().setPlatform(pl1);
 		f2.getProperties().getInTrack().setPlatform(pl1);
